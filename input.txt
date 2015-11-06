@@ -1,0 +1,15 @@
+Procedure :: {
+    if (word ==word){
+       "words"
+    }
+    switch (word, !){
+       case "hello": "word"
+    }
+    int a = 5;
+    float b = 5;
+    double c = 5;
+    boolean d = 5;
+    string e= "word";
+    
+}
+
