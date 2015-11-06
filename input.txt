@@ -11,8 +11,12 @@ Procedure :: {
        int fg = 91;
     }
     switch (word, !=){
-       case "hello": {int a = 4;}
-       case "hello": {int b = 3;}
+       case "hello1": {int a = 4;a=5;}
+       case "hello2": {int b = 3;}
+    }
+    switch (dog, <=){
+       case 2: {int a = 4;a=5;}
+       case 3: {int b = 3;}
     }
     int a = 5;
     a=7;
@@ -27,7 +31,7 @@ Procedure :: {
     int subtract = 5 - 5;
     int mult = 5 * 5;
     int divide = 5/5;
-    int multops = 5 + 6 * 3;
+    int multops = 5 + 6 * 3 /4;
     a++;
     a--;
     a+=5;
