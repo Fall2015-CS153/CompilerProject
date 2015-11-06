@@ -3,7 +3,7 @@ Procedure :: {
     {
        int f = 9;
        int g = 10;
-    } elseif (word <= word)
+    } elseif (dog <= cat)
     {
        int f = 100;
        int g = 99;
@@ -15,10 +15,13 @@ Procedure :: {
        case "hello": {int b = 3;}
     }
     int a = 5;
-    float b = 5;
-    double c = 5;
-    boolean d = 5;
+    a=7;
+    float b = 5.0235645;
+    double c = 5.24;
+    c=6.3;
+    boolean d = true;
     string e= 'word';
+    e="newword";
     string e= 'abc';
     int add = 5 + 5;
     int subtract = 5 - 5;

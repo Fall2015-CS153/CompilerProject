@@ -281,7 +281,9 @@ System.out.println(" Found a Case statement");
 }
 void Assignment() : {}
 {
-( LOOKAHEAD(2)StringAssignment()|(<RESERVEDWORDINT> |<RESERVEDWORDFLOAT>| <RESERVEDWORDDOUBLE>| <RESERVEDWORDBOOLEAN>| <RESERVEDWORDSTRING>) Assign() Factor() <SSSemiColon> )
+( LOOKAHEAD(2)StringAssignment()|(<RESERVEDWORDINT> | <RESERVEDWORDSTRING>) Assign() Factor() <SSSemiColon> |
+(<RESERVEDWORDFLOAT>| <RESERVEDWORDDOUBLE>)Assign() DoubleExpr() <SSSemiColon> |
+ <RESERVEDWORDBOOLEAN> Assign() (<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>)<SSSemiColon>)
 {
 System.out.println("Numeric Assignment");
 }
@@ -301,8 +303,15 @@ void Assign() : {}
 
 void Expr() : {}
 {
-  <IDENTIFIER>(OperatorEqualsExpr()|IncrementExpr()|DecrementExpr())
-
+  <IDENTIFIER>(( <SSEquals>(Factor()|DoubleExpr()|<STRING>)<SSSemiColon>)|OperatorEqualsExpr()|IncrementExpr()|DecrementExpr())
+  {
+  System.out.println("Found a Identifier and Operation");
+  }
+ 
+}
+void DoubleExpr(): {}
+{
+  (<INTEGER>|<REALNUMBER>)((<SSPlus>|<SSMinus>|<SSStar>|<SSDivide>) (<INTEGER>|<REALNUMBER>))*
 }
 void ArithmeticExpr(): {}
 {
