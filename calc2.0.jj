@@ -286,7 +286,7 @@ void Expr() : {}
 }
 void ArithmeticExpr(): {}
 {
-  <INTEGER>(<SSPlus>|<SSMinus>|<SSStar>|<SSDivide>) <INTEGER>
+  <INTEGER>((<SSPlus>|<SSMinus>|<SSStar>|<SSDivide>) <INTEGER>)*
   {
   System.out.println("Arithmetic Expression");
   }
