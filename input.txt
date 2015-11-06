@@ -1,7 +1,14 @@
 Procedure :: {
-    if (word ==word)
+    if (dog == cat)
     {
        int f = 9;
+       int g = 10;
+    } elseif (word != word)
+    {
+       int f = 100;
+       int g = 99;
+    }else{
+       int fg = 91;
     }
     switch (word, !){
        case "hello": "word"
