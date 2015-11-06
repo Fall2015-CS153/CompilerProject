@@ -1,6 +1,7 @@
 Procedure :: {
-    if (word ==word){
-       "words"
+    if (word ==word)
+    {
+       int f = 9;
     }
     switch (word, !){
        case "hello": "word"
@@ -10,6 +11,16 @@ Procedure :: {
     double c = 5;
     boolean d = 5;
     string e= "word";
+    int add = 5 + 5;
+    int subtract = 5 - 5;
+    int mult = 5 * 5;
+    int divide = 5/5;
+    a++;
+    a--;
+    a+=5;
+    a-=5;
+    a*=5;
+    a/=5;
     
 }
 

@@ -47,15 +47,44 @@ SKIP :
 TOKEN:
 {
 
-<SPECIALSYMBOL: "~" | "!" | "@" | "%" | "^" | "&" | "*" |"-" | "+" | "|" | 
-"/"| "?" | "<" | ">" | "." | "\'"  | "++" | "--" | "<<" | ">>" | "<=" | ">=" | "+=" | "-=" | "*=" | "/="  | "|=" | "%="|
+<SPECIALSYMBOL: "~" | "!" | "@" | "%" | "^" | "&" | "|" | 
+ "?" | "<" | ">" | "." | "\'"  | "<<" | ">>" | "<=" | ">="  | "|=" | "%="|
 "&=" | "^=" | "||" | "&&" | "!=" | "<<=" | ">>=" |"\""   >
 { debugStream.println("SPECIAL SYMBOL : " + matchedToken.image); }
+|
+<SSPlus: "+">
+{ debugStream.println("SS Plus : " + matchedToken.image); }
+|
+<SSMinus: "-">
+{ debugStream.println("SS Minus : " + matchedToken.image); }
+|
+<SSStar: "*">
+{ debugStream.println("SS Star: " + matchedToken.image); }
+|
+<SSDivide: "/">
+{ debugStream.println("SS Divide : " + matchedToken.image); }
+|
+<SSplusplus: "++">
+{ debugStream.println("SS Plus_plus : " + matchedToken.image); }
+|
+<SSminusminus: "--">
+{ debugStream.println("SS Minus_minus : " + matchedToken.image); }
 |
 <SSSemiColon: ";">
 { debugStream.println("SS SemiColon : " + matchedToken.image); }
 |
-
+<SSPlusEquals: "+=">
+{ debugStream.println("SS Plus_equals : " + matchedToken.image); }
+|
+<SSMinusEquals: "-=">
+{ debugStream.println("SS Minus_equals : " + matchedToken.image); }
+|
+<SSMultEquals: "*=">
+{ debugStream.println("SS Mult_equals : " + matchedToken.image); }
+|
+<SSDivideEquals: "/=">
+{ debugStream.println("SS Divide_equals : " + matchedToken.image); }
+|
 <SSEquals: "=">
 { debugStream.println("SS Equals : " + matchedToken.image); }
 |
@@ -170,7 +199,7 @@ TOKEN : {
 }
 void Program() : {}
 {
-<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart() | Expr()| Assignment())* <SSCloseBraces>
+<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart() | Expr()| Assignment() )* <SSCloseBraces>
 {
 System.out.println("Program Complete");
 }
@@ -180,7 +209,7 @@ System.out.println("Program Complete");
 
 void IfPart() : {} 
 {
-  <RESERVEDWORDIF> <SSOpenParen> (BooleanExpr()) <SSCloseParen> <SSOpenBraces> (Expr()) <SSCloseBraces> (ElseIfPart())* (ElsePart())?
+  <RESERVEDWORDIF> <SSOpenParen> (BooleanExpr()) <SSCloseParen> <SSOpenBraces> (Assignment()) <SSCloseBraces> (ElseIfPart())* (ElsePart())?
 {
 System.out.println("if part");
 }
@@ -229,7 +258,7 @@ System.out.println("Casestatement");
 
 void Assignment() : {}
 {
-StringAssignment() |( <RESERVEDWORDINT> |<RESERVEDWORDFLOAT>| <RESERVEDWORDDOUBLE>| <RESERVEDWORDBOOLEAN>| <RESERVEDWORDSTRING>) Assign() <INTEGER> <SSSemiColon> 
+( LOOKAHEAD(2)StringAssignment()|(<RESERVEDWORDINT> |<RESERVEDWORDFLOAT>| <RESERVEDWORDDOUBLE>| <RESERVEDWORDBOOLEAN>| <RESERVEDWORDSTRING>) Assign() Factor() <SSSemiColon> )
 {
 System.out.println("Numeric Assignment");
 }
@@ -249,9 +278,67 @@ void Assign() : {}
 
 void Expr() : {} 
 {
-  <STRING>
+  <IDENTIFIER>(OperatorEqualsExpr()|IncrementExpr()|DecrementExpr())
 
 }
+void ArithmeticExpr(): {}
+{
+  <INTEGER>(<SSPlus>|<SSMinus>|<SSStar>|<SSDivide>) <INTEGER>
+  {
+  System.out.println("Arithmetic Expression");
+  }
+}
+void Factor():{}
+{
+   (LOOKAHEAD(2)ArithmeticExpr()|<INTEGER>)
+}
+void IncrementExpr(): {}
+{
+   <SSplusplus><SSSemiColon>
+   {
+   System.out.println("Identifier ++");
+   }
+}
+void DecrementExpr(): {}
+{
+   <SSminusminus><SSSemiColon>
+   {
+   System.out.println("Identifier --");
+   }
+}
+void OperatorEqualsExpr():{}
+{
+   (LOOKAHEAD(2)PlusEqualsExpr()|LOOKAHEAD(2)MinusEqualsExpr()|LOOKAHEAD(2)MultEqualsExpr()|LOOKAHEAD(2)DivideEqualsExpr())
+}
+void PlusEqualsExpr(): {}
+{
+   <SSPlusEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
+   {
+   System.out.println("Plus Equals Operation");
+   }
+}
+void MinusEqualsExpr(): {}
+{
+   <SSMinusEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
+   {
+   System.out.println("Minus Equals Operation");
+   }
+}
+void MultEqualsExpr(): {}
+{
+   <SSMultEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
+   {
+   System.out.println("Mult Equals Operation");
+   }
+}
+void DivideEqualsExpr(): {}
+{
+   <SSDivideEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
+   {
+   System.out.println("Divide Equals Operation");
+   }
+}
+
 
 
 
