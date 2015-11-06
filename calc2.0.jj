@@ -47,10 +47,34 @@ SKIP :
 TOKEN:
 {
 
-<SPECIALSYMBOL: "~" | "!" | "@" | "%" | "^" | "&" | "|" | 
- "?" | "<" | ">" | "." | "\'"  | "<<" | ">>" | "<=" | ">="  | "|=" | "%="|
-"&=" | "^=" | "||" | "&&" | "<<=" | ">>=" |"\""   >
+<SPECIALSYMBOL: "~"  | "@" | "%" | "^" |
+ "?"  | "." | "\'"  | "<<" | ">>" | "|=" | "%="|
+"&=" | "^="   | "<<=" | ">>=" |"\""   >
 { debugStream.println("SPECIAL SYMBOL : " + matchedToken.image); }
+|
+<SSAnd: "&">
+{ debugStream.println("SS And : " + matchedToken.image); }
+|
+<SSOr: "|">
+{ debugStream.println("SS Or : " + matchedToken.image); }
+|
+<SSNot: "!">
+{ debugStream.println("SS Not : " + matchedToken.image); }
+|
+<SSL: "<">
+{ debugStream.println("SS Less than : " + matchedToken.image); }
+|
+<SSLE: "<=">
+{ debugStream.println("SS Less than equals : " + matchedToken.image); }
+|
+<SSG: ">">
+{ debugStream.println("SS Greater than : " + matchedToken.image); }
+|
+<SSGE: ">=">
+{ debugStream.println("SS Greater than equals : " + matchedToken.image); }
+|
+<SSNE: "!=">
+{ debugStream.println("SS Not equal to : " + matchedToken.image); }
 |
 <SSPlus: "+">
 { debugStream.println("SS Plus : " + matchedToken.image); }
@@ -110,9 +134,6 @@ TOKEN:
 <ComparisonEquals : "==">
 { debugStream.println("ComparisonEquals : " + matchedToken.image); }
 |
-<ComparisonNotEquals : "!=">
-{ debugStream.println("ComparisonNotEquals : " + matchedToken.image); }
-|
 <SSComma : ",">
 { debugStream.println("Comma : " + matchedToken.image); }
 |
@@ -121,64 +142,47 @@ TOKEN:
 }
 
 TOKEN : {
-      <STRING:("\"")(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> ("\""))*  >
-{ debugStream.println("STRING token:" + matchedToken.image  ); }
-
-    | <CHAR: ("\'" (<LETTER>|<DIGIT>|<SPECIALSYMBOL>){1} "\'")| ("\'\\\'")> 
-{debugStream.println("CHAR token:" + matchedToken.image  );}
-|
- <RESERVEDWORDPROCEDURE :"Procedure ::"> 
+ <RESERVEDWORDPROCEDURE :"Procedure ::">
 { debugStream.println("RESERVEDWORD Prodcedure token:" + matchedToken.image  ); }
-
-| <RESERVEDWORDIF :"if"> 
+| <RESERVEDWORDIF :"if">
 { debugStream.println("RESERVEDWORD IF token:" + matchedToken.image  ); }
-
- |<RESERVEDWORDBOOLEAN :"boolean"> 
-{ debugStream.println("RESERVEDWORD BOOLEAN token:" + matchedToken.image  ); }
- |<RESERVEDWORDDOUBLE :"double"> 
-{ debugStream.println("RESERVEDWORD DOUBLE token:" + matchedToken.image  ); }
-
- |<RESERVEDWORDBREAK :"break"> 
+ |<RESERVEDWORDBREAK :"break">
 { debugStream.println("RESERVEDWORD BREAK token:" + matchedToken.image  ); }
- |<RESERVEDWORDELSE :"else"> 
+ |<RESERVEDWORDELSE :"else">
 { debugStream.println("RESERVEDWORD ELSE token:" + matchedToken.image  ); }
- |<RESERVEDWORDELSEIF :"elseif"> 
+ |<RESERVEDWORDELSEIF :"elseif">
 { debugStream.println("RESERVEDWORD ELSEIF token:" + matchedToken.image  ); }
-
- |<RESERVEDWORDBYTE :"byte"> 
-{ debugStream.println("RESERVEDWORD BYTE token:" + matchedToken.image  ); }
- |<RESERVEDWORDRETURN :"return"> 
+ |<RESERVEDWORDRETURN :"return">
 { debugStream.println("RESERVEDWORD RETURN token:" + matchedToken.image  ); }
-
- |<RESERVEDWORDCASE :"case"> 
+ |<RESERVEDWORDCASE :"case">
 { debugStream.println("RESERVEDWORD CASE token:" + matchedToken.image  ); }
-
- |<RESERVEDWORDINT :"int"> 
-{ debugStream.println("RESERVEDWORD INT token:" + matchedToken.image  ); }
-
- |<RESERVEDWORDTRUE :"true"> 
-{ debugStream.println("RESERVEDWORD TRUE token:" + matchedToken.image  ); }
- |<RESERVEDWORDFALSE :"false"> 
-{ debugStream.println("RESERVEDWORD FALSE token:" + matchedToken.image  ); }
- |<RESERVEDWORDLONG :"long"> 
-{ debugStream.println("RESERVEDWORD LONG token:" + matchedToken.image  ); }
- |<RESERVEDWORDSTRING :"string"> 
-{ debugStream.println("RESERVEDWORD string token:" + matchedToken.image  ); }
-
- |<RESERVEDWORDSTRICTFP :"strictfp"> 
- |<RESERVEDWORDFLOAT :"float"> 
-{ debugStream.println("RESERVEDWORD FLOAT token:" + matchedToken.image  ); }
- |<RESERVEDWORDSWITCH :"switch"> 
+|<RESERVEDWORDSWITCH :"switch">
 { debugStream.println("RESERVEDWORD SWITCH token:" + matchedToken.image  ); }
- |<RESERVEDWORDWHILE :"while"> 
+|<RESERVEDWORDWHILE :"while">
 { debugStream.println("RESERVEDWORD WHILE token:" + matchedToken.image  ); }
- |<RESERVEDWORDCONTINUE :"continue"> 
-{ debugStream.println("RESERVEDWORD CONTINUE token:" + matchedToken.image  ); }
- |<RESERVEDWORDFOR :"for"> 
+ |<RESERVEDWORDFOR :"for">
 { debugStream.println("RESERVEDWORD FOR token:" + matchedToken.image  ); }
 
- | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
+ |<RESERVEDWORDTRUE :"true">
+{ debugStream.println("RESERVEDWORD TRUE token:" + matchedToken.image  ); }
+ |<RESERVEDWORDFALSE :"false">
+{ debugStream.println("RESERVEDWORD FALSE token:" + matchedToken.image  ); }
+|<RESERVEDWORDINT :"int">
+{ debugStream.println("RESERVEDWORD INTEGER token:" + matchedToken.image  ); }
+ |<RESERVEDWORDFLOAT :"float">
+{ debugStream.println("RESERVEDWORD FLOAT token:" + matchedToken.image  ); }
+|<RESERVEDWORDBOOLEAN :"boolean">
+{ debugStream.println("RESERVEDWORD BOOLEAN token:" + matchedToken.image  ); }
+|<RESERVEDWORDDOUBLE :"double">
+{ debugStream.println("RESERVEDWORD DOUBLE token:" + matchedToken.image  ); }
+|<RESERVEDWORDSTRING :"string">
+{ debugStream.println("RESERVEDWORD STRING token:" + matchedToken.image  ); }
+
+| <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 { debugStream.println("IDENTIFIER token: " + matchedToken.image); }
+|
+<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
+{ debugStream.println("STRING token:" + matchedToken.image  ); }
 |<INTEGER: <DECIMALINTEGER>|<OCTALINTEGER>|<HEXINTEGER>>
 {debugStream.println("INTEGER token: " + matchedToken.image);}
  | <DECIMALINTEGER : <NONZERO> (<DIGIT> )*>
@@ -192,6 +196,8 @@ TOKEN : {
 | <REAL_NUMBER : ("."(<DIGIT>)* ("e"|"E"|"")("+"|"-"|"")(<DIGIT>)*)>
 { debugStream.println("REALNUMBER: " + matchedToken.image); }
 
+ | <#SINGLEQUOTE:["\'"]>
+ | <#DOUBLEQUOTE:["\""]>
  | <#HEXLETTERS:["A"-"F","a"-"f"]>
  | <#DIGIT  : ["0"-"9"]>
  | <#NONZERO  : ["1"-"9"]>
@@ -234,9 +240,17 @@ System.out.println("else part");
 }
 }
 
+void ComparisonOperator() : {}
+{
+  <SSAnd>|<SSOr>|<SSNot>|<ComparisonEquals>|<SSL>|<SSLE>|<SSG>|<SSGE>|<SSNE>
+{
+System.out.println("Found a boolean expression");
+}
+}
+
 void BooleanExpr() : {} 
 {
-  <IDENTIFIER> (<ComparisonEquals>| <ComparisonNotEquals>) <IDENTIFIER>
+  <IDENTIFIER> (ComparisonOperator()) <IDENTIFIER>
 
 }
 
@@ -244,7 +258,7 @@ void BooleanExpr() : {}
 
 void SwitchPart() : {} 
 {
-  <RESERVEDWORDSWITCH> <SSOpenParen> <IDENTIFIER><SSComma><SPECIALSYMBOL> <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces> 
+  <RESERVEDWORDSWITCH> <SSOpenParen> <IDENTIFIER><SSComma> (ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces> 
 {
 System.out.println("Switch statement");
 }

@@ -3,21 +3,22 @@ Procedure :: {
     {
        int f = 9;
        int g = 10;
-    } elseif (word != word)
+    } elseif (word <= word)
     {
        int f = 100;
        int g = 99;
     }else{
        int fg = 91;
     }
-    switch (word, !){
+    switch (word, !=){
        case "hello": "word"
     }
     int a = 5;
     float b = 5;
     double c = 5;
     boolean d = 5;
-    string e= "word";
+    string e= 'word';
+    string e= 'abc';
     int add = 5 + 5;
     int subtract = 5 - 5;
     int mult = 5 * 5;
