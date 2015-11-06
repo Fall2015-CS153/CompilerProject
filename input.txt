@@ -11,7 +11,8 @@ Procedure :: {
        int fg = 91;
     }
     switch (word, !=){
-       case "hello": "word"
+       case "hello": {int a = 4;}
+       case "hello": {int b = 3;}
     }
     int a = 5;
     float b = 5;
