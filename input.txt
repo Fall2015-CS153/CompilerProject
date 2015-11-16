@@ -11,11 +11,11 @@ Procedure :: {
        int fg = 91;
     }
     switch (word, !=){
-       case "hello1": {int a = 4;a=5;}
+       case "hello1": { int a = 4;}
        case "hello2": {int b = 3;}
     }
     switch (dog, <=){
-       case 2: {int a = 4;a=5;}
+       case 2: {int a = 4; a = 5; }
        case 3: {int b = 3;}
     }
     int a = 5;
@@ -38,6 +38,16 @@ Procedure :: {
     a-=5;
     a*=5;
     a/=5;
+
+    //DataType Declarations
+    hashmap hp= new;
+    set s= new [4];
+    list l= new [3];
+
+    //DataType Assignment
+    hashmap hp[3]=5 ;
+    set s[2]= 2;
+    list l[0]= 1;
     
 }
 

@@ -177,6 +177,14 @@ TOKEN : {
 { debugStream.println("RESERVEDWORD DOUBLE token:" + matchedToken.image  ); }
 |<RESERVEDWORDSTRING :"string">
 { debugStream.println("RESERVEDWORD STRING token:" + matchedToken.image  ); }
+|<RESERVEDWORDHASHMAP :"hashmap">
+{ debugStream.println("RESERVEDWORD HASHMAP token:" + matchedToken.image  ); }
+|<RESERVEDWORDSET :"set">
+{ debugStream.println("RESERVEDWORD CASE Set:" + matchedToken.image  ); }
+ |<RESERVEDWORDLIST :"list">
+{ debugStream.println("RESERVEDWORD LIST token:" + matchedToken.image  ); }
+ |<RESERVEDWORDNEW :"new">
+{ debugStream.println("RESERVEDWORD NEW token:" + matchedToken.image  ); }
 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 { debugStream.println("IDENTIFIER token: " + matchedToken.image); }
@@ -208,7 +216,7 @@ TOKEN : {
 }
 void Program() : {}
 {
-<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart() | Expr()| Assignment() )* <SSCloseBraces>
+<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart() | Expr()| Assignment()| DataTypes() )* <SSCloseBraces>
 {
 System.out.println("Program Complete");
 }
@@ -274,7 +282,7 @@ System.out.println("Found a Switch statement");
 
 void Cases() : {}
 {
-  <RESERVEDWORDCASE> (Literal()) <SSColon> <SSOpenBraces> (Assignment())* <SSCloseBraces>  
+  <RESERVEDWORDCASE> (Literal()) <SSColon> <SSOpenBraces> (Assignment()| Expr())* <SSCloseBraces>  
 {
 System.out.println(" Found a Case statement");
 }
@@ -369,4 +377,20 @@ void DivideEqualsExpr(): {}
    {
    System.out.println("Divide Equals Operation");
    }
+}
+void DataTypes() : {}
+{
+(Hashmap()| List() | Set())
+}
+void Hashmap (): {}
+{
+ <RESERVEDWORDHASHMAP> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon> 
+}
+void Set (): {}
+{
+ <RESERVEDWORDSET> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>
+}
+void List (): {}
+{
+ <RESERVEDWORDLIST> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>
 }
