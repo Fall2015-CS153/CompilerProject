@@ -43,7 +43,13 @@ SKIP :
 {
   <~[]>
 }
-
+void SimpleExpr(): {}
+{
+   (<SSMinus>)? Term() ((<SSPlus>|<SSMinus>|<SSOr>) Term() )*
+   {
+		System.out.println("Simple Expression");
+   }
+}
 TOKEN:
 {
 
@@ -214,9 +220,34 @@ TOKEN : {
  | <#ZERO : ["0"]>
 
 }
+void Expr(): {}
+{
+   SimpleExpr() |( (<SSEquals>|<SSL>|<SSLE>|<SSG>|<SSGE>|<ComparisonEquals>) SimpleExpr() )?
+   {
+		System.out.println("Expression");
+   }
+
+}
+
+void Term (): {}
+{
+   Factor() ((<SSStar>|<SSDivide>|<SSAnd>) Factor())*
+   {
+		System.out.println("Term");
+   }
+}
+
+void Factor(): {}
+{
+   <IDENTIFIER>|<INTEGER>|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>)
+   {
+		System.out.println("Factor");
+   }
+}
+
 void Program() : {}
 {
-<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart() | Expr()| Assignment()| DataTypes() )* <SSCloseBraces>
+<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart() | Assignment()| DataTypes() )* <SSCloseBraces>
 {
 System.out.println("Program Complete");
 }
@@ -275,26 +306,24 @@ System.out.println("Found a boolean expression");
 void SwitchPart() : {}
 {
   <RESERVEDWORDSWITCH> <SSOpenParen> <IDENTIFIER><SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>
-{
-System.out.println("Found a Switch statement");
-}
+	{
+		System.out.println("Found a Switch statement");
+	}
 }
 
 void Cases() : {}
 {
-  <RESERVEDWORDCASE> (Literal()) <SSColon> <SSOpenBraces> (Assignment()| Expr())* <SSCloseBraces>  
+  <RESERVEDWORDCASE> (Literal()) <SSColon> <SSOpenBraces> (Assignment())* <SSCloseBraces>  
 {
 System.out.println(" Found a Case statement");
 }
 }
 void Assignment() : {}
 {
-( LOOKAHEAD(2)StringAssignment()|(<RESERVEDWORDINT> | <RESERVEDWORDSTRING>) Assign() Factor() <SSSemiColon> |
-(<RESERVEDWORDFLOAT>| <RESERVEDWORDDOUBLE>)Assign() DoubleExpr() <SSSemiColon> |
- <RESERVEDWORDBOOLEAN> Assign() (<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>)<SSSemiColon>)
-{
-System.out.println("Numeric Assignment");
-}
+    <RESERVEDWORDINT> Assign() SimpleExpr() <SSSemiColon>
+	{
+		System.out.println("Numeric Assignment");
+	}
 }
 void StringAssignment() : {}
 {
@@ -309,29 +338,14 @@ void Assign() : {}
 <IDENTIFIER> <SSEquals>
 }
 
-void Expr() : {}
-{
-  <IDENTIFIER>(( <SSEquals>(Factor()|DoubleExpr()|<STRING>)<SSSemiColon>)|OperatorEqualsExpr()|IncrementExpr()|DecrementExpr())
-  {
-  System.out.println("Found a Identifier and Operation");
-  }
- 
-}
+
+
+
 void DoubleExpr(): {}
 {
   (<INTEGER>|<REALNUMBER>)((<SSPlus>|<SSMinus>|<SSStar>|<SSDivide>) (<INTEGER>|<REALNUMBER>))*
 }
-void ArithmeticExpr(): {}
-{
-  <INTEGER>((<SSPlus>|<SSMinus>|<SSStar>|<SSDivide>) <INTEGER>)*
-  {
-  System.out.println("Arithmetic Expression");
-  }
-}
-void Factor():{}
-{
-   (LOOKAHEAD(2)ArithmeticExpr()|<INTEGER>)
-}
+
 void IncrementExpr(): {}
 {
    <SSplusplus><SSSemiColon>
@@ -346,38 +360,7 @@ void DecrementExpr(): {}
    System.out.println("Identifier --");
    }
 }
-void OperatorEqualsExpr():{}
-{
-   (LOOKAHEAD(2)PlusEqualsExpr()|LOOKAHEAD(2)MinusEqualsExpr()|LOOKAHEAD(2)MultEqualsExpr()|LOOKAHEAD(2)DivideEqualsExpr())
-}
-void PlusEqualsExpr(): {}
-{
-   <SSPlusEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
-   {
-   System.out.println("Plus Equals Operation");
-   }
-}
-void MinusEqualsExpr(): {}
-{
-   <SSMinusEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
-   {
-   System.out.println("Minus Equals Operation");
-   }
-}
-void MultEqualsExpr(): {}
-{
-   <SSMultEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
-   {
-   System.out.println("Mult Equals Operation");
-   }
-}
-void DivideEqualsExpr(): {}
-{
-   <SSDivideEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
-   {
-   System.out.println("Divide Equals Operation");
-   }
-}
+
 void DataTypes() : {}
 {
 (Hashmap()| List() | Set())
