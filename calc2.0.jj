@@ -11,12 +11,13 @@ public class ExprParser
     {
         java.io.FileReader sr= new java.io.FileReader(args[0]);
         ExprParser parser = new ExprParser(sr);// Mark set
-
-	System.out.println("Parsing has commenced");
-        try {
+		System.out.println("Parsing has commenced");
+        try 
+		{
             parser.Program();
         }
-        catch (ParseException ex) {
+        catch (ParseException ex) 
+		{
             ex.printStackTrace();
         }
     }
@@ -219,7 +220,7 @@ TOKEN : {
 
 void Program() : {}
 {
-<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart() | LOOKAHEAD(3)Assignment()|Declaration()| DataTypes() |LOOKAHEAD(2)IncrementStatement()|LOOKAHEAD(2)DecrementStatement()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement())* <SSCloseBraces>
+<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart()|Statement()| DataTypes() )* <SSCloseBraces>
 {
 System.out.println("Program Complete");
 }
@@ -260,7 +261,10 @@ void Factor(): {}
 		System.out.println("Factor");
    }
 }
-
+void Statement(): {}
+{
+   LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()
+}
 void IfPart() : {}
 {
   <RESERVEDWORDIF> <SSOpenParen> (Expr()) <SSCloseParen> <SSOpenBraces> (LOOKAHEAD(3)Assignment()|Declaration())* <SSCloseBraces> (ElseIfPart())* (ElsePart())?
