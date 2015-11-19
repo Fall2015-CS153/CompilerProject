@@ -43,13 +43,7 @@ SKIP :
 {
   <~[]>
 }
-void SimpleExpr(): {}
-{
-   (<SSMinus>)? Term() ((<SSPlus>|<SSMinus>|<SSOr>) Term() )*
-   {
-		System.out.println("Simple Expression");
-   }
-}
+
 TOKEN:
 {
 
@@ -220,18 +214,40 @@ TOKEN : {
  | <#ZERO : ["0"]>
 
 }
+
+
+
+void Program() : {}
+{
+<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart() | LOOKAHEAD(3)Assignment()|Declaration()| DataTypes() |LOOKAHEAD(2)IncrementStatement()|LOOKAHEAD(2)DecrementStatement()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement())* <SSCloseBraces>
+{
+System.out.println("Program Complete");
+}
+
+}
+void PrimitiveType(): {}
+{
+   <RESERVEDWORDINT>|<RESERVEDWORDSTRING>|<RESERVEDWORDDOUBLE>|<RESERVEDWORDFLOAT>|<RESERVEDWORDBOOLEAN>
+}
+
 void Expr(): {}
 {
-   SimpleExpr() |( (<SSEquals>|<SSL>|<SSLE>|<SSG>|<SSGE>|<ComparisonEquals>) SimpleExpr() )?
+   SimpleExpr() ( (<SSL>|<SSLE>|<SSG>|<SSGE>|<ComparisonEquals>) SimpleExpr() )*
    {
 		System.out.println("Expression");
    }
 
 }
-
+void SimpleExpr(): {}
+{
+   (<SSMinus>)? Term() ((<SSPlus>|<SSMinus>|<SSOr>) Term() )*
+   {
+		System.out.println("Simple Expression");
+   }
+}
 void Term (): {}
 {
-   Factor() ((<SSStar>|<SSDivide>|<SSAnd>) Factor())*
+   Factor() ( (<SSStar>|<SSDivide>|<SSAnd>) Factor() )*
    {
 		System.out.println("Term");
    }
@@ -239,25 +255,15 @@ void Term (): {}
 
 void Factor(): {}
 {
-   <IDENTIFIER>|<INTEGER>|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>)
+   <IDENTIFIER>|(<INTEGER>|<REALNUMBER>|<REAL_NUMBER>)|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>
    {
 		System.out.println("Factor");
    }
 }
 
-void Program() : {}
-{
-<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart() | Assignment()| DataTypes() )* <SSCloseBraces>
-{
-System.out.println("Program Complete");
-}
-
-}
-
-
 void IfPart() : {}
 {
-  <RESERVEDWORDIF> <SSOpenParen> (BooleanExpr()) <SSCloseParen> <SSOpenBraces> (Assignment())* <SSCloseBraces> (ElseIfPart())* (ElsePart())?
+  <RESERVEDWORDIF> <SSOpenParen> (Expr()) <SSCloseParen> <SSOpenBraces> (LOOKAHEAD(3)Assignment()|Declaration())* <SSCloseBraces> (ElseIfPart())* (ElsePart())?
 {
 System.out.println("if part");
 }
@@ -265,7 +271,7 @@ System.out.println("if part");
 
 void ElseIfPart() : {}
 {
-  <RESERVEDWORDELSEIF> <SSOpenParen> (BooleanExpr()) <SSCloseParen><SSOpenBraces>  (Assignment())* <SSCloseBraces>
+  <RESERVEDWORDELSEIF> <SSOpenParen> (Expr()) <SSCloseParen><SSOpenBraces>  (LOOKAHEAD(3)Assignment()|Declaration())* <SSCloseBraces>
 {
 System.out.println("elseif part");
 }
@@ -273,12 +279,32 @@ System.out.println("elseif part");
 
 void ElsePart() : {}
 {
-  <RESERVEDWORDELSE> <SSOpenBraces>  (Assignment())* <SSCloseBraces>
+  <RESERVEDWORDELSE> <SSOpenBraces>  (LOOKAHEAD(3)Assignment()|Declaration())* <SSCloseBraces>
 {
 System.out.println("else part");
 }
 }
 
+
+
+
+void Literal() : {}
+{
+	<INTEGER>|<REALNUMBER>|<REAL_NUMBER>|<STRING>
+	{
+		System.out.println("Found a boolean expression");
+	}
+}
+
+
+
+void SwitchPart() : {}
+{
+    <RESERVEDWORDSWITCH> <SSOpenParen> <IDENTIFIER><SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>
+	{
+		System.out.println("Found a Switch statement");
+	}
+}
 void ComparisonOperator() : {}
 {
   <SSAnd>|<SSOr>|<SSNot>|<ComparisonEquals>|<SSL>|<SSLE>|<SSG>|<SSGE>|<SSNE>
@@ -286,79 +312,60 @@ void ComparisonOperator() : {}
 System.out.println("Found a boolean expression");
 }
 }
-void BooleanExpr() : {}
-{
-  LOOKAHEAD(2)((<IDENTIFIER>|(Literal())) (ComparisonOperator()) (<IDENTIFIER>|(Literal()))) |<IDENTIFIER> |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>
-{
-System.out.println("Found a boolean expression");
-}
-}
-
-void Literal() : {}
-{
-  <INTEGER>|<REALNUMBER>|<REAL_NUMBER>|<STRING>
-{
-System.out.println("Found a boolean expression");
-}
-}
-
-
-void SwitchPart() : {}
-{
-  <RESERVEDWORDSWITCH> <SSOpenParen> <IDENTIFIER><SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>
-	{
-		System.out.println("Found a Switch statement");
-	}
-}
-
 void Cases() : {}
 {
-  <RESERVEDWORDCASE> (Literal()) <SSColon> <SSOpenBraces> (Assignment())* <SSCloseBraces>  
-{
-System.out.println(" Found a Case statement");
-}
+	<RESERVEDWORDCASE> (Expr()) <SSColon> <SSOpenBraces> (LOOKAHEAD(3)Declaration()|Assignment())* <SSCloseBraces>  
+	{
+		System.out.println(" Found a Case statement");
+	}
 }
 void Assignment() : {}
 {
-    <RESERVEDWORDINT> Assign() SimpleExpr() <SSSemiColon>
+    (<IDENTIFIER><SSEquals> (Expr()) <SSSemiColon>)
 	{
-		System.out.println("Numeric Assignment");
+		System.out.println("Assignment");
 	}
 }
-void StringAssignment() : {}
+
+void Declaration(): {}
 {
-(<RESERVEDWORDSTRING> Assign() <STRING> <SSSemiColon>)
-{
-System.out.println("String Assignment");
-}
-
-}
-void Assign() : {}
-{
-<IDENTIFIER> <SSEquals>
-}
-
-
-
-
-void DoubleExpr(): {}
-{
-  (<INTEGER>|<REALNUMBER>)((<SSPlus>|<SSMinus>|<SSStar>|<SSDivide>) (<INTEGER>|<REALNUMBER>))*
-}
-
-void IncrementExpr(): {}
-{
-   <SSplusplus><SSSemiColon>
+   PrimitiveType() (LOOKAHEAD(2)(Assignment()) |(<IDENTIFIER> (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )   
    {
-   System.out.println("Identifier ++");
+		System.out.println("Declaration");
    }
 }
-void DecrementExpr(): {}
+
+
+void IncrementStatement(): {}
 {
-   <SSminusminus><SSSemiColon>
+   <IDENTIFIER><SSplusplus><SSSemiColon>
    {
-   System.out.println("Identifier --");
+   System.out.println("Increment Statement (Plus Plus)");
    }
+}
+void DecrementStatement(): {}
+{
+   <IDENTIFIER><SSminusminus><SSSemiColon>
+   {
+   System.out.println("Decrement Statement (Minus Minus)");
+   }
+}
+void PlusEqualsStatement(): {}
+{
+   <IDENTIFIER> <SSPlusEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
+}
+
+void MinusEqualsStatement():{}
+{
+<IDENTIFIER> <SSMinusEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>
+}
+void StarEqualsStatement(): {}
+{
+<IDENTIFIER> <SSMultEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>
+}
+void DivideEqualsStatement(): {}
+{
+<IDENTIFIER> <SSDivideEquals>(<IDENTIFIER>|<INTEGER>)<SSSemiColon>
 }
 
 void DataTypes() : {}
