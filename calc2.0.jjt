@@ -8,12 +8,30 @@ options
 }
 
 PARSER_BEGIN(ExprParser)
-import java.io.*;
+package wci.frontend;
 
-public class ExprParser
+import java.io.*;
+import wci.intermediate.*;
+import wci.intermediate.symtabimpl.*;
+import wci.backend.*;
+import wci.util.*;
+import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
+import static wci.intermediate.symtabimpl.DefinitionImpl.*;
+import static wci.intermediate.symtabimpl.RoutineCodeImpl.*;
+import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
+import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
+
+private static SymTabStack symTabStack;
+private static SymTabEntry programId;
+public class ExprParser throws Exception
 {
     public static void main(String [] args) throws Exception
     {
+		// Create and initialize the symbol table stack.
+        symTabStack = SymTabFactory.createSymTabStack();
+        Predefined.initialize(symTabStack);
+		
+		//Parse program
         java.io.FileReader sr= new java.io.FileReader(args[0]);
         ExprParser parser = new ExprParser(sr);// Mark set
 		System.out.println("Parsing has commenced");
@@ -25,6 +43,21 @@ public class ExprParser
 		{
             ex.printStackTrace();
         }
+		// Print the cross-reference table.
+        CrossReferencer crossReferencer = new CrossReferencer();
+        crossReferencer.print(symTabStack);
+		 // Visit the parse tree nodes to decorate them with type information.
+        TypeSetterVisitor typeVisitor = new TypeSetterVisitor();
+        rootNode.jjtAccept(typeVisitor, null);
+
+        // Create and initialize the ICode wrapper for the parse tree.
+        ICode iCode = ICodeFactory.createICode();
+        iCode.setRoot(rootNode);
+        programId.setAttribute(ROUTINE_ICODE, iCode);
+        
+        // Print the parse tree.
+        ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
+        treePrinter.print(symTabStack);
     }
 }
 PARSER_END(ExprParser)
