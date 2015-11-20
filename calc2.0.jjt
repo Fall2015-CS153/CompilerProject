@@ -1,6 +1,6 @@
 options 
 {
-    OUTPUT_DIRECTORY="src";
+    //OUTPUT_DIRECTORY="src";
 	MULTI = true;
 	VISITOR = true;
 	JJTREE_OUTPUT_DIRECTORY="src/wci/frontend";
@@ -27,7 +27,7 @@ public class ExprParser
 	//Symbol table information
 	private static SymTabStack symTabStack;
 	private static SymTabEntry programId;
-    public static void main(String [] args)
+    public static void main(String [] args) throws FileNotFoundException
     {
 		// Create and initialize the symbol table stack.
         symTabStack = SymTabFactory.createSymTabStack();
@@ -47,19 +47,19 @@ public class ExprParser
         }
 		// Print the cross-reference table.
         CrossReferencer crossReferencer = new CrossReferencer();
-        crossReferencer.print(symTabStack);
+        //crossReferencer.print(symTabStack);
 		 // Visit the parse tree nodes to decorate them with type information.
         TypeSetterVisitor typeVisitor = new TypeSetterVisitor();
-        rootNode.jjtAccept(typeVisitor, null);
+        //rootNode.jjtAccept(typeVisitor, null);
 
         // Create and initialize the ICode wrapper for the parse tree.
         ICode iCode = ICodeFactory.createICode();
-        iCode.setRoot(rootNode);
-        programId.setAttribute(ROUTINE_ICODE, iCode);
+        //iCode.setRoot(rootNode);
+        //programId.setAttribute(ROUTINE_ICODE, iCode);
         
         // Print the parse tree.
         ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
-        treePrinter.print(symTabStack);
+        //treePrinter.print(symTabStack);
     }
 }
 PARSER_END(ExprParser)

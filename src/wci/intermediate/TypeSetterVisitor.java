@@ -4,7 +4,7 @@ import wci.frontend.*;
 import wci.intermediate.*;
 import wci.intermediate.symtabimpl.*;
 
-public class TypeSetterVisitor extends PclParserVisitorAdapter
+public class TypeSetterVisitor extends ExprParserVisitorAdapter
 {
     private void setType(SimpleNode node)
     {
@@ -22,7 +22,8 @@ public class TypeSetterVisitor extends PclParserVisitorAdapter
         
         node.setTypeSpec(type);
     }
-    
+    /*
+    Leftover from PclParser. need to implement our own
     public Object visit(ASTassignmentStatement node, Object data)
     {
         Object obj = super.visit(node, data);
@@ -72,4 +73,5 @@ public class TypeSetterVisitor extends PclParserVisitorAdapter
     {
         return data;
     }
+    */
 }
