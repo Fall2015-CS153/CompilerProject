@@ -21,11 +21,12 @@ import static wci.intermediate.symtabimpl.RoutineCodeImpl.*;
 import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
 
+//Symbol table information
 private static SymTabStack symTabStack;
 private static SymTabEntry programId;
 public class ExprParser throws Exception
 {
-    public static void main(String [] args) throws Exception
+    public static void main(String [] args)
     {
 		// Create and initialize the symbol table stack.
         symTabStack = SymTabFactory.createSymTabStack();
