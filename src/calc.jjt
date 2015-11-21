@@ -1,65 +1,30 @@
-options 
-{
-    //OUTPUT_DIRECTORY="src";
-	MULTI = true;
-	VISITOR = true;
-	JJTREE_OUTPUT_DIRECTORY="src/wci/frontend";
-	NODE_EXTENDS="wci.intermediate.icodeimpl.ICodeNodeImpl";
+options{
+//other options
+DEBUG_PARSER=true;
 }
-
 PARSER_BEGIN(ExprParser)
-package wci.frontend;
-
 import java.io.*;
-import wci.intermediate.*;
-import wci.intermediate.symtabimpl.*;
-import wci.backend.*;
-import wci.util.*;
-import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
-import static wci.intermediate.symtabimpl.DefinitionImpl.*;
-import static wci.intermediate.symtabimpl.RoutineCodeImpl.*;
-import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
-import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
 
-
-public class ExprParser 
+public class ExprParser
 {
-	//Symbol table information
-	private static SymTabStack symTabStack;
-	private static SymTabEntry programId;
-    public static void main(String [] args) throws FileNotFoundException
+    public static void main(String [] args) throws Exception
     {
-		// Create and initialize the symbol table stack.
-        symTabStack = SymTabFactory.createSymTabStack();
-        Predefined.initialize(symTabStack);
-		
-		//Parse program
-        java.io.FileReader sr= new java.io.FileReader(args[0]);
-        ExprParser parser = new ExprParser(sr);// Mark set
-		System.out.println("Parsing has commenced");
-        try 
-		{
-            parser.Program();
-        }
-        catch (ParseException ex) 
-		{
-            ex.printStackTrace();
-        }
-		// Print the cross-reference table.
-        CrossReferencer crossReferencer = new CrossReferencer();
-        //crossReferencer.print(symTabStack);
-		 // Visit the parse tree nodes to decorate them with type information.
-        TypeSetterVisitor typeVisitor = new TypeSetterVisitor();
-        //rootNode.jjtAccept(typeVisitor, null);
 
-        // Create and initialize the ICode wrapper for the parse tree.
-        ICode iCode = ICodeFactory.createICode();
-        //iCode.setRoot(rootNode);
-        //programId.setAttribute(ROUTINE_ICODE, iCode);
-        
-        // Print the parse tree.
-        ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
-        //treePrinter.print(symTabStack);
+   java.io.FileReader sr= new java.io.FileReader(args[0]);
+    ExprParser calc = new ExprParser(sr);
+
+    try {
+      SimpleNode node = calc.Program();
+      node.dump(">");
+    }
+
+
+
+    catch (ParseException ex) {
+      ex.printStackTrace();
+    }
+
+
     }
 }
 PARSER_END(ExprParser)
@@ -115,7 +80,8 @@ TOKEN:
 { debugStream.println("SS Greater than equals : " + matchedToken.image); }
 |
 <SSNE: "!=">
-{ debugStream.println("SS Not equal to : " + matchedToken.image); }
+{ debugStream.println("SSNE : " + matchedToken.image); }
+
 |
 <SSPlus: "+">
 { debugStream.println("SS Plus : " + matchedToken.image); }
@@ -258,75 +224,71 @@ TOKEN : {
 
 
 
-void Program() : {}
+SimpleNode Program() : {}
 {
 <RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart()|Statement()| DataTypes() )* <SSCloseBraces>
 {
-System.out.println("Program Complete");
+return jjtThis;
 }
 
 }
 void PrimitiveType(): {}
 {
-   <RESERVEDWORDINT>|<RESERVEDWORDSTRING>|<RESERVEDWORDDOUBLE>|<RESERVEDWORDFLOAT>|<RESERVEDWORDBOOLEAN>
+  <RESERVEDWORDINT>|<RESERVEDWORDSTRING>|<RESERVEDWORDDOUBLE>|<RESERVEDWORDFLOAT>|<RESERVEDWORDBOOLEAN>
+
+
 }
 
 void Expr(): {}
 {
    SimpleExpr() ( (<SSL>|<SSLE>|<SSG>|<SSGE>|<ComparisonEquals>) SimpleExpr() )*
-   {
-		System.out.println("Expression");
-   }
+   
+
 
 }
 void SimpleExpr(): {}
 {
-   (<SSMinus>)? Term() ((<SSPlus>|<SSMinus>|<SSOr>) Term() )*
-   {
-		System.out.println("Simple Expression");
-   }
+  (<SSMinus>)? Term() ((<SSPlus>|<SSMinus>|<SSOr>) Term() )*
+
 }
 void Term (): {}
 {
-   Factor() ( (<SSStar>|<SSDivide>|<SSAnd>) Factor() )*
-   {
-		System.out.println("Term");
-   }
+  Factor() ( (<SSStar>|<SSDivide>|<SSAnd>) Factor() )*
+
+
 }
 
 void Factor(): {}
 {
-   <IDENTIFIER>|(<INTEGER>|<REALNUMBER>|<REAL_NUMBER>)|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>
-   {
-		System.out.println("Factor");
-   }
+    <IDENTIFIER>|(<INTEGER>|<REALNUMBER>|<REAL_NUMBER>)|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>
+   
+
 }
 void Statement(): {}
 {
    LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()
+
+
 }
 void IfPart() : {}
 {
   <RESERVEDWORDIF> <SSOpenParen> (Expr()) <SSCloseParen> <SSOpenBraces> (Statement())* <SSCloseBraces> (ElseIfPart())* (ElsePart())?
-{
-System.out.println("if part");
-}
+
+
 }
 
 void ElseIfPart() : {}
 {
-  <RESERVEDWORDELSEIF> <SSOpenParen> (Expr()) <SSCloseParen><SSOpenBraces>  (Statement())* <SSCloseBraces>
-{
-System.out.println("elseif part");
-}
+ <RESERVEDWORDELSEIF> <SSOpenParen> (Expr()) <SSCloseParen><SSOpenBraces>  (Statement())* <SSCloseBraces>
+
+
 }
 
 void ElsePart() : {}
 {
-  <RESERVEDWORDELSE> <SSOpenBraces>  (Statement())* <SSCloseBraces>
-{
-System.out.println("else part");
-}
+ <RESERVEDWORDELSE> <SSOpenBraces>  (Statement())* <SSCloseBraces>
+
+
 }
 
 
@@ -335,96 +297,90 @@ System.out.println("else part");
 void Literal() : {}
 {
 	<INTEGER>|<REALNUMBER>|<REAL_NUMBER>|<STRING>
-	{
-		System.out.println("Found a boolean expression");
-	}
+	
+
 }
 
 
 
 void SwitchPart() : {}
 {
-    <RESERVEDWORDSWITCH> <SSOpenParen> <IDENTIFIER><SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>
-	{
-		System.out.println("Found a Switch statement");
-	}
+     <RESERVEDWORDSWITCH> <SSOpenParen> <IDENTIFIER><SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>
+	
+
 }
 void ComparisonOperator() : {}
 {
-  <SSAnd>|<SSOr>|<SSNot>|<ComparisonEquals>|<SSL>|<SSLE>|<SSG>|<SSGE>|<SSNE>
-{
-System.out.println("Found a boolean expression");
-}
+ <SSAnd>|<SSOr>|<SSNot>|<ComparisonEquals>|<SSL>|<SSLE>|<SSG>|<SSGE>|<SSNE>
+
+
 }
 void Cases() : {}
 {
-	<RESERVEDWORDCASE> (Expr()) <SSColon> <SSOpenBraces> (LOOKAHEAD(3)Declaration()|Assignment())* <SSCloseBraces>  
-	{
-		System.out.println(" Found a Case statement");
-	}
+	<RESERVEDWORDCASE> (Expr()) <SSColon> <SSOpenBraces> (LOOKAHEAD(3)Declaration()|Assignment())* <SSCloseBraces>
+	
+
 }
 void Assignment() : {}
 {
-    (<IDENTIFIER><SSEquals> (Expr()) <SSSemiColon>)
-	{
-		System.out.println("Assignment");
-	}
+  (<IDENTIFIER><SSEquals> (Expr()) <SSSemiColon>)
+
+
 }
 
 void Declaration(): {}
 {
-   PrimitiveType() (LOOKAHEAD(2)(Assignment()) |(<IDENTIFIER> (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )   
-   {
-		System.out.println("Declaration");
-   }
+   PrimitiveType() (LOOKAHEAD(2)(Assignment()) |(<IDENTIFIER> (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )
+
+
 }
 
 
-void IncrementStatement(): {}
+void IncrementStatement(): {Token t;}
 {
-   <IDENTIFIER><SSplusplus><SSSemiColon>
-   {
-   System.out.println("Increment Statement (Plus Plus)");
-   }
+   t = <IDENTIFIER><SSplusplus><SSSemiColon>
+   {jjtThis.setImage(t.image);}
+
 }
-void DecrementStatement(): {}
+void DecrementStatement(): {Token t;}
 {
-   <IDENTIFIER><SSminusminus><SSSemiColon>
-   {
-   System.out.println("Decrement Statement (Minus Minus)");
-   }
+   t = <IDENTIFIER><SSminusminus><SSSemiColon>
+   {jjtThis.setImage(t.image);}
+
 }
-void PlusEqualsStatement(): {}
+void PlusEqualsStatement(): {Token t;}
 {
-   <IDENTIFIER> <SSPlusEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
+   t = <IDENTIFIER> <SSPlusEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
 }
 
-void MinusEqualsStatement():{}
+void MinusEqualsStatement():{Token t;}
 {
-<IDENTIFIER> <SSMinusEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>
+t = <IDENTIFIER> <SSMinusEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>
 }
-void StarEqualsStatement(): {}
+void StarEqualsStatement(): {Token t;}
 {
-<IDENTIFIER> <SSMultEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>
+t = <IDENTIFIER> <SSMultEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>
 }
-void DivideEqualsStatement(): {}
+void DivideEqualsStatement(): {Token t;}
 {
-<IDENTIFIER> <SSDivideEquals>(<IDENTIFIER>|<INTEGER>)<SSSemiColon>
+t = <IDENTIFIER> <SSDivideEquals>(<IDENTIFIER>|<INTEGER>)<SSSemiColon>
 }
 
 void DataTypes() : {}
 {
 (Hashmap()| List() | Set())
+
+
 }
-void Hashmap (): {}
+void Hashmap (): {Token t;}
 {
- <RESERVEDWORDHASHMAP> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon> 
+ t = <RESERVEDWORDHASHMAP> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon>
 }
-void Set (): {}
+void Set (): {Token t;}
 {
- <RESERVEDWORDSET> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>
+t =  <RESERVEDWORDSET> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>
 }
-void List (): {}
+void List (): {Token t;}
 {
- <RESERVEDWORDLIST> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>
+t =  <RESERVEDWORDLIST> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>
 }
