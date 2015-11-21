@@ -1,4 +1,5 @@
 package wci.frontend;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import wci.intermediate.*;
@@ -18,7 +19,7 @@ class SimpleNode implements Node {
   protected ExprParser parser;
   private String image;
   private TypeSpec TypeSpec;
-  private ICodeNodeImpl temp = new ICodeNodeImpl();
+  private ICodeNodeImpl Attribute = new ICodeNodeImpl();
   
   
   public SimpleNode(int i) {
@@ -103,17 +104,19 @@ class SimpleNode implements Node {
 
     Object childrenAccept(ExprParserVisitorAdapter aThis, Object data)
     {
+        System.out.println("Adding data " + data);
         Node child = (Node)(data);
         this.jjtAddChild(child,this.jjtGetNumChildren()+1);
-        return child;
+        return this;
      }
 
     @Override
     public Object jjtAccept(ExprParserVisitor visitor, Object data)
     {
+        System.out.println("Adding data " + data);
      Node child = (Node)(data);
         this.jjtAddChild(child,this.jjtGetNumChildren()+1);
-        return child;    
+        return this;    
     }
 
     /**
@@ -134,13 +137,24 @@ class SimpleNode implements Node {
 
     public void setAttribute(ICodeKeyImpl a, Object b)
     {
-     temp.setAttribute(a,b);
+        getAttribute().setAttribute(a,b);
     }
+    
+    
 
     public Set<Map.Entry<ICodeKey, Object>> entrySet()
     {
-        return (Set<Map.Entry<ICodeKey, Object>>) temp;
+        return getAttribute().entrySet();
     }
+
+    /**
+     * @return the Attribute
+     */
+    public ICodeNodeImpl getAttribute()
+    {
+        return Attribute;
+    }
+
 
 
 }
