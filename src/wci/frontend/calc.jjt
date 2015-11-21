@@ -386,7 +386,12 @@ void Cases() : {}
 }
 void Assignment() : {}
 {
-  ((variable())<SSEquals> (Expr()) <SSSemiColon>)
+  
+variable() {
+        SymTabEntry variableId = symTabStack.lookup(token.image);
+        variableId.appendLineNumber(token.beginLine);
+    }
+<SSEquals> (Expr()) <SSSemiColon>
 
 
 }

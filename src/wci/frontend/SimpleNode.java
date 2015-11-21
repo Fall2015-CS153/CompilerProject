@@ -104,17 +104,15 @@ class SimpleNode implements Node {
 
     Object childrenAccept(ExprParserVisitorAdapter aThis, Object data)
     {
-        System.out.println("Adding data " + data);
-        Node child = (Node)(data);
-        this.jjtAddChild(child,this.jjtGetNumChildren()+1);
+       
         return this;
      }
 
     @Override
     public Object jjtAccept(ExprParserVisitor visitor, Object data)
     {
-        System.out.println("Adding data " + data);
-     Node child = (Node)(data);
+ System.out.println("Adding data " + data);
+        Node child = (Node)(data);
         this.jjtAddChild(child,this.jjtGetNumChildren()+1);
         return this;    
     }
@@ -137,7 +135,11 @@ class SimpleNode implements Node {
 
     public void setAttribute(ICodeKeyImpl a, Object b)
     {
-        getAttribute().setAttribute(a,b);
+         System.out.println("Adding data " + a + " " + b);
+         ICodeNodeImpl ab = new ICodeNodeImpl();
+          Attribute.setAttribute(a,b);
+          Attribute.addChild(ab);
+        System.out.println( Attribute.getChildren().size());
     }
     
     

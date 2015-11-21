@@ -29,7 +29,8 @@ public class ICodeNodeImpl
      * Constructor.
      * @param type the node type whose name will be the name of this node.
      */
-    public ICodeNodeImpl() {}
+    public ICodeNodeImpl() {this.parent = null;
+        this.children = new ArrayList<ICodeNode>();}
 
     /**
      * Constructor.
