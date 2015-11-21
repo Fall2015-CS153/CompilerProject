@@ -28,10 +28,14 @@ public class Predefined
     public static TypeSpec booleanType;
     public static TypeSpec stringType;
     public static TypeSpec undefinedType;
-
+    public static TypeSpec doubleType;
+    public static TypeSpec floatType;
+    
     // Predefined identifiers.
     public static SymTabEntry integerId;
     public static SymTabEntry realId;
+    public static SymTabEntry doubleId;
+    public static SymTabEntry floatId;
     public static SymTabEntry booleanId;
     public static SymTabEntry stringId;
     public static SymTabEntry falseId;
@@ -102,6 +106,20 @@ public class Predefined
         stringType.setIdentifier(stringId);
         stringId.setDefinition(DefinitionImpl.TYPE);
         stringId.setTypeSpec(stringType);
+
+	// Float Type
+        floatId = symTabStack.enterLocal("float");
+        floatType = TypeFactory.createType(ENUMERATION);
+        floatType.setIdentifier(floatId);
+        floatId.setDefinition(DefinitionImpl.TYPE);
+        floatId.setTypeSpec(floatType);
+        
+        //Double Type
+        doubleId = symTabStack.enterLocal("double");
+        doubleType = TypeFactory.createType(ENUMERATION);
+        doubleType.setIdentifier(doubleId);
+        doubleId.setDefinition(DefinitionImpl.TYPE);
+        doubleId.setTypeSpec(doubleType);
 
         // Undefined type.
         undefinedType = TypeFactory.createType(SCALAR);
