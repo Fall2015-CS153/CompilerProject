@@ -48,7 +48,7 @@ public class TypeSpecImpl
         indexType.setAttribute(SUBRANGE_MAX_VALUE, value.length());
 
         setAttribute(ARRAY_INDEX_TYPE, indexType);
-        setAttribute(ARRAY_ELEMENT_TYPE, Predefined.charType);
+        setAttribute(ARRAY_ELEMENT_TYPE, Predefined.stringType);
         setAttribute(ARRAY_ELEMENT_COUNT, value.length());
     }
 
@@ -108,7 +108,7 @@ public class TypeSpecImpl
             TypeSpec elmtType  = (TypeSpec) getAttribute(ARRAY_ELEMENT_TYPE);
             TypeSpec indexType = (TypeSpec) getAttribute(ARRAY_INDEX_TYPE);
 
-            return (elmtType.baseType()  == Predefined.charType) &&
+            return (elmtType.baseType()  == Predefined.stringType) &&
                    (indexType.baseType() == Predefined.integerType);
         }
         else {

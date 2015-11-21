@@ -99,7 +99,7 @@ public class TypeChecker
      */
     public static boolean isChar(TypeSpec type)
     {
-        return (type != null) && (type.baseType() == Predefined.charType);
+        return (type != null) && (type.baseType() == Predefined.stringType);
     }
 
     /**

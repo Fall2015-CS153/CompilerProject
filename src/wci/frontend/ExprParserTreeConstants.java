@@ -21,18 +21,19 @@ public interface ExprParserTreeConstants
   public int JJTCOMPARISONOPERATOR = 15;
   public int JJTCASES = 16;
   public int JJTASSIGNMENT = 17;
-  public int JJTDECLARATION = 18;
-  public int JJTINCREMENTSTATEMENT = 19;
-  public int JJTDECREMENTSTATEMENT = 20;
-  public int JJTPLUSEQUALSSTATEMENT = 21;
-  public int JJTMINUSEQUALSSTATEMENT = 22;
-  public int JJTSTAREQUALSSTATEMENT = 23;
-  public int JJTDIVIDEEQUALSSTATEMENT = 24;
-  public int JJTDATATYPES = 25;
-  public int JJTHASHMAP = 26;
-  public int JJTSET = 27;
-  public int JJTLIST = 28;
-  public int JJTVOID = 29;
+  public int JJTVARIABLE = 18;
+  public int JJTDECLARATION = 19;
+  public int JJTINCREMENTSTATEMENT = 20;
+  public int JJTDECREMENTSTATEMENT = 21;
+  public int JJTPLUSEQUALSSTATEMENT = 22;
+  public int JJTMINUSEQUALSSTATEMENT = 23;
+  public int JJTSTAREQUALSSTATEMENT = 24;
+  public int JJTDIVIDEEQUALSSTATEMENT = 25;
+  public int JJTDATATYPES = 26;
+  public int JJTHASHMAP = 27;
+  public int JJTSET = 28;
+  public int JJTLIST = 29;
+  public int JJTVOID = 30;
 
 
   public String[] jjtNodeName = {
@@ -54,6 +55,7 @@ public interface ExprParserTreeConstants
     "ComparisonOperator",
     "Cases",
     "Assignment",
+    "variable",
     "Declaration",
     "IncrementStatement",
     "DecrementStatement",
@@ -68,4 +70,4 @@ public interface ExprParserTreeConstants
     "void",
   };
 }
-/* JavaCC - OriginalChecksum=510cd20687e68577fffef796a6f2ac11 (do not edit this line) */
+/* JavaCC - OriginalChecksum=10325eaa9ef6661be11f0f307ef85f9b (do not edit this line) */

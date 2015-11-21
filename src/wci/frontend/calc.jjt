@@ -42,7 +42,7 @@ public class ExprParser
         crossReferencer.print(symTabStack);
 
         // Visit the parse tree nodes to decorate them with type information.
-        ExpreParserVisitorAdapter typeVisitor = new ExpreParserVisitorAdapter();
+        ExprParserVisitorAdapter typeVisitor = new ExprParserVisitorAdapter();
         rootNode.jjtAccept(typeVisitor, null);
 
         // Create and initialize the ICode wrapper for the parse tree.
@@ -282,7 +282,7 @@ void Term (): {}
 
 void Factor(): {}
 {
-    <IDENTIFIER>|(<INTEGER>|<REALNUMBER>|<REAL_NUMBER>)|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>
+    variable()|(IntegerConst()|<REALNUMBER>|<REAL_NUMBER>)|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>
    
 
 }
@@ -338,7 +338,7 @@ void IntegerConst() : {}
 
 void RealConst() : {}
 {
-	<REALNUMBER><REAL_NUMBER>
+	<REALNUMBER>|<REAL_NUMBER>
 {
         jjtThis.setTypeSpec(Predefined.realType);
         jjtThis.setAttribute(VALUE, Float.parseFloat(token.image));
@@ -363,7 +363,7 @@ void StringConst() : {}
 
 void SwitchPart() : {}
 {
-     <RESERVEDWORDSWITCH> <SSOpenParen> <IDENTIFIER><SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>
+     <RESERVEDWORDSWITCH> <SSOpenParen> (variable())<SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>
 	
 
 }
@@ -381,47 +381,58 @@ void Cases() : {}
 }
 void Assignment() : {}
 {
-  (<IDENTIFIER><SSEquals> (Expr()) <SSSemiColon>)
+  ((variable())<SSEquals> (Expr()) <SSSemiColon>)
 
 
+}
+
+void variable() : {}
+{
+    <IDENTIFIER> {
+        SymTabEntry variableId = symTabStack.lookup(token.image);
+        variableId.appendLineNumber(token.beginLine);
+        TypeSpec type = variableId.getTypeSpec();
+        jjtThis.setTypeSpec(type);
+        jjtThis.setAttribute(ID, variableId);
+    }
 }
 
 void Declaration(): {}
 {
-   PrimitiveType() (LOOKAHEAD(2)(Assignment()) |(<IDENTIFIER> (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )
+   PrimitiveType() (LOOKAHEAD(2)(Assignment()) |(<IDENTIFIER> (<SSComma> variable())*  <SSSemiColon> ) )
 
 
 }
 
 
-void IncrementStatement(): {Token t;}
+void IncrementStatement(): {}
 {
-   t = <IDENTIFIER><SSplusplus><SSSemiColon>
-   {jjtThis.setImage(t.image);}
+   variable()<SSplusplus><SSSemiColon>
+ 
 
 }
-void DecrementStatement(): {Token t;}
+void DecrementStatement(): {}
 {
-   t = <IDENTIFIER><SSminusminus><SSSemiColon>
-   {jjtThis.setImage(t.image);}
+   variable()<SSminusminus><SSSemiColon>
+
 
 }
-void PlusEqualsStatement(): {Token t;}
+void PlusEqualsStatement(): {}
 {
-   t = <IDENTIFIER> <SSPlusEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>
+    variable() <SSPlusEquals>(variable()|IntegerConst()) <SSSemiColon>
 }
 
-void MinusEqualsStatement():{Token t;}
+void MinusEqualsStatement():{}
 {
-t = <IDENTIFIER> <SSMinusEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>
+variable() <SSMinusEquals> (variable()|IntegerConst())<SSSemiColon>
 }
-void StarEqualsStatement(): {Token t;}
+void StarEqualsStatement(): {}
 {
-t = <IDENTIFIER> <SSMultEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>
+variable() <SSMultEquals> (variable()|IntegerConst())<SSSemiColon>
 }
-void DivideEqualsStatement(): {Token t;}
+void DivideEqualsStatement(): {}
 {
-t = <IDENTIFIER> <SSDivideEquals>(<IDENTIFIER>|<INTEGER>)<SSSemiColon>
+variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>
 }
 
 void DataTypes() : {}
@@ -432,15 +443,15 @@ void DataTypes() : {}
 }
 void Hashmap (): {Token t;}
 {
- t = <RESERVEDWORDHASHMAP> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon>
+ t = <RESERVEDWORDHASHMAP> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon>
 }
 void Set (): {Token t;}
 {
-t =  <RESERVEDWORDSET> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>
+t =  <RESERVEDWORDSET> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>
 }
 void List (): {Token t;}
 {
-t =  <RESERVEDWORDLIST> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>
+t =  <RESERVEDWORDLIST> (variable()) (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>
 }
 
 JAVACODE

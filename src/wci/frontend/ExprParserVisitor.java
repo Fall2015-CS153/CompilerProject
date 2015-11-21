@@ -22,6 +22,7 @@ public interface ExprParserVisitor
   public Object visit(ASTComparisonOperator node, Object data);
   public Object visit(ASTCases node, Object data);
   public Object visit(ASTAssignment node, Object data);
+  public Object visit(ASTvariable node, Object data);
   public Object visit(ASTDeclaration node, Object data);
   public Object visit(ASTIncrementStatement node, Object data);
   public Object visit(ASTDecrementStatement node, Object data);
@@ -34,4 +35,4 @@ public interface ExprParserVisitor
   public Object visit(ASTSet node, Object data);
   public Object visit(ASTList node, Object data);
 }
-/* JavaCC - OriginalChecksum=80f9dda529f0bb6f8b903a7fd1e0caec (do not edit this line) */
+/* JavaCC - OriginalChecksum=c4d3c95c41741b12fbdde8ed9a85be4b (do not edit this line) */

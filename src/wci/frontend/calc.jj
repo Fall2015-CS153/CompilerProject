@@ -46,7 +46,7 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
         crossReferencer.print(symTabStack);
 
         // Visit the parse tree nodes to decorate them with type information.
-        ExpreParserVisitorAdapter typeVisitor = new ExpreParserVisitorAdapter();
+        ExprParserVisitorAdapter typeVisitor = new ExprParserVisitorAdapter();
         rootNode.jjtAccept(typeVisitor, null);
 
         // Create and initialize the ICode wrapper for the parse tree.
@@ -413,7 +413,7 @@ void Factor(): {/*@bgen(jjtree) Factor */
 {/*@bgen(jjtree) Factor */
     try {
 /*@egen*/
-    <IDENTIFIER>|(<INTEGER>|<REALNUMBER>|<REAL_NUMBER>)|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>/*@bgen(jjtree)*/
+    variable()|(IntegerConst()|<REALNUMBER>|<REAL_NUMBER>)|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -642,7 +642,7 @@ void RealConst() : {/*@bgen(jjtree) RealConst */
 {/*@bgen(jjtree) RealConst */
         try {
 /*@egen*/
-	<REALNUMBER><REAL_NUMBER>/*@bgen(jjtree)*/
+	<REALNUMBER>|<REAL_NUMBER>/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
@@ -701,7 +701,7 @@ void SwitchPart() : {/*@bgen(jjtree) SwitchPart */
 {/*@bgen(jjtree) SwitchPart */
      try {
 /*@egen*/
-     <RESERVEDWORDSWITCH> <SSOpenParen> <IDENTIFIER><SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>/*@bgen(jjtree)*/
+     <RESERVEDWORDSWITCH> <SSOpenParen> (variable())<SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>/*@bgen(jjtree)*/
      } catch (Throwable jjte000) {
        if (jjtc000) {
          jjtree.clearNodeScope(jjtn000);
@@ -783,7 +783,7 @@ void Assignment() : {/*@bgen(jjtree) Assignment */
 {/*@bgen(jjtree) Assignment */
   try {
 /*@egen*/
-  (<IDENTIFIER><SSEquals> (Expr()) <SSSemiColon>)/*@bgen(jjtree)*/
+  ((variable())<SSEquals> (Expr()) <SSSemiColon>)/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -808,6 +808,34 @@ void Assignment() : {/*@bgen(jjtree) Assignment */
 
 }
 
+void variable() : {/*@bgen(jjtree) variable */
+  ASTvariable jjtn000 = new ASTvariable(JJTVARIABLE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) variable */
+    try {
+/*@egen*/
+    <IDENTIFIER>/*@bgen(jjtree)*/
+                 {
+                   jjtree.closeNodeScope(jjtn000, true);
+                   jjtc000 = false;
+                 }
+/*@egen*/ {
+        SymTabEntry variableId = symTabStack.lookup(token.image);
+        variableId.appendLineNumber(token.beginLine);
+        TypeSpec type = variableId.getTypeSpec();
+        jjtn000.setTypeSpec(type);
+        jjtn000.setAttribute(ID, variableId);
+    }/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
+
 void Declaration(): {/*@bgen(jjtree) Declaration */
   ASTDeclaration jjtn000 = new ASTDeclaration(JJTDECLARATION);
   boolean jjtc000 = true;
@@ -816,7 +844,7 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
 {/*@bgen(jjtree) Declaration */
    try {
 /*@egen*/
-   PrimitiveType() (LOOKAHEAD(2)(Assignment()) |(<IDENTIFIER> (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )/*@bgen(jjtree)*/
+   PrimitiveType() (LOOKAHEAD(2)(Assignment()) |(<IDENTIFIER> (<SSComma> variable())*  <SSSemiColon> ) )/*@bgen(jjtree)*/
    } catch (Throwable jjte000) {
      if (jjtc000) {
        jjtree.clearNodeScope(jjtn000);
@@ -843,43 +871,60 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
 
 
 void IncrementStatement(): {/*@bgen(jjtree) IncrementStatement */
-                            ASTIncrementStatement jjtn000 = new ASTIncrementStatement(JJTINCREMENTSTATEMENT);
-                            boolean jjtc000 = true;
-                            jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t;}
+  ASTIncrementStatement jjtn000 = new ASTIncrementStatement(JJTINCREMENTSTATEMENT);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
 {/*@bgen(jjtree) IncrementStatement */
    try {
 /*@egen*/
-   t = <IDENTIFIER><SSplusplus><SSSemiColon>/*@bgen(jjtree)*/
-   {
-     jjtree.closeNodeScope(jjtn000, true);
-     jjtc000 = false;
-   }
-/*@egen*/
-   {jjtn000.setImage(t.image);}/*@bgen(jjtree)*/
+   variable()<SSplusplus><SSSemiColon>/*@bgen(jjtree)*/
+   } catch (Throwable jjte000) {
+     if (jjtc000) {
+       jjtree.clearNodeScope(jjtn000);
+       jjtc000 = false;
+     } else {
+       jjtree.popNode();
+     }
+     if (jjte000 instanceof RuntimeException) {
+       throw (RuntimeException)jjte000;
+     }
+     if (jjte000 instanceof ParseException) {
+       throw (ParseException)jjte000;
+     }
+     throw (Error)jjte000;
    } finally {
      if (jjtc000) {
        jjtree.closeNodeScope(jjtn000, true);
      }
    }
 /*@egen*/
+ 
 
 }
 void DecrementStatement(): {/*@bgen(jjtree) DecrementStatement */
-                            ASTDecrementStatement jjtn000 = new ASTDecrementStatement(JJTDECREMENTSTATEMENT);
-                            boolean jjtc000 = true;
-                            jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t;}
+  ASTDecrementStatement jjtn000 = new ASTDecrementStatement(JJTDECREMENTSTATEMENT);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
 {/*@bgen(jjtree) DecrementStatement */
    try {
 /*@egen*/
-   t = <IDENTIFIER><SSminusminus><SSSemiColon>/*@bgen(jjtree)*/
-   {
-     jjtree.closeNodeScope(jjtn000, true);
-     jjtc000 = false;
-   }
-/*@egen*/
-   {jjtn000.setImage(t.image);}/*@bgen(jjtree)*/
+   variable()<SSminusminus><SSSemiColon>/*@bgen(jjtree)*/
+   } catch (Throwable jjte000) {
+     if (jjtc000) {
+       jjtree.clearNodeScope(jjtn000);
+       jjtc000 = false;
+     } else {
+       jjtree.popNode();
+     }
+     if (jjte000 instanceof RuntimeException) {
+       throw (RuntimeException)jjte000;
+     }
+     if (jjte000 instanceof ParseException) {
+       throw (ParseException)jjte000;
+     }
+     throw (Error)jjte000;
    } finally {
      if (jjtc000) {
        jjtree.closeNodeScope(jjtn000, true);
@@ -887,33 +932,62 @@ void DecrementStatement(): {/*@bgen(jjtree) DecrementStatement */
    }
 /*@egen*/
 
+
 }
 void PlusEqualsStatement(): {/*@bgen(jjtree) PlusEqualsStatement */
-                             ASTPlusEqualsStatement jjtn000 = new ASTPlusEqualsStatement(JJTPLUSEQUALSSTATEMENT);
-                             boolean jjtc000 = true;
-                             jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t;}
+  ASTPlusEqualsStatement jjtn000 = new ASTPlusEqualsStatement(JJTPLUSEQUALSSTATEMENT);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
 {/*@bgen(jjtree) PlusEqualsStatement */
-   try {
+    try {
 /*@egen*/
-   t = <IDENTIFIER> <SSPlusEquals>(<IDENTIFIER>|<INTEGER>) <SSSemiColon>/*@bgen(jjtree)*/
-   } finally {
-     if (jjtc000) {
-       jjtree.closeNodeScope(jjtn000, true);
-     }
-   }
+    variable() <SSPlusEquals>(variable()|IntegerConst()) <SSSemiColon>/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
 /*@egen*/
 }
 
 void MinusEqualsStatement():{/*@bgen(jjtree) MinusEqualsStatement */
-                             ASTMinusEqualsStatement jjtn000 = new ASTMinusEqualsStatement(JJTMINUSEQUALSSTATEMENT);
-                             boolean jjtc000 = true;
-                             jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t;}
+  ASTMinusEqualsStatement jjtn000 = new ASTMinusEqualsStatement(JJTMINUSEQUALSSTATEMENT);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
 {/*@bgen(jjtree) MinusEqualsStatement */
 try {
 /*@egen*/
-t = <IDENTIFIER> <SSMinusEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>/*@bgen(jjtree)*/
+variable() <SSMinusEquals> (variable()|IntegerConst())<SSSemiColon>/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
 } finally {
   if (jjtc000) {
     jjtree.closeNodeScope(jjtn000, true);
@@ -922,14 +996,28 @@ t = <IDENTIFIER> <SSMinusEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>/*@bgen(jj
 /*@egen*/
 }
 void StarEqualsStatement(): {/*@bgen(jjtree) StarEqualsStatement */
-                             ASTStarEqualsStatement jjtn000 = new ASTStarEqualsStatement(JJTSTAREQUALSSTATEMENT);
-                             boolean jjtc000 = true;
-                             jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t;}
+  ASTStarEqualsStatement jjtn000 = new ASTStarEqualsStatement(JJTSTAREQUALSSTATEMENT);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
 {/*@bgen(jjtree) StarEqualsStatement */
 try {
 /*@egen*/
-t = <IDENTIFIER> <SSMultEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>/*@bgen(jjtree)*/
+variable() <SSMultEquals> (variable()|IntegerConst())<SSSemiColon>/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
 } finally {
   if (jjtc000) {
     jjtree.closeNodeScope(jjtn000, true);
@@ -938,14 +1026,28 @@ t = <IDENTIFIER> <SSMultEquals> (<IDENTIFIER>|<INTEGER>)<SSSemiColon>/*@bgen(jjt
 /*@egen*/
 }
 void DivideEqualsStatement(): {/*@bgen(jjtree) DivideEqualsStatement */
-                               ASTDivideEqualsStatement jjtn000 = new ASTDivideEqualsStatement(JJTDIVIDEEQUALSSTATEMENT);
-                               boolean jjtc000 = true;
-                               jjtree.openNodeScope(jjtn000);
-/*@egen*/Token t;}
+  ASTDivideEqualsStatement jjtn000 = new ASTDivideEqualsStatement(JJTDIVIDEEQUALSSTATEMENT);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
 {/*@bgen(jjtree) DivideEqualsStatement */
 try {
 /*@egen*/
-t = <IDENTIFIER> <SSDivideEquals>(<IDENTIFIER>|<INTEGER>)<SSSemiColon>/*@bgen(jjtree)*/
+variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
 } finally {
   if (jjtc000) {
     jjtree.closeNodeScope(jjtn000, true);
@@ -994,7 +1096,21 @@ void Hashmap (): {/*@bgen(jjtree) Hashmap */
 {/*@bgen(jjtree) Hashmap */
  try {
 /*@egen*/
- t = <RESERVEDWORDHASHMAP> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon>/*@bgen(jjtree)*/
+ t = <RESERVEDWORDHASHMAP> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon>/*@bgen(jjtree)*/
+ } catch (Throwable jjte000) {
+   if (jjtc000) {
+     jjtree.clearNodeScope(jjtn000);
+     jjtc000 = false;
+   } else {
+     jjtree.popNode();
+   }
+   if (jjte000 instanceof RuntimeException) {
+     throw (RuntimeException)jjte000;
+   }
+   if (jjte000 instanceof ParseException) {
+     throw (ParseException)jjte000;
+   }
+   throw (Error)jjte000;
  } finally {
    if (jjtc000) {
      jjtree.closeNodeScope(jjtn000, true);
@@ -1010,7 +1126,21 @@ void Set (): {/*@bgen(jjtree) Set */
 {/*@bgen(jjtree) Set */
 try {
 /*@egen*/
-t =  <RESERVEDWORDSET> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>/*@bgen(jjtree)*/
+t =  <RESERVEDWORDSET> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
 } finally {
   if (jjtc000) {
     jjtree.closeNodeScope(jjtn000, true);
@@ -1026,7 +1156,21 @@ void List (): {/*@bgen(jjtree) List */
 {/*@bgen(jjtree) List */
 try {
 /*@egen*/
-t =  <RESERVEDWORDLIST> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>/*@bgen(jjtree)*/
+t =  <RESERVEDWORDLIST> (variable()) (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
 } finally {
   if (jjtc000) {
     jjtree.closeNodeScope(jjtn000, true);
