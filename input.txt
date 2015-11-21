@@ -4,7 +4,8 @@ Procedure :: {
        float floDecl= 6.5545;
        string strDecl= "It finally works";
        boolean boDecl = true;
-       f=3;
+       f=3;// this will result error caught
+       intDecl =5; // this will looked up
    
 }
 
