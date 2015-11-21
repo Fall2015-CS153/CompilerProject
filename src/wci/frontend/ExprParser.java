@@ -1455,7 +1455,7 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
 
     do {
         token = getNextToken();
-    } while (token.kind != ';');
+    } while (token.kind != SEMICOLON);
 
         jjtree.popNode();
     return token.image;
