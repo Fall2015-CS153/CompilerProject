@@ -265,6 +265,10 @@ try {
 }
 /*@egen*/
 {
+programId = symTabStack.enterLocal(token.image);
+        programId.setDefinition(DefinitionImpl.PROGRAM);
+        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
+        symTabStack.setProgramId(programId);
 return jjtn000;
 }/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
@@ -466,6 +470,7 @@ void Statement(): {/*@bgen(jjtree) Statement */
      }
    }
 /*@egen*/
+
 
 
 }
@@ -837,14 +842,24 @@ void variable() : {/*@bgen(jjtree) variable */
 }
 
 void Declaration(): {/*@bgen(jjtree) Declaration */
-  ASTDeclaration jjtn000 = new ASTDeclaration(JJTDECLARATION);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
+                     ASTDeclaration jjtn000 = new ASTDeclaration(JJTDECLARATION);
+                     boolean jjtc000 = true;
+                     jjtree.openNodeScope(jjtn000);
+/*@egen*/ArrayList<SymTabEntry> variableList;
+	                                 int index = 0;}
 {/*@bgen(jjtree) Declaration */
    try {
 /*@egen*/
-   PrimitiveType() (LOOKAHEAD(2)(Assignment()) |(<IDENTIFIER> (<SSComma> variable())*  <SSSemiColon> ) )/*@bgen(jjtree)*/
+   PrimitiveType() (LOOKAHEAD(2)((<IDENTIFIER><SSEquals> (Expr()) <SSSemiColon>)) |(<IDENTIFIER> (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )/*@bgen(jjtree)*/
+{
+  jjtree.closeNodeScope(jjtn000, true);
+  jjtc000 = false;
+}
+/*@egen*/
+{
+variableList = new ArrayList<SymTabEntry>();
+processVariableDecl(token, index++, variableList);
+}/*@bgen(jjtree)*/
    } catch (Throwable jjte000) {
      if (jjtc000) {
        jjtree.clearNodeScope(jjtn000);
@@ -865,7 +880,6 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
      }
    }
 /*@egen*/
-
 
 }
 
@@ -1188,18 +1202,4 @@ void processVariableDecl(Token token, int index,
     variableId.setDefinition(DefinitionImpl.VARIABLE);
     variableId.appendLineNumber(token.beginLine);
     variableList.add(variableId);
-}
-
-JAVACODE
-String handleError(ParseException ex)      
-{
-    Token token = ex.currentToken;
-    System.out.println(ex.getMessage());
-
-    do {
-    	token = getNextToken();
-    } while (token.kind != SEMICOLON);
-
-	jjtree.popNode();
-    return token.image;
 }

@@ -250,6 +250,10 @@ SimpleNode Program() : {}
 {
 <RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart()|Statement()| DataTypes() )* <SSCloseBraces>
 {
+programId = symTabStack.enterLocal(token.image);
+        programId.setDefinition(DefinitionImpl.PROGRAM);
+        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
+        symTabStack.setProgramId(programId);
 return jjtThis;
 }
 
@@ -289,6 +293,7 @@ void Factor(): {}
 void Statement(): {}
 {
    LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()
+
 
 
 }
@@ -397,10 +402,14 @@ void variable() : {}
     }
 }
 
-void Declaration(): {}
+void Declaration(): {ArrayList<SymTabEntry> variableList;
+	                                 int index = 0;}
 {
-   PrimitiveType() (LOOKAHEAD(2)(Assignment()) |(<IDENTIFIER> (<SSComma> variable())*  <SSSemiColon> ) )
-
+   PrimitiveType() (LOOKAHEAD(2)((<IDENTIFIER><SSEquals> (Expr()) <SSSemiColon>)) |(<IDENTIFIER> (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )
+{
+variableList = new ArrayList<SymTabEntry>();
+processVariableDecl(token, index++, variableList);
+}
 
 }
 
@@ -463,18 +472,4 @@ void processVariableDecl(Token token, int index,
     variableId.setDefinition(DefinitionImpl.VARIABLE);
     variableId.appendLineNumber(token.beginLine);
     variableList.add(variableId);
-}
-
-JAVACODE
-String handleError(ParseException ex) #void
-{
-    Token token = ex.currentToken;
-    System.out.println(ex.getMessage());
-
-    do {
-    	token = getNextToken();
-    } while (token.kind != SEMICOLON);
-
-	jjtree.popNode();
-    return token.image;
 }

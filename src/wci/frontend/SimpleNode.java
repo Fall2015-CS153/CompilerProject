@@ -18,7 +18,7 @@ class SimpleNode implements Node {
   protected ExprParser parser;
   private String image;
   private TypeSpec TypeSpec;
-  private ICodeNodeImpl temp;
+  private ICodeNodeImpl temp = new ICodeNodeImpl();
   
   
   public SimpleNode(int i) {
@@ -103,13 +103,17 @@ class SimpleNode implements Node {
 
     Object childrenAccept(ExprParserVisitorAdapter aThis, Object data)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        Node child = (Node)(data);
+        this.jjtAddChild(child,this.jjtGetNumChildren()+1);
+        return child;
+     }
 
     @Override
     public Object jjtAccept(ExprParserVisitor visitor, Object data)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     Node child = (Node)(data);
+        this.jjtAddChild(child,this.jjtGetNumChildren()+1);
+        return child;    
     }
 
     /**

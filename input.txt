@@ -1,53 +1,7 @@
 Procedure :: {
-    if (dog == cat)
-    {
        int f = 9;
        int g = 10;
-    } elseif (dog <= cat)
-    {
-       int f = 100;
-       int g = 99;
-    }else{
-       int fg = 91;
-    }
-    switch (word, !=){
-       case "hello1": { int a = 4;}
-       case "hello2": {int b = 3;}
-    }
-    switch (dog, <=){
-       case 2: {int a = 4; a = 5; }
-       case 3: {int b = 3;}
-    }
-    int a = 5;
-    a=7;
-    float b = 5.0235645;
-    double c = 5.24;
-    c=6.3;
-    boolean d = true;
-    string e= 'word';
-    e="newword";
-    string e= 'abc';
-    int add = 5 + 5;
-    int subtract = 5 - 5;
-    int mult = 5 * 5;
-    int divide = 5/5;
-    int multops = 5 + 6 * 3 /4;
-    a++;
-    a--;
-    a+=5;
-    a-=5;
-    a*=5;
-    a/=5;
 
-    //DataType Declarations
-    hashmap hp= new;
-    set s= new [4];
-    list l= new [3];
-
-    //DataType Assignment
-    hashmap hp[3]=5 ;
-    set s[2]= 2;
-    list l[0]= 1;
-    
+   
 }
 
