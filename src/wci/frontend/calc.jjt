@@ -467,6 +467,15 @@ void DivideEqualsStatement(): {}
 {
 variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>
 }
+void For(): {}
+{
+  <RESERVEDWORDFOR> <SSOpenParen>(Declaration()|Assignment())<SSSemiColon> Expr()<SSSemiColon> <Statement><SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
+}
+
+void While():{}
+{
+ <RESERVEDWORDWHILE> <SSOpenParen> Expr() <SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
+}
 
 void DataTypes() : {}
 {
