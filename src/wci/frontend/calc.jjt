@@ -1,29 +1,64 @@
-
+options{
+    NODE_EXTENDS="wci.intermediate.icodeimpl.ICodeNodeImpl";
+    MULTI=true;
+    VISITOR=true;
+}
 PARSER_BEGIN(ExprParser)
+package wci.frontend;
+
+import java.util.ArrayList;
 import java.io.*;
+
+import wci.intermediate.*;
+import wci.intermediate.symtabimpl.*;
+import wci.backend.*;
+import wci.util.*;
+
+import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
+import static wci.intermediate.symtabimpl.DefinitionImpl.*;
+import static wci.intermediate.symtabimpl.RoutineCodeImpl.*;
+import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
+import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
 
 public class ExprParser
 {
-    public static void main(String [] args) throws Exception
+    private static SymTabStack symTabStack;
+    private static SymTabEntry programId;
+
+    public static void main(String[] args)
+        throws Exception
     {
+    	// Create and initialize the symbol table stack.
+        symTabStack = SymTabFactory.createSymTabStack();
+        Predefined.initialize(symTabStack);
 
-    Reader sr = new StringReader(args[0]);
-    ExprParser calc = new ExprParser(sr);
+ // Parse a Pcl program.
+        Reader    reader = new FileReader(args[0]);
+        ExprParser parser = new ExprParser(reader);
+        SimpleNode rootNode = parser.Program();
 
-    try {
-      SimpleNode node = calc.Program();
-      node.dump(">");
-    }
+        // Print the cross-reference table.
+        CrossReferencer crossReferencer = new CrossReferencer();
+        crossReferencer.print(symTabStack);
 
+        // Visit the parse tree nodes to decorate them with type information.
+        ExpreParserVisitorAdapter typeVisitor = new ExpreParserVisitorAdapter();
+        rootNode.jjtAccept(typeVisitor, null);
 
+        // Create and initialize the ICode wrapper for the parse tree.
+        ICode iCode = ICodeFactory.createICode();
+        iCode.setRoot(rootNode);
+        programId.setAttribute(ROUTINE_ICODE, iCode);
+        
+        // Print the parse tree.
+        ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
+        treePrinter.print(symTabStack);
 
-    catch (ParseException ex) {
-      ex.printStackTrace();
-    }
-
-
-    }
 }
+
+
+    }
+
 PARSER_END(ExprParser)
 
 SKIP : {
@@ -53,159 +88,150 @@ TOKEN:
 <SPECIALSYMBOL: "~"  | "@" | "%" | "^" |
  "?"  | "." | "\'"  | "<<" | ">>" | "|=" | "%="|
 "&=" | "^="   | "<<=" | ">>=" |"\""   >
-{ debugStream.println("SPECIAL SYMBOL : " + matchedToken.image); }
+
 |
 <SSAnd: "&">
-{ debugStream.println("SS And : " + matchedToken.image); }
+
 |
 <SSOr: "|">
-{ debugStream.println("SS Or : " + matchedToken.image); }
+
 |
 <SSNot: "!">
-{ debugStream.println("SS Not : " + matchedToken.image); }
+
 |
 <SSL: "<">
-{ debugStream.println("SS Less than : " + matchedToken.image); }
+
 |
 <SSLE: "<=">
-{ debugStream.println("SS Less than equals : " + matchedToken.image); }
+
 |
 <SSG: ">">
-{ debugStream.println("SS Greater than : " + matchedToken.image); }
+
 |
 <SSGE: ">=">
-{ debugStream.println("SS Greater than equals : " + matchedToken.image); }
+
 |
 <SSNE: "!=">
-{ debugStream.println("SS Not equal to : " + matchedToken.image); }
+
 |
 <SSPlus: "+">
-{ debugStream.println("SS Plus : " + matchedToken.image); }
+
 |
 <SSMinus: "-">
-{ debugStream.println("SS Minus : " + matchedToken.image); }
+
 |
 <SSStar: "*">
-{ debugStream.println("SS Star: " + matchedToken.image); }
+
 |
 <SSDivide: "/">
-{ debugStream.println("SS Divide : " + matchedToken.image); }
+
 |
 <SSplusplus: "++">
-{ debugStream.println("SS Plus_plus : " + matchedToken.image); }
+
 |
 <SSminusminus: "--">
-{ debugStream.println("SS Minus_minus : " + matchedToken.image); }
+
 |
 <SSSemiColon: ";">
-{ debugStream.println("SS SemiColon : " + matchedToken.image); }
+
 |
 <SSPlusEquals: "+=">
-{ debugStream.println("SS Plus_equals : " + matchedToken.image); }
+
 |
 <SSMinusEquals: "-=">
-{ debugStream.println("SS Minus_equals : " + matchedToken.image); }
+
 |
 <SSMultEquals: "*=">
-{ debugStream.println("SS Mult_equals : " + matchedToken.image); }
+
 |
 <SSDivideEquals: "/=">
-{ debugStream.println("SS Divide_equals : " + matchedToken.image); }
+
 |
 <SSEquals: "=">
-{ debugStream.println("SS Equals : " + matchedToken.image); }
+
 |
 
 <SSOpenParen : "(">
-{ debugStream.println("SS Open Parenthesis : " + matchedToken.image); }
+
 |
 <SSCloseParen : ")">
-{ debugStream.println("SS Close Parenthesis  : " + matchedToken.image); }
+
 |
 <SSOpenBraces : "{">
-{ debugStream.println("SS Open Braces: " + matchedToken.image); }
+
 |
 <SSCloseBraces : "}">
-{ debugStream.println("SS Close Braces  : " + matchedToken.image); }
+
 |
 <SSOpenBracket : "[">
-{ debugStream.println("SS Open Bracket: " + matchedToken.image); }
+
 |
 <SSCloseBracket : "]">
-{ debugStream.println("SS Close Bracket  : " + matchedToken.image); }
+
 |
 <ComparisonEquals : "==">
-{ debugStream.println("ComparisonEquals : " + matchedToken.image); }
+
 |
 <SSComma : ",">
-{ debugStream.println("Comma : " + matchedToken.image); }
+
 |
 <SSColon : ":">
-{ debugStream.println("Colon : " + matchedToken.image); }
+
 }
 
 TOKEN : {
  <RESERVEDWORDPROCEDURE :"Procedure ::">
-{ debugStream.println("RESERVEDWORD Prodcedure token:" + matchedToken.image  ); }
+
 | <RESERVEDWORDIF :"if">
-{ debugStream.println("RESERVEDWORD IF token:" + matchedToken.image  ); }
+
  |<RESERVEDWORDBREAK :"break">
-{ debugStream.println("RESERVEDWORD BREAK token:" + matchedToken.image  ); }
+
  |<RESERVEDWORDELSE :"else">
-{ debugStream.println("RESERVEDWORD ELSE token:" + matchedToken.image  ); }
+
  |<RESERVEDWORDELSEIF :"elseif">
-{ debugStream.println("RESERVEDWORD ELSEIF token:" + matchedToken.image  ); }
+
  |<RESERVEDWORDRETURN :"return">
-{ debugStream.println("RESERVEDWORD RETURN token:" + matchedToken.image  ); }
+
  |<RESERVEDWORDCASE :"case">
-{ debugStream.println("RESERVEDWORD CASE token:" + matchedToken.image  ); }
+
 |<RESERVEDWORDSWITCH :"switch">
-{ debugStream.println("RESERVEDWORD SWITCH token:" + matchedToken.image  ); }
+
 |<RESERVEDWORDWHILE :"while">
-{ debugStream.println("RESERVEDWORD WHILE token:" + matchedToken.image  ); }
+
  |<RESERVEDWORDFOR :"for">
-{ debugStream.println("RESERVEDWORD FOR token:" + matchedToken.image  ); }
 
  |<RESERVEDWORDTRUE :"true">
-{ debugStream.println("RESERVEDWORD TRUE token:" + matchedToken.image  ); }
+
  |<RESERVEDWORDFALSE :"false">
-{ debugStream.println("RESERVEDWORD FALSE token:" + matchedToken.image  ); }
+
 |<RESERVEDWORDINT :"int">
-{ debugStream.println("RESERVEDWORD INTEGER token:" + matchedToken.image  ); }
+
  |<RESERVEDWORDFLOAT :"float">
-{ debugStream.println("RESERVEDWORD FLOAT token:" + matchedToken.image  ); }
+
 |<RESERVEDWORDBOOLEAN :"boolean">
-{ debugStream.println("RESERVEDWORD BOOLEAN token:" + matchedToken.image  ); }
+
 |<RESERVEDWORDDOUBLE :"double">
-{ debugStream.println("RESERVEDWORD DOUBLE token:" + matchedToken.image  ); }
+
 |<RESERVEDWORDSTRING :"string">
-{ debugStream.println("RESERVEDWORD STRING token:" + matchedToken.image  ); }
+
 |<RESERVEDWORDHASHMAP :"hashmap">
-{ debugStream.println("RESERVEDWORD HASHMAP token:" + matchedToken.image  ); }
+
 |<RESERVEDWORDSET :"set">
-{ debugStream.println("RESERVEDWORD CASE Set:" + matchedToken.image  ); }
+
  |<RESERVEDWORDLIST :"list">
-{ debugStream.println("RESERVEDWORD LIST token:" + matchedToken.image  ); }
+
  |<RESERVEDWORDNEW :"new">
-{ debugStream.println("RESERVEDWORD NEW token:" + matchedToken.image  ); }
+
 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
-{ debugStream.println("IDENTIFIER token: " + matchedToken.image); }
-|
-<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
-{ debugStream.println("STRING token:" + matchedToken.image  ); }
+|<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
 |<INTEGER: <DECIMALINTEGER>|<OCTALINTEGER>|<HEXINTEGER>>
-{debugStream.println("INTEGER token: " + matchedToken.image);}
- | <DECIMALINTEGER : <NONZERO> (<DIGIT> )*>
-{ debugStream.println("DECIMAL INTEGER token: " + matchedToken.image); }
- | <OCTALINTEGER : <ZERO>(<OCTALS> )*>
-{ debugStream.println("OCTAL INTEGER token: " + matchedToken.image); }
- | <HEXINTEGER : "0"("x"|"X")(<DIGIT>|<HEXLETTERS>)(<DIGIT>|<HEXLETTERS> )*>
-{ debugStream.println("HEXADECIMAL INTEGER token: " + matchedToken.image); }
+| <DECIMALINTEGER : <NONZERO> (<DIGIT> )*>
+| <OCTALINTEGER : <ZERO>(<OCTALS> )*>
+| <HEXINTEGER : "0"("x"|"X")(<DIGIT>|<HEXLETTERS>)(<DIGIT>|<HEXLETTERS> )*>
 | <REALNUMBER : (<DIGIT>(<DIGIT>)* ("."|"")(<DIGIT>)* ("e"|"E"|"")("+"|"-"|"")(<DIGIT>)*)>
-{ debugStream.println("REALNUMBER: " + matchedToken.image); }
 | <REAL_NUMBER : ("."(<DIGIT>)* ("e"|"E"|"")("+"|"-"|"")(<DIGIT>)*)>
-{ debugStream.println("REALNUMBER: " + matchedToken.image); }
+
 
  | <#SINGLEQUOTE:["\'"]>
  | <#DOUBLEQUOTE:["\""]>
@@ -292,10 +318,46 @@ void ElsePart() : {}
 
 void Literal() : {}
 {
-	<INTEGER>|<REALNUMBER>|<REAL_NUMBER>|<STRING>
+	IntegerConst()|RealConst()|StringConst()
 	
 
 }
+
+
+
+void IntegerConst() : {}
+{
+	<INTEGER>
+{
+        jjtThis.setTypeSpec(Predefined.integerType);
+        jjtThis.setAttribute(VALUE, Integer.parseInt(token.image));
+    }
+	
+
+}
+
+void RealConst() : {}
+{
+	<REALNUMBER><REAL_NUMBER>
+{
+        jjtThis.setTypeSpec(Predefined.realType);
+        jjtThis.setAttribute(VALUE, Float.parseFloat(token.image));
+    }
+	
+
+}
+
+void StringConst() : {}
+{
+	<STRING>
+{
+        jjtThis.setTypeSpec(Predefined.stringType);
+        jjtThis.setAttribute(VALUE, token.image);
+    }
+	
+
+}
+
 
 
 
@@ -379,4 +441,29 @@ t =  <RESERVEDWORDSET> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> 
 void List (): {Token t;}
 {
 t =  <RESERVEDWORDLIST> <IDENTIFIER> (<SSOpenBracket> <INTEGER> <SSCloseBracket> <SSEquals> <INTEGER>|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> <INTEGER> <SSCloseBracket>) <SSSemiColon>
+}
+
+JAVACODE
+void processVariableDecl(Token token, int index,
+                         ArrayList<SymTabEntry> variableList) #void
+{
+    SymTabEntry variableId = symTabStack.enterLocal(token.image);
+    variableId.setIndex(index);
+    variableId.setDefinition(DefinitionImpl.VARIABLE);
+    variableId.appendLineNumber(token.beginLine);
+    variableList.add(variableId);
+}
+
+JAVACODE
+String handleError(ParseException ex) #void
+{
+    Token token = ex.currentToken;
+    System.out.println(ex.getMessage());
+
+    do {
+    	token = getNextToken();
+    } while (token.kind != SEMICOLON);
+
+	jjtree.popNode();
+    return token.image;
 }
