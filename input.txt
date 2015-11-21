@@ -1,7 +1,10 @@
 Procedure :: {
-       int f = 9;
-       int g = 10;
-       int h = 10;
+       int intDecl = 9;
+       double doDecl = 4.0;
+       float floDecl= 6.5545;
+       string strDecl= "It finally works";
+       boolean boDecl = true;
+       f=3;
    
 }
 

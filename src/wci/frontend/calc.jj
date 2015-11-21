@@ -28,6 +28,7 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
 /*@egen*/
     private static SymTabStack symTabStack;
     private static SymTabEntry programId;
+    private static int index=0;
 
     public static void main(String[] args)
         throws Exception
@@ -258,17 +259,20 @@ SimpleNode Program() : {/*@bgen(jjtree) Program */
 {/*@bgen(jjtree) Program */
 try {
 /*@egen*/
-<RESERVEDWORDPROCEDURE> <SSOpenBraces> (IfPart() | SwitchPart()|Statement()| DataTypes() )* <SSCloseBraces>/*@bgen(jjtree)*/
+<RESERVEDWORDPROCEDURE>{
+	programId = symTabStack.enterLocal(token.image);
+        programId.setDefinition(DefinitionImpl.PROGRAM);
+        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
+        symTabStack.setProgramId(programId);
+	
+}<SSOpenBraces> (IfPart() | SwitchPart()|Statement()| DataTypes() )* <SSCloseBraces>/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
 }
 /*@egen*/
 {
-programId = symTabStack.enterLocal(token.image);
-        programId.setDefinition(DefinitionImpl.PROGRAM);
-        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
-        symTabStack.setProgramId(programId);
+
 return jjtn000;
 }/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
@@ -293,7 +297,7 @@ return jjtn000;
 /*@egen*/
 
 }
-void PrimitiveType(): {/*@bgen(jjtree) PrimitiveType */
+TypeSpec PrimitiveType(): {/*@bgen(jjtree) PrimitiveType */
   ASTPrimitiveType jjtn000 = new ASTPrimitiveType(JJTPRIMITIVETYPE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
@@ -301,7 +305,36 @@ void PrimitiveType(): {/*@bgen(jjtree) PrimitiveType */
 {/*@bgen(jjtree) PrimitiveType */
   try {
 /*@egen*/
-  <RESERVEDWORDINT>|<RESERVEDWORDSTRING>|<RESERVEDWORDDOUBLE>|<RESERVEDWORDFLOAT>|<RESERVEDWORDBOOLEAN>/*@bgen(jjtree)*/
+  <RESERVEDWORDINT>/*@bgen(jjtree)*/
+                    {
+                      jjtree.closeNodeScope(jjtn000, true);
+                      jjtc000 = false;
+                    }
+/*@egen*/ {return Predefined.integerType;}
+  |<RESERVEDWORDSTRING>/*@bgen(jjtree)*/
+                       {
+                         jjtree.closeNodeScope(jjtn000, true);
+                         jjtc000 = false;
+                       }
+/*@egen*/{return Predefined.stringType;}
+  |<RESERVEDWORDDOUBLE>/*@bgen(jjtree)*/
+                       {
+                         jjtree.closeNodeScope(jjtn000, true);
+                         jjtc000 = false;
+                       }
+/*@egen*/{return Predefined.doubleType;}
+  |<RESERVEDWORDFLOAT>/*@bgen(jjtree)*/
+                      {
+                        jjtree.closeNodeScope(jjtn000, true);
+                        jjtc000 = false;
+                      }
+/*@egen*/{return Predefined.floatType;}
+  |<RESERVEDWORDBOOLEAN>/*@bgen(jjtree)*/
+                        {
+                          jjtree.closeNodeScope(jjtn000, true);
+                          jjtc000 = false;
+                        }
+/*@egen*/{return Predefined.booleanType;}/*@bgen(jjtree)*/
   } finally {
     if (jjtc000) {
       jjtree.closeNodeScope(jjtn000, true);
@@ -789,10 +822,7 @@ void Assignment() : {/*@bgen(jjtree) Assignment */
 try {
 /*@egen*/
   
-variable() {
-        SymTabEntry variableId = symTabStack.lookup(token.image);
-        variableId.appendLineNumber(token.beginLine);
-    }
+variable() 
 <SSEquals> (Expr()) <SSSemiColon>/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
   if (jjtc000) {
@@ -833,10 +863,14 @@ void variable() : {/*@bgen(jjtree) variable */
                  }
 /*@egen*/ {
         SymTabEntry variableId = symTabStack.lookup(token.image);
+	    if(variableId==null){
+		System.out.println("VARIABLE LOOKUP ERROR***");
+	    }else {
         variableId.appendLineNumber(token.beginLine);
         TypeSpec type = variableId.getTypeSpec();
         jjtn000.setTypeSpec(type);
         jjtn000.setAttribute(ID, variableId);
+	    }
     }/*@bgen(jjtree)*/
     } finally {
       if (jjtc000) {
@@ -850,20 +884,30 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
                      ASTDeclaration jjtn000 = new ASTDeclaration(JJTDECLARATION);
                      boolean jjtc000 = true;
                      jjtree.openNodeScope(jjtn000);
-/*@egen*/ArrayList<SymTabEntry> variableList;
-	                                 int index = 0;}
+/*@egen*/TypeSpec type;}
 {/*@bgen(jjtree) Declaration */
    try {
 /*@egen*/
-   PrimitiveType() (LOOKAHEAD(2)((<IDENTIFIER><SSEquals> (Expr()) <SSSemiColon>)) |(<IDENTIFIER> (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )/*@bgen(jjtree)*/
+   type=PrimitiveType()
+   <IDENTIFIER>{
+       SymTabEntry variableId = symTabStack.enterLocal(token.image);
+       variableId.setDefinition(DefinitionImpl.VARIABLE);
+       if(type!=null){
+           variableId.setTypeSpec(type);
+       }else{     
+           variableId.setTypeSpec(Predefined.undefinedType);
+       }
+       variableId.appendLineNumber(token.beginLine);
+       variableId.setIndex(index++);
+	
+   }
+   (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
 }
 /*@egen*/
 {
-variableList = new ArrayList<SymTabEntry>();
-processVariableDecl(token, index++, variableList);
 }/*@bgen(jjtree)*/
    } catch (Throwable jjte000) {
      if (jjtc000) {
@@ -1198,6 +1242,7 @@ t =  <RESERVEDWORDLIST> (variable()) (<SSOpenBracket> IntegerConst() <SSCloseBra
 /*@egen*/
 }
 
+// Garbage Code???
 JAVACODE
 void processVariableDecl(Token token, int index,
                          ArrayList<SymTabEntry> variableList)      
@@ -1207,4 +1252,5 @@ void processVariableDecl(Token token, int index,
     variableId.setDefinition(DefinitionImpl.VARIABLE);
     variableId.appendLineNumber(token.beginLine);
     variableList.add(variableId);
+  
 }
