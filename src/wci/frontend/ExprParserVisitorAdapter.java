@@ -230,13 +230,11 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
 
     @Override
     public Object visit(ASThandleError node, Object data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        return node.childrenAccept(this, data); }
 
     @Override
     public Object visit(ASTError node, Object data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        return node.childrenAccept(this, data); }
 
     @Override
     public Object visit(ASTCommands node, Object data) {
@@ -252,6 +250,11 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
     public Object visit(ASTWhile node, Object data) {
         return node.childrenAccept(this, data);  
     }
+
+    @Override
+    public Object visit(ASTvariableDecl node, Object data)
+    {
+        return node.childrenAccept(this, data); }
    
    
 

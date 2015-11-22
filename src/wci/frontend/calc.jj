@@ -236,7 +236,6 @@ TOKEN : {
 | <DECIMALINTEGER : <NONZERO> (<DIGIT> )*>
 | <OCTALINTEGER : <ZERO>(<OCTALS> )*>
 | <HEXINTEGER : "0"("x"|"X")(<DIGIT>|<HEXLETTERS>)(<DIGIT>|<HEXLETTERS> )*>
-| <DOUBLE : (<DIGIT>(<DIGIT>)* ("."|"")(<DIGIT>)* )>
 | <REALNUMBER : (<DIGIT>(<DIGIT>)* ("."|"")(<DIGIT>)* ("e"|"E"|"")("+"|"-"|"")(<DIGIT>)*)>
 | <REAL_NUMBER : ("."(<DIGIT>)* ("e"|"E"|"")("+"|"-"|"")(<DIGIT>)*)>
 
@@ -761,7 +760,7 @@ void RealConst() : {/*@bgen(jjtree) RealConst */
 {/*@bgen(jjtree) RealConst */
         try {
 /*@egen*/
-	<REALNUMBER>|<REAL_NUMBER>|<DOUBLE>/*@bgen(jjtree)*/
+	<REALNUMBER>|<REAL_NUMBER>/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
@@ -797,7 +796,7 @@ void StringConst() : {/*@bgen(jjtree) StringConst */
 /*@egen*/
 {
         jjtn000.setTypeSpec(Predefined.stringType);
-        jjtn000.setAttribute(VALUE, token.image);
+        jjtn000.setAttribute(VALUE, token.image.substring(1,token.image.length()-2));
     }/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
@@ -961,6 +960,35 @@ void variable() : {/*@bgen(jjtree) variable */
 /*@egen*/
 }
 
+void variableDecl(TypeSpec type) : {/*@bgen(jjtree) variableDecl */
+  ASTvariableDecl jjtn000 = new ASTvariableDecl(JJTVARIABLEDECL);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) variableDecl */
+try {
+/*@egen*/
+<IDENTIFIER>/*@bgen(jjtree)*/
+             {
+               jjtree.closeNodeScope(jjtn000, true);
+               jjtc000 = false;
+             }
+/*@egen*/ {
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index);
+            variableId.setDefinition(DefinitionImpl.VARIABLE);
+            jjtn000.setAttribute(ID, variableId);
+            variableId.setTypeSpec(type);
+        }/*@bgen(jjtree)*/
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
+/*@egen*/
+}
+
 void Declaration(): {/*@bgen(jjtree) Declaration */
                      ASTDeclaration jjtn000 = new ASTDeclaration(JJTDECLARATION);
                      boolean jjtc000 = true;
@@ -970,13 +998,8 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
 try {
 /*@egen*/
 type=PrimitiveType()
-<IDENTIFIER> {
-            SymTabEntry variableId = symTabStack.enterLocal(token.image);
-            variableId.setIndex(index);
-            variableId.setDefinition(DefinitionImpl.VARIABLE);
-            variableId.setTypeSpec(type);
-            variableId.appendLineNumber(token.beginLine);
-        }
+variableDecl(type) 
+
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);

@@ -396,7 +396,7 @@ void StringConst() : {}
 	<STRING>
 {
         jjtThis.setTypeSpec(Predefined.stringType);
-        jjtThis.setAttribute(VALUE, token.image);
+        jjtThis.setAttribute(VALUE, token.image.substring(1,token.image.length()-2));
     }
 	
 
@@ -447,16 +447,23 @@ void variable() : {}
     }
 }
 
+void variableDecl(TypeSpec type) : {}
+{
+<IDENTIFIER> {
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index);
+            variableId.setDefinition(DefinitionImpl.VARIABLE);
+            jjtThis.setAttribute(ID, variableId);
+            variableId.setTypeSpec(type);
+        }
+}
+
 void Declaration(): {TypeSpec type;}
 {
 type=PrimitiveType()
-<IDENTIFIER> {
-            SymTabEntry variableId = symTabStack.enterLocal(token.image);
-            variableId.setIndex(index);
-            variableId.setDefinition(DefinitionImpl.VARIABLE);
-            variableId.setTypeSpec(type);
-            variableId.appendLineNumber(token.beginLine);
-        }
+variableDecl(type) 
+
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )
 {
 }
