@@ -469,7 +469,7 @@ variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>
 }
 void For(): {}
 {
-  <RESERVEDWORDFOR> <SSOpenParen>(Declaration()|Assignment())<SSSemiColon> Expr()<SSSemiColon> <Statement><SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
+  <RESERVEDWORDFOR> <SSOpenParen>(Declaration()|Assignment())<SSSemiColon> Expr()<SSSemiColon> Statement()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
 }
 
 void While():{}

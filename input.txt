@@ -6,6 +6,10 @@ Procedure :: {
        boolean boDecl = true;
        f=3;// this will result error caught
        intDecl =5; // this will looked up
+       string abc = "dog";
+       switch(abc,<=){
+       case "cde" : {int w = 0;}
+}
    
 }
 
