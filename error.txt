@@ -1,0 +1,26 @@
+Procedure :: {
+
+       // Awesome Error Recovery
+       
+       int intDecl = 9;// basic Declare
+       string dc= "No Error"
+       
+       f=3;// Catching incorrect Sym Tab Lookup integer
+       er= "look" // Catching incorrect Sym Tab Lookup String
+       
+       ASDF; // Catching basic error
+       
+       intDecl =5; //Immediate Recover: this will looked up
+       
+       int int int i=5;// error Recovered and variable i will be in symbol table
+}
+
+Procedure :: {
+	  //Multiple Procedure error Recovery
+	  asdf;// error will be caught
+
+       	  int inl = 9;// basic Declare
+
+	  asd;kfh asdfnklafnh // Ultimate Recovery
+
+}

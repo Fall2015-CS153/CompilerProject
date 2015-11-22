@@ -246,6 +246,7 @@ TOKEN : {
  | <#ZERO : ["0"]>
  | <ERROR   : ~["\r", "\n"]>
 }
+
 JAVACODE
 String handleError(Token token)
 {
@@ -254,10 +255,10 @@ String handleError(Token token)
 
     Token t;
   
-    do {
+    
         t = getNextToken();
-    } while (t.kind != EOF);
-  
+   
+
     return t.image;
 }
 
@@ -289,6 +290,7 @@ void Commands() : {}
 	(IfPart() | SwitchPart()|Statement()| DataTypes() |For()|While()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
+	Commands();
     })
 }
 TypeSpec PrimitiveType(): {}
