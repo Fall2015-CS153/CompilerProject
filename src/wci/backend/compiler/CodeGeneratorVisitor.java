@@ -73,7 +73,7 @@ public class CodeGeneratorVisitor
 
     public Object visit(ASTRealConst node, Object data)
     {
-        float value = (Float) node.getAttribute(VALUE);
+        double value = (Double) node.getAttribute(VALUE);
 
         // Emit a load constant instruction.
         CodeGenerator.objectFile.println("    ldc " + value);
@@ -117,7 +117,10 @@ public class CodeGeneratorVisitor
         // Emit the appropriate add instruction.
         CodeGenerator.objectFile.println("    " + typePrefix + "add");
         CodeGenerator.objectFile.flush();
-
+        //assign the value to itself.
+        CodeGenerator.objectFile.println("    putstatic " + "test"+
+        		                         "/" + ((SimpleNode)node.jjtGetChild(0)).getAttribute(ID)+ " " + type);
+        
         return data;
     }
 
@@ -156,12 +159,13 @@ public class CodeGeneratorVisitor
         // Emit the appropriate add instruction.
         CodeGenerator.objectFile.println("    " + typePrefix + "sub");
         CodeGenerator.objectFile.flush();
-
+        //assign the result value [data] to the initial variable.
         return data;
     }
 
     public Object visit(ASTStarEqualsStatement node, Object data)
     {
+        System.out.println("Got into required code.");
         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
         SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(0);
 
@@ -170,6 +174,7 @@ public class CodeGeneratorVisitor
 
         // Get the addition type.
         TypeSpec type = node.getTypeSpec();
+        System.out.println("Type is " + type);
         String typePrefix = (type == Predefined.integerType) ? "i" : "f";
 
         // Emit code for the first expression

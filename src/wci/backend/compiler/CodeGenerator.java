@@ -56,7 +56,6 @@ public class CodeGenerator extends Backend
         
         
         SymTabEntry programId = symTabStack.getProgramId();
-        System.out.println("Backend" + programId);
         int localsCount = 7;
                 //(Integer) programId.getAttribute(7);
         SymTab routineSymTab = 
@@ -81,7 +80,6 @@ public class CodeGenerator extends Backend
                 
                 String fieldName = id.getName();
                 TypeSpec type = id.getTypeSpec();
-                System.out.println(fieldName + " " + type);
                 String typeCode = type == Predefined.integerType ? "I" : "F";
                 objectFile.println(".field private static " + fieldName + 
                 		           " " + typeCode);
@@ -121,11 +119,12 @@ public class CodeGenerator extends Backend
 
         // Visit the parse tree nodes to generate code 
         // for the main method's compound statement.
+        //add local variables to the stack.
+        // provide code for actual execution.
         CodeGeneratorVisitor codeVisitor = new CodeGeneratorVisitor();
         Node rootNode = iCode.getRoot();
         rootNode.jjtAccept(codeVisitor, programName);
-        objectFile.println();
-
+        
         // Generate the main method epilogue.
         objectFile.println("    getstatic	" + programName +
         		           "/_runTimer LRunTimer;");

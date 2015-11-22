@@ -104,16 +104,20 @@ class SimpleNode implements Node {
 
     Object childrenAccept(ExprParserVisitor aThis, Object data)
     {
-       System.out.println("acc " + aThis + " " + data);
+        if(children!=null)
+        {
+        for(Node a:children)
+            a.jjtAccept(aThis, data);
+        }
         return this;
      }
 
     @Override
     public Object jjtAccept(ExprParserVisitor visitor, Object data)
     {
- System.out.println("Visitng data " + data);
         Node child = (Node)(data);
         this.jjtAddChild(child,this.jjtGetNumChildren()+1);
+        visitor.visit(this,data);
         return this;    
     }
 
@@ -130,9 +134,7 @@ class SimpleNode implements Node {
      */
     public void setTypeSpec(TypeSpec type)
     {
-        System.out.println(type);
         this.TypeSpec = type;
-        System.out.println(this + " " + this.getTypeSpec());
     }
 
     public void setAttribute(ICodeKeyImpl a, Object b)
@@ -140,7 +142,6 @@ class SimpleNode implements Node {
          ICodeNodeImpl ab = new ICodeNodeImpl();
           Attribute.setAttribute(a,b);
           Attribute.addChild(ab);
-        System.out.println( Attribute.getChildren().size());
     }
     
     

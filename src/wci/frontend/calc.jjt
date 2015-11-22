@@ -350,26 +350,26 @@ void StringConst() : {}
 }
 
 
-void Expr(): {}
+void Expr()#void: {}
 {
    SimpleExpr() ( (<SSL>|<SSLE>|<SSG>|<SSGE>|<ComparisonEquals>) SimpleExpr() )*
    
 
 
 }
-void SimpleExpr(): {}
+void SimpleExpr() #void: {}
 {
  Term() (<SSPlus>  Term() #add(2)|<SSMinus>  Term() #subtract(2)|<SSOr>  Term() #or(2))*
 
 }
-void Term () : {}
+void Term () #void: {}
 {
   Factor() ( <SSStar> Factor() #multiply(2)|<SSDivide> Factor() #divide(2)|<SSAnd> Factor() #and(2) )*
 
 
 }
 
-void Factor(): {}
+void Factor() #void: {}
 {
     variable()
 |(IntegerConst()|RealConst()|StringConst())
@@ -430,28 +430,37 @@ void Cases() : {}
 	
 
 }
-void Assignment() : {}
+void Assignment() : {TypeSpec type;}
 {
   
-variable() 
+type = variable() 
 <SSEquals> (Expr()) <SSSemiColon>
+
+{
+jjtThis.setTypeSpec(type);
+}
+
 
 
 }
 
-void variable() : {}
+TypeSpec variable() : {}
 {
     <IDENTIFIER> {
         SymTabEntry variableId = symTabStack.lookup(token.image);
 	    if(variableId==null){
 		System.out.println("VARIABLE LOOKUP ERROR***");
+                return null;
 	    }else {
         variableId.appendLineNumber(token.beginLine);
         TypeSpec type = variableId.getTypeSpec();
         jjtThis.setTypeSpec(type);
         jjtThis.setAttribute(ID, variableId);
+        return type;
 	    }
+            
     }
+
 }
 
 void variableDecl(TypeSpec type) : {}
@@ -472,38 +481,61 @@ void Declaration(): {TypeSpec type;}
 type=PrimitiveType()
 variableDecl(type) 
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )
+{
+jjtThis.setTypeSpec(type);
+}
 
 }
 
 
-void IncrementStatement(): {}
+void IncrementStatement(): {TypeSpec type;}
 {
-   variable()<SSplusplus><SSSemiColon>
+ type =   variable()<SSplusplus><SSSemiColon>
+{
+jjtThis.setTypeSpec(type);
+}
  
 
 }
-void DecrementStatement(): {}
+void DecrementStatement(): {TypeSpec type;}
 {
-   variable()<SSminusminus><SSSemiColon>
-
-
+type =   variable()<SSminusminus><SSSemiColon>
+{
+{
+jjtThis.setTypeSpec(type);
 }
-void PlusEqualsStatement(): {}
-{
-    variable() <SSPlusEquals>(variable()|IntegerConst()) <SSSemiColon>
 }
 
-void MinusEqualsStatement():{}
-{
-variable() <SSMinusEquals> (variable()|IntegerConst())<SSSemiColon>
+
 }
-void StarEqualsStatement(): {}
+void PlusEqualsStatement(): {TypeSpec type;}
 {
-variable() <SSMultEquals> (variable()|IntegerConst())<SSSemiColon>
+type =    variable() <SSPlusEquals>(variable()|IntegerConst()) <SSSemiColon>
+{
+jjtThis.setTypeSpec(type);
 }
-void DivideEqualsStatement(): {}
+}
+
+void MinusEqualsStatement():{TypeSpec type;}
 {
-variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>
+type = variable() <SSMinusEquals> (variable()|IntegerConst())<SSSemiColon>
+{
+jjtThis.setTypeSpec(type);
+}
+}
+void StarEqualsStatement(): {TypeSpec type;}
+{
+type = variable() <SSMultEquals> (variable()|IntegerConst())<SSSemiColon>
+{
+jjtThis.setTypeSpec(type);
+}
+}
+void DivideEqualsStatement(): {TypeSpec type;}
+{
+type = variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>
+{
+jjtThis.setTypeSpec(type);
+}
 }
 void For(): {}
 {

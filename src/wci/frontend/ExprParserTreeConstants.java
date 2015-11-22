@@ -12,43 +12,39 @@ public interface ExprParserTreeConstants
   public int JJTINTEGERCONST = 6;
   public int JJTREALCONST = 7;
   public int JJTSTRINGCONST = 8;
-  public int JJTEXPR = 9;
-  public int JJTSIMPLEEXPR = 10;
-  public int JJTADD = 11;
-  public int JJTSUBTRACT = 12;
-  public int JJTOR = 13;
-  public int JJTTERM = 14;
-  public int JJTMULTIPLY = 15;
-  public int JJTDIVIDE = 16;
-  public int JJTAND = 17;
-  public int JJTFACTOR = 18;
-  public int JJTSTATEMENT = 19;
-  public int JJTIFPART = 20;
-  public int JJTELSEIFPART = 21;
-  public int JJTELSEPART = 22;
-  public int JJTSWITCHPART = 23;
-  public int JJTCOMPARISONOPERATOR = 24;
-  public int JJTCASES = 25;
-  public int JJTASSIGNMENT = 26;
-  public int JJTVARIABLE = 27;
-  public int JJTVARIABLEDECL = 28;
-  public int JJTDECLARATION = 29;
-  public int JJTINCREMENTSTATEMENT = 30;
-  public int JJTDECREMENTSTATEMENT = 31;
-  public int JJTPLUSEQUALSSTATEMENT = 32;
-  public int JJTMINUSEQUALSSTATEMENT = 33;
-  public int JJTSTAREQUALSSTATEMENT = 34;
-  public int JJTDIVIDEEQUALSSTATEMENT = 35;
-  public int JJTFOR = 36;
-  public int JJTDECVAR = 37;
-  public int JJTTESTCOND = 38;
-  public int JJTWHILEINCREMENTCOND = 39;
-  public int JJTINCREMENTCOND = 40;
-  public int JJTWHILE = 41;
-  public int JJTDATATYPES = 42;
-  public int JJTHASHMAP = 43;
-  public int JJTSET = 44;
-  public int JJTLIST = 45;
+  public int JJTADD = 9;
+  public int JJTSUBTRACT = 10;
+  public int JJTOR = 11;
+  public int JJTMULTIPLY = 12;
+  public int JJTDIVIDE = 13;
+  public int JJTAND = 14;
+  public int JJTSTATEMENT = 15;
+  public int JJTIFPART = 16;
+  public int JJTELSEIFPART = 17;
+  public int JJTELSEPART = 18;
+  public int JJTSWITCHPART = 19;
+  public int JJTCOMPARISONOPERATOR = 20;
+  public int JJTCASES = 21;
+  public int JJTASSIGNMENT = 22;
+  public int JJTVARIABLE = 23;
+  public int JJTVARIABLEDECL = 24;
+  public int JJTDECLARATION = 25;
+  public int JJTINCREMENTSTATEMENT = 26;
+  public int JJTDECREMENTSTATEMENT = 27;
+  public int JJTPLUSEQUALSSTATEMENT = 28;
+  public int JJTMINUSEQUALSSTATEMENT = 29;
+  public int JJTSTAREQUALSSTATEMENT = 30;
+  public int JJTDIVIDEEQUALSSTATEMENT = 31;
+  public int JJTFOR = 32;
+  public int JJTDECVAR = 33;
+  public int JJTTESTCOND = 34;
+  public int JJTWHILEINCREMENTCOND = 35;
+  public int JJTINCREMENTCOND = 36;
+  public int JJTWHILE = 37;
+  public int JJTDATATYPES = 38;
+  public int JJTHASHMAP = 39;
+  public int JJTSET = 40;
+  public int JJTLIST = 41;
 
 
   public String[] jjtNodeName = {
@@ -61,16 +57,12 @@ public interface ExprParserTreeConstants
     "IntegerConst",
     "RealConst",
     "StringConst",
-    "Expr",
-    "SimpleExpr",
     "add",
     "subtract",
     "or",
-    "Term",
     "multiply",
     "divide",
     "and",
-    "Factor",
     "Statement",
     "IfPart",
     "ElseIfPart",
@@ -100,4 +92,4 @@ public interface ExprParserTreeConstants
     "List",
   };
 }
-/* JavaCC - OriginalChecksum=9af1eab436db911d44955c1554faf31c (do not edit this line) */
+/* JavaCC - OriginalChecksum=4c52ac915ff423013e0bc8582faf06f0 (do not edit this line) */
