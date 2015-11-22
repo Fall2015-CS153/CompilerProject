@@ -269,6 +269,17 @@ void Error() : {}
        
 SimpleNode Program() : {}
 {
+
+(Procedure())*
+{
+
+return jjtThis;
+}
+
+}
+
+void Procedure() : {}
+{
 (<RESERVEDWORDPROCEDURE>{
 	programId = symTabStack.enterLocal(token.image);
         programId.setDefinition(DefinitionImpl.PROGRAM);
@@ -276,12 +287,8 @@ SimpleNode Program() : {}
         symTabStack.setProgramId(programId);
 	index=0;// Every procedure has new indx at 0
 
-}<IDENTIFIER><SSOpenBraces> Commands())*
-
-{
-
-return jjtThis;
-}
+}<IDENTIFIER><SSOpenBraces> Commands()
+)
 
 }
 void Commands() : {}

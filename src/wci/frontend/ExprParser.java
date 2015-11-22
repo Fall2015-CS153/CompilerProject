@@ -103,16 +103,7 @@ if (jjtc000) {
           jj_la1[0] = jj_gen;
           break label_1;
         }
-        jj_consume_token(RESERVEDWORDPROCEDURE);
-programId = symTabStack.enterLocal(token.image);
-        programId.setDefinition(DefinitionImpl.PROGRAM);
-        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
-        symTabStack.setProgramId(programId);
-        index=0;// Every procedure has new indx at 0
-
-        jj_consume_token(IDENTIFIER);
-        jj_consume_token(SSOpenBraces);
-        Commands();
+        Procedure();
       }
 jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
@@ -137,6 +128,42 @@ if (jjtc000) {
   }
     }
     throw new Error("Missing return statement in function");
+  }
+
+  static final public void Procedure() throws ParseException {/*@bgen(jjtree) Procedure */
+  ASTProcedure jjtn000 = new ASTProcedure(JJTPROCEDURE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+    try {
+      jj_consume_token(RESERVEDWORDPROCEDURE);
+programId = symTabStack.enterLocal(token.image);
+        programId.setDefinition(DefinitionImpl.PROGRAM);
+        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
+        symTabStack.setProgramId(programId);
+        index=0;// Every procedure has new indx at 0
+
+      jj_consume_token(IDENTIFIER);
+      jj_consume_token(SSOpenBraces);
+      Commands();
+    } catch (Throwable jjte000) {
+if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    {if (true) throw (RuntimeException)jjte000;}
+  }
+  if (jjte000 instanceof ParseException) {
+    {if (true) throw (ParseException)jjte000;}
+  }
+  {if (true) throw (Error)jjte000;}
+    } finally {
+if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+    }
   }
 
   static final public void Commands() throws ParseException {/*@bgen(jjtree) Commands */
@@ -1959,25 +1986,6 @@ if (jjtc000) {
     finally { jj_save(8, xla); }
   }
 
-  static private boolean jj_3_2()
- {
-    if (jj_3R_16()) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_18()
- {
-    if (jj_3R_24()) return true;
-    if (jj_3R_25()) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_9()) {
-    jj_scanpos = xsp;
-    if (jj_3R_26()) return true;
-    }
-    return false;
-  }
-
   static private boolean jj_3_5()
  {
     if (jj_3R_19()) return true;
@@ -2268,6 +2276,25 @@ if (jjtc000) {
  {
     if (jj_scan_token(SSEquals)) return true;
     if (jj_3R_22()) return true;
+    return false;
+  }
+
+  static private boolean jj_3_2()
+ {
+    if (jj_3R_16()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_18()
+ {
+    if (jj_3R_24()) return true;
+    if (jj_3R_25()) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_9()) {
+    jj_scanpos = xsp;
+    if (jj_3R_26()) return true;
+    }
     return false;
   }
 

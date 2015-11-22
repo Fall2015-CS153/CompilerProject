@@ -7,6 +7,7 @@ public interface ExprParserVisitor
   public Object visit(ASThandleError node, Object data);
   public Object visit(ASTError node, Object data);
   public Object visit(ASTProgram node, Object data);
+  public Object visit(ASTProcedure node, Object data);
   public Object visit(ASTCommands node, Object data);
   public Object visit(ASTPrimitiveType node, Object data);
   public Object visit(ASTExpr node, Object data);
@@ -47,4 +48,4 @@ public interface ExprParserVisitor
   public Object visit(ASTSet node, Object data);
   public Object visit(ASTList node, Object data);
 }
-/* JavaCC - OriginalChecksum=a23fd142dd41ef93b747e258b1053f4f (do not edit this line) */
+/* JavaCC - OriginalChecksum=72823c60fe1ef115286cf31e3feb0083 (do not edit this line) */

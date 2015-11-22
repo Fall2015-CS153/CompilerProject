@@ -18,6 +18,9 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTProgram node, Object data){
     return defaultVisit(node, data);
   }
+  public Object visit(ASTProcedure node, Object data){
+    return defaultVisit(node, data);
+  }
   public Object visit(ASTCommands node, Object data){
     return defaultVisit(node, data);
   }
@@ -136,4 +139,4 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
     return defaultVisit(node, data);
   }
 }
-/* JavaCC - OriginalChecksum=3d508e835ceca56b74f2731e33ba693a (do not edit this line) */
+/* JavaCC - OriginalChecksum=ae963c837b40111874b6f22044cb5b0c (do not edit this line) */
