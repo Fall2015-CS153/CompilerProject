@@ -36,8 +36,9 @@ public class ExprParser
  // Parse a Pcl program.
         Reader    reader = new FileReader(args[0]);
         ExprParser parser = new ExprParser(reader);
-        SimpleNode rootNode = parser.Program();
-
+	SimpleNode rootNode= parser.Program();
+		   
+	
         // Print the cross-reference table.
         CrossReferencer crossReferencer = new CrossReferencer();
         crossReferencer.print(symTabStack);
@@ -55,12 +56,13 @@ public class ExprParser
         ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
         treePrinter.print(symTabStack);
 
-}
+	}
 
 
     }
 
 PARSER_END(ExprParser)
+
 
 SKIP : {
    <IGNORE : [" " , "\n"]> |
@@ -242,25 +244,50 @@ TOKEN : {
  | <#LETTER : ["a"-"z","A"-"Z","_"]>
  | <#OCTALS: ["0"-"7"]>
  | <#ZERO : ["0"]>
+ | <ERROR   : ~["\r", "\n"]>
+}
+JAVACODE
+String handleError(Token token)
+{
+    System.out.println("*** ERROR: Line " + token.beginLine +
+                       " after \"" + token.image + "\"");
 
+    Token t;
+  
+    do {
+        t = getNextToken();
+    } while (t.kind != EOF);
+  
+    return t.image;
 }
 
-
-
+void Error() : {} 
+{
+<ERROR>       
+}
+       
 SimpleNode Program() : {}
 {
-<RESERVEDWORDPROCEDURE>{
+(<RESERVEDWORDPROCEDURE>{
 	programId = symTabStack.enterLocal(token.image);
         programId.setDefinition(DefinitionImpl.PROGRAM);
         programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
         symTabStack.setProgramId(programId);
 	
-}<SSOpenBraces> (IfPart() | SwitchPart()|Statement()| DataTypes() )* <SSCloseBraces>
+}<SSOpenBraces> Commands())*
 {
 
 return jjtThis;
 }
 
+}
+void Commands() : {}
+{
+	(try {
+	(IfPart() | SwitchPart()|Statement()| DataTypes() |Error())* <SSCloseBraces>
+	}catch (ParseException ex) {
+        handleError(ex.currentToken);
+    })
 }
 TypeSpec PrimitiveType(): {}
 {

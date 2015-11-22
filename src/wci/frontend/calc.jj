@@ -40,8 +40,9 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
  // Parse a Pcl program.
         Reader    reader = new FileReader(args[0]);
         ExprParser parser = new ExprParser(reader);
-        SimpleNode rootNode = parser.Program();
-
+	SimpleNode rootNode= parser.Program();
+		   
+	
         // Print the cross-reference table.
         CrossReferencer crossReferencer = new CrossReferencer();
         crossReferencer.print(symTabStack);
@@ -59,12 +60,13 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
         ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
         treePrinter.print(symTabStack);
 
-}
+	}
 
 
     }
 
 PARSER_END(ExprParser)
+
 
 SKIP : {
    <IGNORE : [" " , "\n"]> |
@@ -246,11 +248,51 @@ TOKEN : {
  | <#LETTER : ["a"-"z","A"-"Z","_"]>
  | <#OCTALS: ["0"-"7"]>
  | <#ZERO : ["0"]>
+ | <ERROR   : ~["\r", "\n"]>
+}
+JAVACODE
+String handleError(Token token)
+{/*@bgen(jjtree) handleError */
+ ASThandleError jjtn000 = new ASThandleError(JJTHANDLEERROR);
+ boolean jjtc000 = true;
+ jjtree.openNodeScope(jjtn000);
+ try {
+/*@egen*/
+    System.out.println("*** ERROR: Line " + token.beginLine +
+                       " after \"" + token.image + "\"");
 
+    Token t;
+  
+    do {
+        t = getNextToken();
+    } while (t.kind != EOF);
+  
+    return t.image;/*@bgen(jjtree)*/
+ } finally {
+   if (jjtc000) {
+     jjtree.closeNodeScope(jjtn000, true);
+   }
+ }
+/*@egen*/
 }
 
-
-
+void Error() : {/*@bgen(jjtree) Error */
+  ASTError jjtn000 = new ASTError(JJTERROR);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/} 
+{/*@bgen(jjtree) Error */
+try {
+/*@egen*/
+<ERROR>/*@bgen(jjtree)*/
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
+/*@egen*/       
+}
+       
 SimpleNode Program() : {/*@bgen(jjtree) Program */
   ASTProgram jjtn000 = new ASTProgram(JJTPROGRAM);
   boolean jjtc000 = true;
@@ -259,13 +301,13 @@ SimpleNode Program() : {/*@bgen(jjtree) Program */
 {/*@bgen(jjtree) Program */
 try {
 /*@egen*/
-<RESERVEDWORDPROCEDURE>{
+(<RESERVEDWORDPROCEDURE>{
 	programId = symTabStack.enterLocal(token.image);
         programId.setDefinition(DefinitionImpl.PROGRAM);
         programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
         symTabStack.setProgramId(programId);
 	
-}<SSOpenBraces> (IfPart() | SwitchPart()|Statement()| DataTypes() )* <SSCloseBraces>/*@bgen(jjtree)*/
+}<SSOpenBraces> Commands())*/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
@@ -296,6 +338,40 @@ return jjtn000;
 }
 /*@egen*/
 
+}
+void Commands() : {/*@bgen(jjtree) Commands */
+  ASTCommands jjtn000 = new ASTCommands(JJTCOMMANDS);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) Commands */
+        try {
+/*@egen*/
+	(try {
+	(IfPart() | SwitchPart()|Statement()| DataTypes() |Error())* <SSCloseBraces>
+	}catch (ParseException ex) {
+        handleError(ex.currentToken);
+    })/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
 }
 TypeSpec PrimitiveType(): {/*@bgen(jjtree) PrimitiveType */
   ASTPrimitiveType jjtn000 = new ASTPrimitiveType(JJTPRIMITIVETYPE);

@@ -228,4 +228,19 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
       return node.childrenAccept(this, data);    
     }
 
+    @Override
+    public Object visit(ASThandleError node, Object data) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visit(ASTError node, Object data) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visit(ASTCommands node, Object data) {
+        return node.childrenAccept(this, data);  
+    }
+
 }
