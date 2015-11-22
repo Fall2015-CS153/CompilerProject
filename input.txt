@@ -5,9 +5,7 @@ Procedure :: first{
        boolean boDecl = true;
        intDecl =5; // this will looked up
        string abc = "dog";
-       switch(abc,<=){
-       case "cde" : {int w = 0;}
-}
+
        if(intDecl>3){
        int a = 5;
 	}

@@ -320,6 +320,9 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
         break;
       case REAL_NUMBER:
         jj_consume_token(REAL_NUMBER);
+        break;
+      case DOUBLE:
+        jj_consume_token(DOUBLE);
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
         jjtn000.setTypeSpec(Predefined.doubleType);
@@ -688,12 +691,14 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
         break;
       case STRING:
       case INTEGER:
+      case DOUBLE:
       case REALNUMBER:
       case REAL_NUMBER:
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case INTEGER:
           IntegerConst();
           break;
+        case DOUBLE:
         case REALNUMBER:
         case REAL_NUMBER:
           RealConst();
@@ -1866,12 +1871,6 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
     finally { jj_save(8, xla); }
   }
 
-  static private boolean jj_3_9() {
-    if (jj_scan_token(SSEquals)) return true;
-    if (jj_3R_22()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_35() {
     Token xsp;
     xsp = jj_scanpos;
@@ -1944,6 +1943,11 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
     return false;
   }
 
+  static private boolean jj_3R_46() {
+    if (jj_scan_token(DOUBLE)) return true;
+    return false;
+  }
+
   static private boolean jj_3R_25() {
     if (jj_scan_token(IDENTIFIER)) return true;
     return false;
@@ -1971,11 +1975,6 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
 
   static private boolean jj_3R_23() {
     if (jj_scan_token(IDENTIFIER)) return true;
-    return false;
-  }
-
-  static private boolean jj_3R_46() {
-    if (jj_scan_token(REAL_NUMBER)) return true;
     return false;
   }
 
@@ -2009,9 +2008,12 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
   static private boolean jj_3R_44() {
     Token xsp;
     xsp = jj_scanpos;
-    if (jj_scan_token(64)) {
+    if (jj_scan_token(65)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(66)) {
     jj_scanpos = xsp;
     if (jj_3R_46()) return true;
+    }
     }
     return false;
   }
@@ -2137,6 +2139,12 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
     return false;
   }
 
+  static private boolean jj_3_9() {
+    if (jj_scan_token(SSEquals)) return true;
+    if (jj_3R_22()) return true;
+    return false;
+  }
+
   static private boolean jj_initialized_once = false;
   /** Generated Token Manager. */
   static public ExprParserTokenManager token_source;
@@ -2165,7 +2173,7 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
       jj_la1_1 = new int[] {0x20,0x5fe7040,0x5fe7040,0x3e0000,0x0,0x4,0x4,0x0,0x0,0x0,0x0,0x18000000,0x1c018000,0x4000000,0x43e0000,0x200,0x100,0x43e0000,0x43e0000,0x800,0x4,0x43e0000,0x4000000,0x8,0x8,0x14000000,0x14000000,0x14000000,0x14000000,0x43e0000,0x43e0000,0x43e0000,0x1c00000,0x1,0x1,0x1,};
    }
    private static void jj_la1_init_2() {
-      jj_la1_2 = new int[] {0x0,0x400,0x400,0x0,0x3,0x0,0x0,0x0,0x0,0x0,0x0,0x3,0x3,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
+      jj_la1_2 = new int[] {0x0,0x800,0x800,0x0,0x7,0x0,0x0,0x0,0x0,0x0,0x0,0x7,0x7,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,};
    }
   static final private JJCalls[] jj_2_rtns = new JJCalls[9];
   static private boolean jj_rescan = false;
@@ -2375,7 +2383,7 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[75];
+    boolean[] la1tokens = new boolean[76];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -2395,7 +2403,7 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants, Expr
         }
       }
     }
-    for (int i = 0; i < 75; i++) {
+    for (int i = 0; i < 76; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

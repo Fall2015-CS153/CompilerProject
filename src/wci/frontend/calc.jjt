@@ -232,6 +232,7 @@ TOKEN : {
 | <DECIMALINTEGER : <NONZERO> (<DIGIT> )*>
 | <OCTALINTEGER : <ZERO>(<OCTALS> )*>
 | <HEXINTEGER : "0"("x"|"X")(<DIGIT>|<HEXLETTERS>)(<DIGIT>|<HEXLETTERS> )*>
+| <DOUBLE : <DIGIT>(<DIGIT>)* ("."|"")(<DIGIT>)*>
 | <REALNUMBER : (<DIGIT>(<DIGIT>)* ("."|"")(<DIGIT>)* ("e"|"E"|"")("+"|"-"|"")(<DIGIT>)*)>
 | <REAL_NUMBER : ("."(<DIGIT>)* ("e"|"E"|"")("+"|"-"|"")(<DIGIT>)*)>
 
@@ -326,7 +327,7 @@ void IntegerConst() : {}
 
 void RealConst() : {}
 {
-    <REALNUMBER>|<REAL_NUMBER>
+    <REALNUMBER>|<REAL_NUMBER>|<DOUBLE>
 {
         jjtThis.setTypeSpec(Predefined.doubleType);
         jjtThis.setAttribute(VALUE, Double.parseDouble(token.image));

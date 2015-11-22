@@ -131,27 +131,29 @@ public interface ExprParserConstants {
   /** RegularExpression Id. */
   int HEXINTEGER = 63;
   /** RegularExpression Id. */
-  int REALNUMBER = 64;
+  int DOUBLE = 64;
   /** RegularExpression Id. */
-  int REAL_NUMBER = 65;
+  int REALNUMBER = 65;
   /** RegularExpression Id. */
-  int SINGLEQUOTE = 66;
+  int REAL_NUMBER = 66;
   /** RegularExpression Id. */
-  int DOUBLEQUOTE = 67;
+  int SINGLEQUOTE = 67;
   /** RegularExpression Id. */
-  int HEXLETTERS = 68;
+  int DOUBLEQUOTE = 68;
   /** RegularExpression Id. */
-  int DIGIT = 69;
+  int HEXLETTERS = 69;
   /** RegularExpression Id. */
-  int NONZERO = 70;
+  int DIGIT = 70;
   /** RegularExpression Id. */
-  int LETTER = 71;
+  int NONZERO = 71;
   /** RegularExpression Id. */
-  int OCTALS = 72;
+  int LETTER = 72;
   /** RegularExpression Id. */
-  int ZERO = 73;
+  int OCTALS = 73;
   /** RegularExpression Id. */
-  int ERROR = 74;
+  int ZERO = 74;
+  /** RegularExpression Id. */
+  int ERROR = 75;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -224,6 +226,7 @@ public interface ExprParserConstants {
     "<DECIMALINTEGER>",
     "<OCTALINTEGER>",
     "<HEXINTEGER>",
+    "<DOUBLE>",
     "<REALNUMBER>",
     "<REAL_NUMBER>",
     "<SINGLEQUOTE>",
