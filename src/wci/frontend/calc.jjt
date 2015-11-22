@@ -255,7 +255,7 @@ SimpleNode Program() : {}
         programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
         symTabStack.setProgramId(programId);
 	
-}<SSOpenBraces> (IfPart() | SwitchPart()|Statement()| DataTypes() )* <SSCloseBraces>
+}<SSOpenBraces> (IfPart() | SwitchPart()|Statement()| DataTypes()|For()|While() )* <SSCloseBraces>
 {
 
 return jjtThis;
