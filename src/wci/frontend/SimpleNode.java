@@ -102,7 +102,7 @@ class SimpleNode implements Node {
         this.image = image;
     }
 
-    Object childrenAccept(ExprParserVisitorAdapter aThis, Object data)
+    Object childrenAccept(ExprParserVisitor aThis, Object data)
     {
        System.out.println("acc " + aThis + " " + data);
         return this;
