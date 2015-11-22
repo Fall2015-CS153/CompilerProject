@@ -1,4 +1,12 @@
 Procedure :: first{
+
+       int intDecl = 9;
+       double doDecl = 6.554;
+
+       
+}
+Procedure :: second{
+
        int intDecl = 9 + 7;
        double doDecl = 6.554;
        string strDecl= "It finally works";
@@ -19,9 +27,6 @@ Procedure :: first{
        ~intDecl+=5;}
        
        int multops = 5 + 6 * 3 /4;
-       
-}
-Procedure :: second{
-       int intDecl = 9;
-       double doDecl = 6.554;
+
+
 }
