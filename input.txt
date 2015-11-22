@@ -1,7 +1,6 @@
 Procedure :: {
        int intDecl = 9;
-       double doDecl = 4.0;
-       float floDecl= 6.5545;
+       double doDecl = 6.554;
        string strDecl= "It finally works";
        boolean boDecl = true;
        f=3;// this will result error caught
