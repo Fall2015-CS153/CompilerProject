@@ -11,7 +11,13 @@ public interface ExprParserVisitor
   public Object visit(ASTPrimitiveType node, Object data);
   public Object visit(ASTExpr node, Object data);
   public Object visit(ASTSimpleExpr node, Object data);
+  public Object visit(ASTadd node, Object data);
+  public Object visit(ASTsubtract node, Object data);
+  public Object visit(ASTor node, Object data);
   public Object visit(ASTTerm node, Object data);
+  public Object visit(ASTmultiply node, Object data);
+  public Object visit(ASTdivide node, Object data);
+  public Object visit(ASTand node, Object data);
   public Object visit(ASTFactor node, Object data);
   public Object visit(ASTStatement node, Object data);
   public Object visit(ASTIfPart node, Object data);
@@ -41,4 +47,4 @@ public interface ExprParserVisitor
   public Object visit(ASTSet node, Object data);
   public Object visit(ASTList node, Object data);
 }
-/* JavaCC - OriginalChecksum=2577209e1885700c67f36bb55a3c2589 (do not edit this line) */
+/* JavaCC - OriginalChecksum=1afc4d57516dc43f494204ac54551e9c (do not edit this line) */

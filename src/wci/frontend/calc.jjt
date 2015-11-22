@@ -313,22 +313,27 @@ void Expr(): {}
 }
 void SimpleExpr(): {}
 {
-  (<SSMinus>)? Term() ((<SSPlus>|<SSMinus>|<SSOr>) Term() )*
+ Term() (<SSPlus>  Term() #add(2)|<SSMinus>  Term() #subtract(2)|<SSOr>  Term() #or(2))*
 
 }
-void Term (): {}
+void Term () : {}
 {
-  Factor() ( (<SSStar>|<SSDivide>|<SSAnd>) Factor() )*
+  Factor() ( <SSStar> Factor() #multiply(2)|<SSDivide> Factor() #divide(2)|<SSAnd> Factor() #and(2) )*
 
 
 }
 
 void Factor(): {}
 {
-    variable()|(IntegerConst()|RealConst()|StringConst())|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>
-   
-
+    variable()
+|(IntegerConst()|RealConst()|StringConst())
+|(<SSNot>Factor())
+|(<SSOpenParen> Expr() <SSCloseParen>) 
+|<RESERVEDWORDTRUE>
+|<RESERVEDWORDFALSE>
+  
 }
+
 void Statement(): {}
 {
    LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|LOOKAHEAD(3) Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()
