@@ -40,10 +40,14 @@ public interface ExprParserVisitor
   public Object visit(ASTStarEqualsStatement node, Object data);
   public Object visit(ASTDivideEqualsStatement node, Object data);
   public Object visit(ASTFor node, Object data);
+  public Object visit(ASTDecVar node, Object data);
+  public Object visit(ASTTestCond node, Object data);
+  public Object visit(ASTWhileIncrementCond node, Object data);
+  public Object visit(ASTIncrementCond node, Object data);
   public Object visit(ASTWhile node, Object data);
   public Object visit(ASTDataTypes node, Object data);
   public Object visit(ASTHashmap node, Object data);
   public Object visit(ASTSet node, Object data);
   public Object visit(ASTList node, Object data);
 }
-/* JavaCC - OriginalChecksum=4c84d48f4361a58011a151e6947d98cd (do not edit this line) */
+/* JavaCC - OriginalChecksum=6c5f69d174448ea195221233d6b29a07 (do not edit this line) */

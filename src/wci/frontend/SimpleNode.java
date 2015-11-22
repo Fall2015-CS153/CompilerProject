@@ -111,7 +111,7 @@ class SimpleNode implements Node {
     @Override
     public Object jjtAccept(ExprParserVisitor visitor, Object data)
     {
- System.out.println("Adding data " + data);
+ System.out.println("Visitng data " + data);
         Node child = (Node)(data);
         this.jjtAddChild(child,this.jjtGetNumChildren()+1);
         return this;    

@@ -60,6 +60,9 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
         ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
         treePrinter.print(symTabStack);
 
+        // Create the compiler backend and generate code.
+        Backend backend = BackendFactory.createBackend("compile");
+        backend.process(iCode, symTabStack, "test.j");
 	}
 
 
@@ -92,7 +95,7 @@ SKIP :
 TOKEN:
 {
 
-<SPECIALSYMBOL: "~"  | "@" | "%" | "^" |
+<SPECIALSYMBOL:  "@" | "%" | "^" |
  "?"  | "." | "\'"  | "<<" | ">>" | "|=" | "%="|
 "&=" | "^="   | "<<=" | ">>=" |"\""   >
 
@@ -183,7 +186,8 @@ TOKEN:
 
 |
 <SSColon : ":">
-
+|
+<SSTilda : "~">
 }
 
 TOKEN : {
@@ -1346,7 +1350,7 @@ void For(): {/*@bgen(jjtree) For */
 {/*@bgen(jjtree) For */
   try {
 /*@egen*/
-  <RESERVEDWORDFOR> <SSOpenParen>(Declaration()|Assignment())<SSSemiColon> Expr()<SSSemiColon> Statement()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>/*@bgen(jjtree)*/
+  <RESERVEDWORDFOR> <SSOpenParen>(DecVar()) TestCond()<SSSemiColon> IncrementCond()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1369,6 +1373,130 @@ void For(): {/*@bgen(jjtree) For */
 /*@egen*/
 }
 
+void DecVar():{/*@bgen(jjtree) DecVar */
+  ASTDecVar jjtn000 = new ASTDecVar(JJTDECVAR);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) DecVar */
+try {
+/*@egen*/
+Declaration()|Assignment()/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
+/*@egen*/
+}
+
+void TestCond():{/*@bgen(jjtree) TestCond */
+  ASTTestCond jjtn000 = new ASTTestCond(JJTTESTCOND);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) TestCond */
+try {
+/*@egen*/
+Expr()/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
+/*@egen*/
+}
+
+void WhileIncrementCond():{/*@bgen(jjtree) WhileIncrementCond */
+  ASTWhileIncrementCond jjtn000 = new ASTWhileIncrementCond(JJTWHILEINCREMENTCOND);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) WhileIncrementCond */
+try {
+/*@egen*/
+<SSTilda>Statement()/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
+/*@egen*/
+}
+
+void IncrementCond():{/*@bgen(jjtree) IncrementCond */
+  ASTIncrementCond jjtn000 = new ASTIncrementCond(JJTINCREMENTCOND);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) IncrementCond */
+try {
+/*@egen*/
+Statement()/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
+/*@egen*/
+}
+
 void While():{/*@bgen(jjtree) While */
   ASTWhile jjtn000 = new ASTWhile(JJTWHILE);
   boolean jjtc000 = true;
@@ -1377,7 +1505,7 @@ void While():{/*@bgen(jjtree) While */
 {/*@bgen(jjtree) While */
  try {
 /*@egen*/
- <RESERVEDWORDWHILE> <SSOpenParen> Expr() <SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>/*@bgen(jjtree)*/
+ <RESERVEDWORDWHILE> <SSOpenParen> TestCond() <SSCloseParen><SSOpenBraces> (Statement())* WhileIncrementCond() <SSCloseBraces>/*@bgen(jjtree)*/
  } catch (Throwable jjte000) {
    if (jjtc000) {
      jjtree.clearNodeScope(jjtn000);

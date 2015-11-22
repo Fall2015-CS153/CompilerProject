@@ -56,6 +56,9 @@ public class ExprParser
         ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
         treePrinter.print(symTabStack);
 
+        // Create the compiler backend and generate code.
+        Backend backend = BackendFactory.createBackend("compile");
+        backend.process(iCode, symTabStack, "test.j");
 	}
 
 
@@ -88,7 +91,7 @@ SKIP :
 TOKEN:
 {
 
-<SPECIALSYMBOL: "~"  | "@" | "%" | "^" |
+<SPECIALSYMBOL:  "@" | "%" | "^" |
  "?"  | "." | "\'"  | "<<" | ">>" | "|=" | "%="|
 "&=" | "^="   | "<<=" | ">>=" |"\""   >
 
@@ -179,7 +182,8 @@ TOKEN:
 
 |
 <SSColon : ":">
-
+|
+<SSTilda : "~">
 }
 
 TOKEN : {
@@ -503,12 +507,32 @@ variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>
 }
 void For(): {}
 {
-  <RESERVEDWORDFOR> <SSOpenParen>(Declaration()|Assignment())<SSSemiColon> Expr()<SSSemiColon> Statement()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
+  <RESERVEDWORDFOR> <SSOpenParen>(DecVar()) TestCond()<SSSemiColon> IncrementCond()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
+}
+
+void DecVar():{}
+{
+Declaration()|Assignment()
+}
+
+void TestCond():{}
+{
+Expr()
+}
+
+void WhileIncrementCond():{}
+{
+<SSTilda>Statement()
+}
+
+void IncrementCond():{}
+{
+Statement()
 }
 
 void While():{}
 {
- <RESERVEDWORDWHILE> <SSOpenParen> Expr() <SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
+ <RESERVEDWORDWHILE> <SSOpenParen> TestCond() <SSCloseParen><SSOpenBraces> (Statement())* WhileIncrementCond() <SSCloseBraces>
 }
 
 void DataTypes() : {}

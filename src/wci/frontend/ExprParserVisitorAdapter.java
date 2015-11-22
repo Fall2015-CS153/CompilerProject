@@ -290,6 +290,26 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
     public Object visit(ASTProcedure node, Object data) {
          return node.childrenAccept(this, data);
     }
+
+    @Override
+    public Object visit(ASTDecVar node, Object data)
+    {
+       return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTTestCond node, Object data)
+    {
+        return node.childrenAccept(this, data); }
+
+    @Override
+    public Object visit(ASTIncrementCond node, Object data)
+    {
+        return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTWhileIncrementCond node, Object data)
+    {
+        return node.childrenAccept(this, data);}
    
    
 

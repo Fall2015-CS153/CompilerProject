@@ -40,11 +40,15 @@ public interface ExprParserTreeConstants
   public int JJTSTAREQUALSSTATEMENT = 34;
   public int JJTDIVIDEEQUALSSTATEMENT = 35;
   public int JJTFOR = 36;
-  public int JJTWHILE = 37;
-  public int JJTDATATYPES = 38;
-  public int JJTHASHMAP = 39;
-  public int JJTSET = 40;
-  public int JJTLIST = 41;
+  public int JJTDECVAR = 37;
+  public int JJTTESTCOND = 38;
+  public int JJTWHILEINCREMENTCOND = 39;
+  public int JJTINCREMENTCOND = 40;
+  public int JJTWHILE = 41;
+  public int JJTDATATYPES = 42;
+  public int JJTHASHMAP = 43;
+  public int JJTSET = 44;
+  public int JJTLIST = 45;
 
 
   public String[] jjtNodeName = {
@@ -85,6 +89,10 @@ public interface ExprParserTreeConstants
     "StarEqualsStatement",
     "DivideEqualsStatement",
     "For",
+    "DecVar",
+    "TestCond",
+    "WhileIncrementCond",
+    "IncrementCond",
     "While",
     "DataTypes",
     "Hashmap",
@@ -92,4 +100,4 @@ public interface ExprParserTreeConstants
     "List",
   };
 }
-/* JavaCC - OriginalChecksum=5e166404a004d04e9e2a49e3dc18c5e1 (do not edit this line) */
+/* JavaCC - OriginalChecksum=9af1eab436db911d44955c1554faf31c (do not edit this line) */
