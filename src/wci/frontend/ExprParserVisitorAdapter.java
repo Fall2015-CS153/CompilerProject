@@ -54,7 +54,7 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
 
     }
 
-    @Override
+    //@Override
     public Object visit(ASTPrimitiveType node, Object data)
     {
         return node.childrenAccept(this, data);
@@ -108,11 +108,11 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
         return node.childrenAccept(this, data);
     }
 
-    @Override
+    /*@Override
     public Object visit(ASTLiteral node, Object data)
     {
         return node.childrenAccept(this, data);
-    }
+    }*/
 
     @Override
     public Object visit(ASTSwitchPart node, Object data)

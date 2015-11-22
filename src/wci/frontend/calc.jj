@@ -410,53 +410,101 @@ void Commands() : {/*@bgen(jjtree) Commands */
         }
 /*@egen*/
 }
-TypeSpec PrimitiveType(): {/*@bgen(jjtree) PrimitiveType */
-  ASTPrimitiveType jjtn000 = new ASTPrimitiveType(JJTPRIMITIVETYPE);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) PrimitiveType */
-  try {
-/*@egen*/
-  <RESERVEDWORDINT>/*@bgen(jjtree)*/
-                    {
-                      jjtree.closeNodeScope(jjtn000, true);
-                      jjtc000 = false;
-                    }
-/*@egen*/ {return Predefined.integerType;}
-  |<RESERVEDWORDSTRING>/*@bgen(jjtree)*/
-                       {
-                         jjtree.closeNodeScope(jjtn000, true);
-                         jjtc000 = false;
-                       }
-/*@egen*/{return Predefined.stringType;}
-  |<RESERVEDWORDDOUBLE>/*@bgen(jjtree)*/
-                       {
-                         jjtree.closeNodeScope(jjtn000, true);
-                         jjtc000 = false;
-                       }
-/*@egen*/{return Predefined.doubleType;}
-  |<RESERVEDWORDFLOAT>/*@bgen(jjtree)*/
-                      {
-                        jjtree.closeNodeScope(jjtn000, true);
-                        jjtc000 = false;
-                      }
-/*@egen*/{return Predefined.floatType;}
-  |<RESERVEDWORDBOOLEAN>/*@bgen(jjtree)*/
-                        {
-                          jjtree.closeNodeScope(jjtn000, true);
-                          jjtc000 = false;
-                        }
-/*@egen*/{return Predefined.booleanType;}/*@bgen(jjtree)*/
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-  }
-/*@egen*/
+TypeSpec PrimitiveType()      : {}
+{
+  <RESERVEDWORDINT> {return Predefined.integerType;}
+  |<RESERVEDWORDSTRING>{return Predefined.stringType;}
+  |<RESERVEDWORDDOUBLE>{return Predefined.doubleType;}
+  |<RESERVEDWORDFLOAT>{return Predefined.floatType;}
+  |<RESERVEDWORDBOOLEAN>{return Predefined.booleanType;}
 
 
 }
+
+
+
+void IntegerConst() : {/*@bgen(jjtree) IntegerConst */
+  ASTIntegerConst jjtn000 = new ASTIntegerConst(JJTINTEGERCONST);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) IntegerConst */
+        try {
+/*@egen*/
+	<INTEGER>/*@bgen(jjtree)*/
+{
+  jjtree.closeNodeScope(jjtn000, true);
+  jjtc000 = false;
+}
+/*@egen*/
+{
+        jjtn000.setTypeSpec(Predefined.integerType);
+        jjtn000.setAttribute(VALUE, Integer.parseInt(token.image));
+    }/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+	
+
+}
+
+void RealConst() : {/*@bgen(jjtree) RealConst */
+  ASTRealConst jjtn000 = new ASTRealConst(JJTREALCONST);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) RealConst */
+    try {
+/*@egen*/
+    <REALNUMBER>|<REAL_NUMBER>/*@bgen(jjtree)*/
+{
+  jjtree.closeNodeScope(jjtn000, true);
+  jjtc000 = false;
+}
+/*@egen*/
+{
+        jjtn000.setTypeSpec(Predefined.doubleType);
+        jjtn000.setAttribute(VALUE, Double.parseDouble(token.image));
+}/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+	
+
+}
+
+void StringConst() : {/*@bgen(jjtree) StringConst */
+  ASTStringConst jjtn000 = new ASTStringConst(JJTSTRINGCONST);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) StringConst */
+        try {
+/*@egen*/
+	<STRING>/*@bgen(jjtree)*/
+{
+  jjtree.closeNodeScope(jjtn000, true);
+  jjtc000 = false;
+}
+/*@egen*/
+{
+        jjtn000.setTypeSpec(Predefined.stringType);
+        jjtn000.setAttribute(VALUE, token.image.substring(1,token.image.length()-1));
+    }/*@bgen(jjtree)*/
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
 
 void Expr(): {/*@bgen(jjtree) Expr */
   ASTExpr jjtn000 = new ASTExpr(JJTEXPR);
@@ -889,127 +937,6 @@ void ElsePart() : {/*@bgen(jjtree) ElsePart */
 
 
 
-void Literal() : {/*@bgen(jjtree) Literal */
-  ASTLiteral jjtn000 = new ASTLiteral(JJTLITERAL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Literal */
-        try {
-/*@egen*/
-	IntegerConst()|RealConst()|StringConst()/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-	
-
-}
-
-
-
-void IntegerConst() : {/*@bgen(jjtree) IntegerConst */
-  ASTIntegerConst jjtn000 = new ASTIntegerConst(JJTINTEGERCONST);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) IntegerConst */
-        try {
-/*@egen*/
-	<INTEGER>/*@bgen(jjtree)*/
-{
-  jjtree.closeNodeScope(jjtn000, true);
-  jjtc000 = false;
-}
-/*@egen*/
-{
-        jjtn000.setTypeSpec(Predefined.integerType);
-        jjtn000.setAttribute(VALUE, Integer.parseInt(token.image));
-    }/*@bgen(jjtree)*/
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-	
-
-}
-
-void RealConst() : {/*@bgen(jjtree) RealConst */
-  ASTRealConst jjtn000 = new ASTRealConst(JJTREALCONST);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) RealConst */
-        try {
-/*@egen*/
-	<REALNUMBER>|<REAL_NUMBER>/*@bgen(jjtree)*/
-{
-  jjtree.closeNodeScope(jjtn000, true);
-  jjtc000 = false;
-}
-/*@egen*/
-{
-        jjtn000.setTypeSpec(Predefined.doubleType);
-        jjtn000.setAttribute(VALUE, Double.parseDouble(token.image));
-    }/*@bgen(jjtree)*/
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-	
-
-}
-
-void StringConst() : {/*@bgen(jjtree) StringConst */
-  ASTStringConst jjtn000 = new ASTStringConst(JJTSTRINGCONST);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) StringConst */
-        try {
-/*@egen*/
-	<STRING>/*@bgen(jjtree)*/
-{
-  jjtree.closeNodeScope(jjtn000, true);
-  jjtc000 = false;
-}
-/*@egen*/
-{
-        jjtn000.setTypeSpec(Predefined.stringType);
-        jjtn000.setAttribute(VALUE, token.image.substring(1,token.image.length()-2));
-    }/*@bgen(jjtree)*/
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-	
-
-}
-
-
-
 
 void SwitchPart() : {/*@bgen(jjtree) SwitchPart */
   ASTSwitchPart jjtn000 = new ASTSwitchPart(JJTSWITCHPART);
@@ -1179,6 +1106,7 @@ try {
             variableId.setIndex(index++);
             variableId.setDefinition(DefinitionImpl.VARIABLE);
             jjtn000.setAttribute(ID, variableId);
+            jjtn000.setTypeSpec(type);
             variableId.setTypeSpec(type);
         }/*@bgen(jjtree)*/
 } finally {
@@ -1199,15 +1127,7 @@ try {
 /*@egen*/
 type=PrimitiveType()
 variableDecl(type) 
-
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )/*@bgen(jjtree)*/
-{
-  jjtree.closeNodeScope(jjtn000, true);
-  jjtc000 = false;
-}
-/*@egen*/
-{
-}/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
   if (jjtc000) {
     jjtree.clearNodeScope(jjtn000);

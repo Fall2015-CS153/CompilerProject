@@ -1,5 +1,5 @@
 Procedure :: first{
-       int intDecl = 9;
+       int intDecl = 9 + 7;
        double doDecl = 6.554;
        string strDecl= "It finally works";
        boolean boDecl = true;
@@ -8,6 +8,15 @@ Procedure :: first{
        switch(abc,<=){
        case "cde" : {int w = 0;}
 }
+       if(intDecl>3){
+       int a = 5;
+	}
+       elif{
+	int b = 3;
+	}
+	else{
+	int c = 9;
+	}
    
 }
 Procedure :: second{

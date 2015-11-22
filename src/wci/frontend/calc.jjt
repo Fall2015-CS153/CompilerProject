@@ -300,7 +300,7 @@ void Commands() : {}
 	Commands();// Recursive call to continue error handling
     })
 }
-TypeSpec PrimitiveType(): {}
+TypeSpec PrimitiveType() #void: {}
 {
   <RESERVEDWORDINT> {return Predefined.integerType;}
   |<RESERVEDWORDSTRING>{return Predefined.stringType;}
@@ -310,6 +310,40 @@ TypeSpec PrimitiveType(): {}
 
 
 }
+
+
+
+void IntegerConst() : {}
+{
+	<INTEGER>
+{
+        jjtThis.setTypeSpec(Predefined.integerType);
+        jjtThis.setAttribute(VALUE, Integer.parseInt(token.image));
+    }
+	
+
+}
+
+void RealConst() : {}
+{
+    <REALNUMBER>|<REAL_NUMBER>
+{
+        jjtThis.setTypeSpec(Predefined.doubleType);
+        jjtThis.setAttribute(VALUE, Double.parseDouble(token.image));
+}
+	
+
+}
+
+void StringConst() : {}
+{
+	<STRING>
+{
+        jjtThis.setTypeSpec(Predefined.stringType);
+        jjtThis.setAttribute(VALUE, token.image.substring(1,token.image.length()-1));
+    }
+}
+
 
 void Expr(): {}
 {
@@ -372,50 +406,6 @@ void ElsePart() : {}
 
 
 
-void Literal() : {}
-{
-	IntegerConst()|RealConst()|StringConst()
-	
-
-}
-
-
-
-void IntegerConst() : {}
-{
-	<INTEGER>
-{
-        jjtThis.setTypeSpec(Predefined.integerType);
-        jjtThis.setAttribute(VALUE, Integer.parseInt(token.image));
-    }
-	
-
-}
-
-void RealConst() : {}
-{
-	<REALNUMBER>|<REAL_NUMBER>
-{
-        jjtThis.setTypeSpec(Predefined.doubleType);
-        jjtThis.setAttribute(VALUE, Double.parseDouble(token.image));
-    }
-	
-
-}
-
-void StringConst() : {}
-{
-	<STRING>
-{
-        jjtThis.setTypeSpec(Predefined.stringType);
-        jjtThis.setAttribute(VALUE, token.image.substring(1,token.image.length()-2));
-    }
-	
-
-}
-
-
-
 
 void SwitchPart() : {}
 {
@@ -467,6 +457,7 @@ void variableDecl(TypeSpec type) : {}
             variableId.setIndex(index++);
             variableId.setDefinition(DefinitionImpl.VARIABLE);
             jjtThis.setAttribute(ID, variableId);
+            jjtThis.setTypeSpec(type);
             variableId.setTypeSpec(type);
         }
 }
@@ -475,10 +466,7 @@ void Declaration(): {TypeSpec type;}
 {
 type=PrimitiveType()
 variableDecl(type) 
-
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )
-{
-}
 
 }
 
