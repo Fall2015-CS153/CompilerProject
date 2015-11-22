@@ -274,7 +274,9 @@ SimpleNode Program() : {}
         programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
         symTabStack.setProgramId(programId);
 	
+
 }<SSOpenBraces> Commands())*
+
 {
 
 return jjtThis;
@@ -284,7 +286,7 @@ return jjtThis;
 void Commands() : {}
 {
 	(try {
-	(IfPart() | SwitchPart()|Statement()| DataTypes() |Error())* <SSCloseBraces>
+	(IfPart() | SwitchPart()|Statement()| DataTypes() |For()|While()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
     })
@@ -493,6 +495,15 @@ variable() <SSMultEquals> (variable()|IntegerConst())<SSSemiColon>
 void DivideEqualsStatement(): {}
 {
 variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>
+}
+void For(): {}
+{
+  <RESERVEDWORDFOR> <SSOpenParen>(Declaration()|Assignment())<SSSemiColon> Expr()<SSSemiColon> Statement()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
+}
+
+void While():{}
+{
+ <RESERVEDWORDWHILE> <SSOpenParen> Expr() <SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
 }
 
 void DataTypes() : {}
