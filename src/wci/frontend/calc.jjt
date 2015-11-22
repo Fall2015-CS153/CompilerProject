@@ -45,7 +45,7 @@ public class ExprParser
 
         // Visit the parse tree nodes to decorate them with type information.
         ExprParserVisitorAdapter typeVisitor = new ExprParserVisitorAdapter();
-        rootNode.jjtAccept(typeVisitor, null);
+        rootNode.jjtAccept(typeVisitor, rootNode);
 
         // Create and initialize the ICode wrapper for the parse tree.
         ICode iCode = ICodeFactory.createICode();
@@ -325,13 +325,13 @@ void Term (): {}
 
 void Factor(): {}
 {
-    variable()|(IntegerConst()|<REALNUMBER>|<REAL_NUMBER>)|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>
+    variable()|(IntegerConst()|RealConst()|StringConst())|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>
    
 
 }
 void Statement(): {}
 {
-   LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()
+   LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|LOOKAHEAD(3) Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()
 
 
 
@@ -384,8 +384,8 @@ void RealConst() : {}
 {
 	<REALNUMBER>|<REAL_NUMBER>
 {
-        jjtThis.setTypeSpec(Predefined.realType);
-        jjtThis.setAttribute(VALUE, Float.parseFloat(token.image));
+        jjtThis.setTypeSpec(Predefined.doubleType);
+        jjtThis.setAttribute(VALUE, Double.parseDouble(token.image));
     }
 	
 
@@ -449,19 +449,14 @@ void variable() : {}
 
 void Declaration(): {TypeSpec type;}
 {
-   type=PrimitiveType()
-   <IDENTIFIER>{
-       SymTabEntry variableId = symTabStack.enterLocal(token.image);
-       variableId.setDefinition(DefinitionImpl.VARIABLE);
-       if(type!=null){
-           variableId.setTypeSpec(type);
-       }else{     
-           variableId.setTypeSpec(Predefined.undefinedType);
-       }
-       variableId.appendLineNumber(token.beginLine);
-       variableId.setIndex(index++);
-	
-   }
+type=PrimitiveType()
+<IDENTIFIER> {
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.setIndex(index);
+            variableId.setDefinition(DefinitionImpl.VARIABLE);
+            variableId.setTypeSpec(type);
+            variableId.appendLineNumber(token.beginLine);
+        }
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )
 {
 }

@@ -49,7 +49,7 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
 
         // Visit the parse tree nodes to decorate them with type information.
         ExprParserVisitorAdapter typeVisitor = new ExprParserVisitorAdapter();
-        rootNode.jjtAccept(typeVisitor, null);
+        rootNode.jjtAccept(typeVisitor, rootNode);
 
         // Create and initialize the ICode wrapper for the parse tree.
         ICode iCode = ICodeFactory.createICode();
@@ -236,6 +236,7 @@ TOKEN : {
 | <DECIMALINTEGER : <NONZERO> (<DIGIT> )*>
 | <OCTALINTEGER : <ZERO>(<OCTALS> )*>
 | <HEXINTEGER : "0"("x"|"X")(<DIGIT>|<HEXLETTERS>)(<DIGIT>|<HEXLETTERS> )*>
+| <DOUBLE : (<DIGIT>(<DIGIT>)* ("."|"")(<DIGIT>)* )>
 | <REALNUMBER : (<DIGIT>(<DIGIT>)* ("."|"")(<DIGIT>)* ("e"|"E"|"")("+"|"-"|"")(<DIGIT>)*)>
 | <REAL_NUMBER : ("."(<DIGIT>)* ("e"|"E"|"")("+"|"-"|"")(<DIGIT>)*)>
 
@@ -250,6 +251,7 @@ TOKEN : {
  | <#ZERO : ["0"]>
  | <ERROR   : ~["\r", "\n"]>
 }
+
 JAVACODE
 String handleError(Token token)
 {/*@bgen(jjtree) handleError */
@@ -263,10 +265,10 @@ String handleError(Token token)
 
     Token t;
   
-    do {
+    
         t = getNextToken();
-    } while (t.kind != EOF);
-  
+   
+
     return t.image;/*@bgen(jjtree)*/
  } finally {
    if (jjtc000) {
@@ -353,6 +355,7 @@ void Commands() : {/*@bgen(jjtree) Commands */
 	(IfPart() | SwitchPart()|Statement()| DataTypes() |For()|While()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
+	Commands();
     })/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
@@ -528,7 +531,7 @@ void Factor(): {/*@bgen(jjtree) Factor */
 {/*@bgen(jjtree) Factor */
     try {
 /*@egen*/
-    variable()|(IntegerConst()|<REALNUMBER>|<REAL_NUMBER>)|<STRING>|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>/*@bgen(jjtree)*/
+    variable()|(IntegerConst()|RealConst()|StringConst())|(<SSNot>Factor())| (<SSOpenParen> Expr() <SSCloseParen>) |<RESERVEDWORDTRUE>|<RESERVEDWORDFALSE>/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -560,7 +563,7 @@ void Statement(): {/*@bgen(jjtree) Statement */
 {/*@bgen(jjtree) Statement */
    try {
 /*@egen*/
-   LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()/*@bgen(jjtree)*/
+   LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|LOOKAHEAD(3) Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()/*@bgen(jjtree)*/
    } catch (Throwable jjte000) {
      if (jjtc000) {
        jjtree.clearNodeScope(jjtn000);
@@ -758,15 +761,15 @@ void RealConst() : {/*@bgen(jjtree) RealConst */
 {/*@bgen(jjtree) RealConst */
         try {
 /*@egen*/
-	<REALNUMBER>|<REAL_NUMBER>/*@bgen(jjtree)*/
+	<REALNUMBER>|<REAL_NUMBER>|<DOUBLE>/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
 }
 /*@egen*/
 {
-        jjtn000.setTypeSpec(Predefined.realType);
-        jjtn000.setAttribute(VALUE, Float.parseFloat(token.image));
+        jjtn000.setTypeSpec(Predefined.doubleType);
+        jjtn000.setAttribute(VALUE, Double.parseDouble(token.image));
     }/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
@@ -964,21 +967,16 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
                      jjtree.openNodeScope(jjtn000);
 /*@egen*/TypeSpec type;}
 {/*@bgen(jjtree) Declaration */
-   try {
+try {
 /*@egen*/
-   type=PrimitiveType()
-   <IDENTIFIER>{
-       SymTabEntry variableId = symTabStack.enterLocal(token.image);
-       variableId.setDefinition(DefinitionImpl.VARIABLE);
-       if(type!=null){
-           variableId.setTypeSpec(type);
-       }else{     
-           variableId.setTypeSpec(Predefined.undefinedType);
-       }
-       variableId.appendLineNumber(token.beginLine);
-       variableId.setIndex(index++);
-	
-   }
+type=PrimitiveType()
+<IDENTIFIER> {
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.setIndex(index);
+            variableId.setDefinition(DefinitionImpl.VARIABLE);
+            variableId.setTypeSpec(type);
+            variableId.appendLineNumber(token.beginLine);
+        }
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
@@ -987,25 +985,25 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
 /*@egen*/
 {
 }/*@bgen(jjtree)*/
-   } catch (Throwable jjte000) {
-     if (jjtc000) {
-       jjtree.clearNodeScope(jjtn000);
-       jjtc000 = false;
-     } else {
-       jjtree.popNode();
-     }
-     if (jjte000 instanceof RuntimeException) {
-       throw (RuntimeException)jjte000;
-     }
-     if (jjte000 instanceof ParseException) {
-       throw (ParseException)jjte000;
-     }
-     throw (Error)jjte000;
-   } finally {
-     if (jjtc000) {
-       jjtree.closeNodeScope(jjtn000, true);
-     }
-   }
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
 /*@egen*/
 
 }

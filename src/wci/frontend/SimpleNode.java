@@ -104,7 +104,7 @@ class SimpleNode implements Node {
 
     Object childrenAccept(ExprParserVisitorAdapter aThis, Object data)
     {
-       
+       System.out.println("acc " + aThis + " " + data);
         return this;
      }
 
@@ -126,16 +126,17 @@ class SimpleNode implements Node {
     }
 
     /**
-     * @param TypeSpec the TypeSpec to set
+     * @param type the TypeSpec to set
      */
-    public void setTypeSpec(TypeSpec TypeSpec)
+    public void setTypeSpec(TypeSpec type)
     {
-        this.TypeSpec = TypeSpec;
+        System.out.println(type);
+        this.TypeSpec = type;
+        System.out.println(this + " " + this.getTypeSpec());
     }
 
     public void setAttribute(ICodeKeyImpl a, Object b)
     {
-         System.out.println("Adding data " + a + " " + b);
          ICodeNodeImpl ab = new ICodeNodeImpl();
           Attribute.setAttribute(a,b);
           Attribute.addChild(ab);
@@ -146,15 +147,23 @@ class SimpleNode implements Node {
 
     public Set<Map.Entry<ICodeKey, Object>> entrySet()
     {
-        return getAttribute().entrySet();
+        return  ((ICodeNodeImpl) getAttribute()).entrySet();
     }
 
     /**
      * @return the Attribute
      */
-    public ICodeNodeImpl getAttribute()
+    public Object getAttribute()
     {
         return Attribute;
+    }
+    
+    /**
+     * @return the Attribute
+     */
+    public Object getAttribute(ICodeKeyImpl a)
+    {
+        return  Attribute.getAttribute(a);
     }
 
 
