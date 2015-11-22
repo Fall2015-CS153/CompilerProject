@@ -1,4 +1,4 @@
-Procedure :: {
+Procedure :: first{
 
        // Awesome Error Recovery
        
@@ -15,7 +15,7 @@ Procedure :: {
        int int int i=5;// error Recovered and variable i will be in symbol table
 }
 
-Procedure :: {
+Procedure :: second{
 	  //Multiple Procedure error Recovery
 	  asdf;// error will be caught
 

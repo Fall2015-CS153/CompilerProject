@@ -274,9 +274,9 @@ SimpleNode Program() : {}
         programId.setDefinition(DefinitionImpl.PROGRAM);
         programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
         symTabStack.setProgramId(programId);
-	
+	index=0;// Every procedure has new indx at 0
 
-}<SSOpenBraces> Commands())*
+}<IDENTIFIER><SSOpenBraces> Commands())*
 
 {
 
@@ -290,7 +290,7 @@ void Commands() : {}
 	(IfPart() | SwitchPart()|Statement()| DataTypes() |For()|While()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
-	Commands();
+	Commands();// Recursive call to continue error handling
     })
 }
 TypeSpec PrimitiveType(): {}
@@ -457,7 +457,7 @@ void variableDecl(TypeSpec type) : {}
 <IDENTIFIER> {
             SymTabEntry variableId = symTabStack.enterLocal(token.image);
             variableId.appendLineNumber(token.beginLine);
-            variableId.setIndex(index);
+            variableId.setIndex(index++);
             variableId.setDefinition(DefinitionImpl.VARIABLE);
             jjtThis.setAttribute(ID, variableId);
             variableId.setTypeSpec(type);

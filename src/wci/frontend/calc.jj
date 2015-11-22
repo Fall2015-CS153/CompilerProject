@@ -307,9 +307,9 @@ try {
         programId.setDefinition(DefinitionImpl.PROGRAM);
         programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
         symTabStack.setProgramId(programId);
-	
+	index=0;// Every procedure has new indx at 0
 
-}<SSOpenBraces> Commands())*/*@bgen(jjtree)*/
+}<IDENTIFIER><SSOpenBraces> Commands())*/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
@@ -354,7 +354,7 @@ void Commands() : {/*@bgen(jjtree) Commands */
 	(IfPart() | SwitchPart()|Statement()| DataTypes() |For()|While()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
-	Commands();
+	Commands();// Recursive call to continue error handling
     })/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
@@ -1143,7 +1143,7 @@ try {
 /*@egen*/ {
             SymTabEntry variableId = symTabStack.enterLocal(token.image);
             variableId.appendLineNumber(token.beginLine);
-            variableId.setIndex(index);
+            variableId.setIndex(index++);
             variableId.setDefinition(DefinitionImpl.VARIABLE);
             jjtn000.setAttribute(ID, variableId);
             variableId.setTypeSpec(type);

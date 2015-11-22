@@ -1,4 +1,4 @@
-Procedure :: {
+Procedure :: first{
        int intDecl = 9;
        double doDecl = 6.554;
        string strDecl= "It finally works";
@@ -10,4 +10,7 @@ Procedure :: {
 }
    
 }
-
+Procedure :: second{
+       int intDecl = 9;
+       double doDecl = 6.554;
+}

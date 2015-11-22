@@ -108,6 +108,9 @@ programId = symTabStack.enterLocal(token.image);
         programId.setDefinition(DefinitionImpl.PROGRAM);
         programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
         symTabStack.setProgramId(programId);
+        index=0;// Every procedure has new indx at 0
+
+        jj_consume_token(IDENTIFIER);
         jj_consume_token(SSOpenBraces);
         Commands();
       }
@@ -211,7 +214,8 @@ if (jjtc000) {
         jj_consume_token(SSCloseBraces);
       } catch (ParseException ex) {
 handleError(ex.currentToken);
-        Commands();
+        Commands();// Recursive call to continue error handling
+
       }
     } catch (Throwable jjte000) {
 if (jjtc000) {
@@ -1257,7 +1261,7 @@ jjtree.closeNodeScope(jjtn000, true);
                jjtc000 = false;
 SymTabEntry variableId = symTabStack.enterLocal(token.image);
             variableId.appendLineNumber(token.beginLine);
-            variableId.setIndex(index);
+            variableId.setIndex(index++);
             variableId.setDefinition(DefinitionImpl.VARIABLE);
             jjtn000.setAttribute(ID, variableId);
             variableId.setTypeSpec(type);
