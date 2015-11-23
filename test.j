@@ -32,20 +32,25 @@
     ldc 10.0
     getstatic Test/a I
     ldc 5
+    fadd
+    putstatic Test/null F
     putstatic Test/a I
     getstatic Test/a I
-    getstatic Test/a I
+    ldc 5
     imul
+    putstatic Test/a I
     getstatic Test/a I
-    getstatic Test/a I
+    ldc 5
     isub
+    putstatic Test/a I
     getstatic Test/doDob F
-    getstatic Test/doDob F
+    ldc 10
     fdiv
+    putstatic Test/doDob F
     getstatic Test/doDob F
-    getstatic Test/doDob F
+    ldc 12
     fadd
-    putstatic test/{} {}
+    putstatic Test/doDob F
     getstatic	Test/_runTimer LRunTimer;
     invokevirtual	RunTimer.printElapsedTime()V
 
