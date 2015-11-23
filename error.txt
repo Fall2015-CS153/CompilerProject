@@ -15,12 +15,4 @@ Procedure :: first{
        int int int i=5;// error Recovered and variable i will be in symbol table
 }
 
-Procedure :: second{
-	  //Multiple Procedure error Recovery
-	  asdf;// error will be caught
 
-       	  int inl = 9;// basic Declare
-
-	  asd;kfh asdfnklafnh // Ultimate Recovery
-
-}

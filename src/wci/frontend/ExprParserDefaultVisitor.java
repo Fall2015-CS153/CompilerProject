@@ -24,15 +24,7 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTCommands node, Object data){
     return defaultVisit(node, data);
   }
-  public Object visit(ASTPrimitiveType node, Object data){
-    return defaultVisit(node, data);
-  }
-  public Object visit(ASTExpr node, Object data){
-    return defaultVisit(node, data);
-  }
-  public Object visit(ASTSimpleExpr node, Object data){
-    return defaultVisit(node, data);
-  }
+
   public Object visit(ASTadd node, Object data){
     return defaultVisit(node, data);
   }
@@ -42,9 +34,7 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTor node, Object data){
     return defaultVisit(node, data);
   }
-  public Object visit(ASTTerm node, Object data){
-    return defaultVisit(node, data);
-  }
+
   public Object visit(ASTmultiply node, Object data){
     return defaultVisit(node, data);
   }
@@ -54,9 +44,7 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTand node, Object data){
     return defaultVisit(node, data);
   }
-  public Object visit(ASTFactor node, Object data){
-    return defaultVisit(node, data);
-  }
+
   public Object visit(ASTStatement node, Object data){
     return defaultVisit(node, data);
   }
@@ -69,9 +57,7 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTElsePart node, Object data){
     return defaultVisit(node, data);
   }
-  public Object visit(ASTLiteral node, Object data){
-    return defaultVisit(node, data);
-  }
+
   public Object visit(ASTIntegerConst node, Object data){
     return defaultVisit(node, data);
   }

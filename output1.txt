@@ -1,0 +1,196 @@
+run:
+
+===== CROSS-REFERENCE TABLE =====
+
+*** PROGRAM Procedure :: ***
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+doDecl           026
+                                 Defined as: variable
+                                 Scope nesting level: 2
+                                 Type form = enumeration, Type id = double
+intDecl          025
+                                 Defined as: variable
+                                 Scope nesting level: 2
+                                 Type form = scalar, Type id = integer
+
+===== INTERMEDIATE CODE =====
+
+*** PROGRAM Procedure :: ***
+
+<Program>
+    <Procedure>
+        <Commands>
+            <Statement>
+                <Declaration type_id="integer">
+                    <variableDecl id="intDecl" level="1" index="0" 
+                        type_id="integer" />
+                    <add>
+                        <IntegerConst value="9" type_id="integer" />
+                        <IntegerConst value="7" type_id="integer" />
+                    </add>
+                </Declaration>
+            </Statement>
+            <Statement>
+                <Declaration type_id="double">
+                    <variableDecl id="doDecl" level="1" index="1" 
+                        type_id="double" />
+                    <RealConst value="6.554" type_id="double" />
+                </Declaration>
+            </Statement>
+            <Statement>
+                <Declaration type_id="string">
+                    <variableDecl id="strDecl" level="1" index="2" 
+                        type_id="string" />
+                    <StringConst value="It finally works" type_id="string" />
+                </Declaration>
+            </Statement>
+            <Statement>
+                <Declaration type_id="boolean">
+                    <variableDecl id="boDecl" level="1" index="3" 
+                        type_id="boolean" />
+                </Declaration>
+            </Statement>
+            <Statement>
+                <Assignment type_id="integer">
+                    <variable id="intDecl" level="1" index="0" type_id="integer"
+                    />
+                    <IntegerConst value="5" type_id="integer" />
+                </Assignment>
+            </Statement>
+            <Statement>
+                <Declaration type_id="string">
+                    <variableDecl id="abc" level="1" index="4" type_id="string" 
+                    />
+                    <StringConst value="dog" type_id="string" />
+                </Declaration>
+            </Statement>
+            <IfPart>
+                <IntegerConst value="4" type_id="integer" />
+                <IntegerConst value="3" type_id="integer" />
+                <Statement>
+                    <Declaration type_id="integer">
+                        <variableDecl id="a" level="1" index="5" 
+                            type_id="integer" />
+                        <IntegerConst value="5" type_id="integer" />
+                    </Declaration>
+                </Statement>
+                <ElseIfPart>
+                    <IntegerConst value="7" type_id="integer" />
+                    <IntegerConst value="4" type_id="integer" />
+                    <Statement>
+                        <Declaration type_id="integer">
+                            <variableDecl id="a" level="1" index="6" 
+                                type_id="integer" />
+                            <IntegerConst value="7" type_id="integer" />
+                        </Declaration>
+                    </Statement>
+                </ElseIfPart>
+                <ElsePart>
+                    <Statement>
+                        <Declaration type_id="integer">
+                            <variableDecl id="c" level="1" index="7" 
+                                type_id="integer" />
+                            <IntegerConst value="8" type_id="integer" />
+                        </Declaration>
+                    </Statement>
+                </ElsePart>
+            </IfPart>
+            <Statement>
+                <StarEqualsStatement type_id="integer">
+                    <variable id="intDecl" level="1" index="0" type_id="integer"
+                    />
+                    <IntegerConst value="10" type_id="integer" />
+                </StarEqualsStatement>
+            </Statement>
+            <For>
+                <DecVar>
+                    <Declaration type_id="integer">
+                        <variableDecl id="b" level="1" index="8" 
+                            type_id="integer" />
+                        <IntegerConst value="10" type_id="integer" />
+                    </Declaration>
+                </DecVar>
+                <TestCond>
+                    <variable id="b" level="1" index="8" type_id="integer" />
+                    <IntegerConst value="10" type_id="integer" />
+                </TestCond>
+                <IncrementCond>
+                    <Statement>
+                        <PlusEqualsStatement type_id="integer">
+                            <variable id="b" level="1" index="8" 
+                                type_id="integer" />
+                            <IntegerConst value="5" type_id="integer" />
+                        </PlusEqualsStatement>
+                    </Statement>
+                </IncrementCond>
+                <Statement>
+                    <Declaration type_id="integer">
+                        <variableDecl id="b2" level="1" index="9" 
+                            type_id="integer" />
+                        <IntegerConst value="9" type_id="integer" />
+                    </Declaration>
+                </Statement>
+            </For>
+            <While>
+                <TestCond>
+                    <variable id="intDecl" level="1" index="0" type_id="integer"
+                    />
+                    <IntegerConst value="11" type_id="integer" />
+                </TestCond>
+                <Statement>
+                    <Declaration type_id="integer">
+                        <variableDecl id="a" level="1" index="10" 
+                            type_id="integer" />
+                        <IntegerConst value="7" type_id="integer" />
+                    </Declaration>
+                </Statement>
+                <WhileIncrementCond>
+                    <Statement>
+                        <PlusEqualsStatement type_id="integer">
+                            <variable id="intDecl" level="1" index="0" 
+                                type_id="integer" />
+                            <IntegerConst value="5" type_id="integer" />
+                        </PlusEqualsStatement>
+                    </Statement>
+                </WhileIncrementCond>
+            </While>
+            <Statement>
+                <Declaration type_id="integer">
+                    <variableDecl id="multops" level="1" index="11" 
+                        type_id="integer" />
+                    <add>
+                        <IntegerConst value="5" type_id="integer" />
+                        <divide>
+                            <multiply>
+                                <IntegerConst value="6" type_id="integer" />
+                                <IntegerConst value="3" type_id="integer" />
+                            </multiply>
+                            <IntegerConst value="4" type_id="integer" />
+                        </divide>
+                    </add>
+                </Declaration>
+            </Statement>
+        </Commands>
+    </Procedure>
+    <Procedure>
+        <Commands>
+            <Statement>
+                <Declaration type_id="integer">
+                    <variableDecl id="intDecl" level="2" index="0" 
+                        type_id="integer" />
+                    <IntegerConst value="9" type_id="integer" />
+                </Declaration>
+            </Statement>
+            <Statement>
+                <Declaration type_id="double">
+                    <variableDecl id="doDecl" level="2" index="1" 
+                        type_id="double" />
+                    <RealConst value="6.554" type_id="double" />
+                </Declaration>
+            </Statement>
+        </Commands>
+    </Procedure>
+</Program>
+BUILD SUCCESSFUL (total time: 1 second)

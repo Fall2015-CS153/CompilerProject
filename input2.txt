@@ -1,7 +1,6 @@
 Procedure :: first{
 	int a = 4;
         double doDob = 10.0;
-        a = a+5;
         a*=5;
         a-=5;
         doDob/=10;

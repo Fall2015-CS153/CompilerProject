@@ -1,0 +1,89 @@
+run:
+*** ERROR: Line 6 after ""No Error""
+*** ERROR: Line 8 after "f"
+*** ERROR: Line 8 after "="
+*** ERROR: Line 8 after "3"
+VARIABLE LOOKUP ERROR***
+*** ERROR: Line 9 after ""look" "
+*** ERROR: Line 11 after "ASDF"
+*** ERROR: Line 13 after ";"
+*** ERROR: Line 15 after "int"
+
+===== CROSS-REFERENCE TABLE =====
+
+*** PROGRAM Procedure :: ***
+
+Identifier       Line numbers    Type specification
+----------       ------------    ------------------
+dc               006
+                                 Defined as: variable
+                                 Scope nesting level: 1
+                                 Type form = scalar, Type id = string
+i                015
+                                 Defined as: variable
+                                 Scope nesting level: 1
+                                 Type form = scalar, Type id = integer
+intDecl          005 013
+                                 Defined as: variable
+                                 Scope nesting level: 1
+                                 Type form = scalar, Type id = integer
+
+===== INTERMEDIATE CODE =====
+
+*** PROGRAM Procedure :: ***
+
+<Program>
+    <Procedure>
+        <Commands>
+            <Statement>
+                <Declaration type_id="integer">
+                    <variableDecl id="intDecl" level="1" index="0" 
+                        type_id="integer" />
+                    <IntegerConst value="9" type_id="integer" />
+                </Declaration>
+            </Statement>
+            <handleError />
+            <Commands>
+                <handleError />
+                <Commands>
+                    <handleError />
+                    <Commands>
+                        <handleError />
+                        <Commands>
+                            <handleError />
+                            <Commands>
+                                <handleError />
+                                <Commands>
+                                    <Statement>
+                                        <Assignment type_id="integer">
+                                            <variable id="intDecl" level="1" 
+                                                index="0" type_id="integer" />
+                                            <IntegerConst value="5" 
+                                                type_id="integer" />
+                                        </Assignment>
+                                    </Statement>
+                                    <handleError />
+                                    <Commands>
+                                        <handleError />
+                                        <Commands>
+                                            <Statement>
+                                                <Declaration type_id="integer">
+                                                    <variableDecl id="i" 
+                                                        level="1" index="2" 
+                                                        type_id="integer" />
+                                                    <IntegerConst value="5" 
+                                                        type_id="integer" />
+                                                </Declaration>
+                                            </Statement>
+                                        </Commands>
+                                    </Commands>
+                                </Commands>
+                            </Commands>
+                        </Commands>
+                    </Commands>
+                </Commands>
+            </Commands>
+        </Commands>
+    </Procedure>
+</Program>
+BUILD SUCCESSFUL (total time: 0 seconds)

@@ -32,11 +32,6 @@
     ldc 10.0
     getstatic Test/a I
     ldc 5
-    fadd
-    putstatic Test/null F
-    putstatic Test/a I
-    getstatic Test/a I
-    ldc 5
     imul
     putstatic Test/a I
     getstatic Test/a I

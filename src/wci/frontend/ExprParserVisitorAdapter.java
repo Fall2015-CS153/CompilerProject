@@ -10,23 +10,17 @@ import wci.frontend.ASTDecrementStatement;
 import wci.frontend.ASTDivideEqualsStatement;
 import wci.frontend.ASTElseIfPart;
 import wci.frontend.ASTElsePart;
-import wci.frontend.ASTExpr;
-import wci.frontend.ASTFactor;
 import wci.frontend.ASTHashmap;
 import wci.frontend.ASTIfPart;
 import wci.frontend.ASTIncrementStatement;
 import wci.frontend.ASTList;
-import wci.frontend.ASTLiteral;
 import wci.frontend.ASTMinusEqualsStatement;
 import wci.frontend.ASTPlusEqualsStatement;
-import wci.frontend.ASTPrimitiveType;
 import wci.frontend.ASTProgram;
 import wci.frontend.ASTSet;
-import wci.frontend.ASTSimpleExpr;
 import wci.frontend.ASTStarEqualsStatement;
 import wci.frontend.ASTStatement;
 import wci.frontend.ASTSwitchPart;
-import wci.frontend.ASTTerm;
 import wci.frontend.ExprParserVisitor;
 
 /*
@@ -53,13 +47,13 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
         return node.childrenAccept(this, data);
 
     }
-
+/*
     //@Override
     public Object visit(ASTPrimitiveType node, Object data)
     {
         return node.childrenAccept(this, data);
     }
-/*
+
     @Override
     public Object visit(ASTExpr node, Object data)
     {
