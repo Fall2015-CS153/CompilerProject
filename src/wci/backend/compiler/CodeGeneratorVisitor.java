@@ -10,6 +10,22 @@ public class CodeGeneratorVisitor
         extends ExprParserVisitorAdapter
         implements ExprParserTreeConstants
 {
+     public Object visit(ASTProcedure node, Object data) {
+         
+         // Generating method call
+         CodeGenerator.objectFile.print(".method public static "+node.getAttribute(VALUE)+"()V");
+         CodeGenerator.objectFile.println();
+         // create stuff inside
+         SimpleNode commandsNode = (SimpleNode)node.jjtGetChild(0);
+         commandsNode.jjtAccept(this, data);
+         
+         //create end
+         CodeGenerator.objectFile.println();
+         CodeGenerator.objectFile.println("return\n"+".limit locals 16\n" +
+".limit stack 16\n" +
+".end method"+"\n");
+         return data;
+    }
 
     public Object visit(ASTAssignment node, Object data)
     {

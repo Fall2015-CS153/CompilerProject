@@ -24,7 +24,15 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTCommands node, Object data){
     return defaultVisit(node, data);
   }
-
+  public Object visit(ASTIntegerConst node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTRealConst node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTStringConst node, Object data){
+    return defaultVisit(node, data);
+  }
   public Object visit(ASTadd node, Object data){
     return defaultVisit(node, data);
   }
@@ -34,7 +42,6 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTor node, Object data){
     return defaultVisit(node, data);
   }
-
   public Object visit(ASTmultiply node, Object data){
     return defaultVisit(node, data);
   }
@@ -44,7 +51,6 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTand node, Object data){
     return defaultVisit(node, data);
   }
-
   public Object visit(ASTStatement node, Object data){
     return defaultVisit(node, data);
   }
@@ -55,16 +61,6 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
     return defaultVisit(node, data);
   }
   public Object visit(ASTElsePart node, Object data){
-    return defaultVisit(node, data);
-  }
-
-  public Object visit(ASTIntegerConst node, Object data){
-    return defaultVisit(node, data);
-  }
-  public Object visit(ASTRealConst node, Object data){
-    return defaultVisit(node, data);
-  }
-  public Object visit(ASTStringConst node, Object data){
     return defaultVisit(node, data);
   }
   public Object visit(ASTSwitchPart node, Object data){
@@ -88,6 +84,9 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTDeclaration node, Object data){
     return defaultVisit(node, data);
   }
+  public Object visit(ASTFunction node, Object data){
+    return defaultVisit(node, data);
+  }
   public Object visit(ASTIncrementStatement node, Object data){
     return defaultVisit(node, data);
   }
@@ -109,6 +108,18 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTFor node, Object data){
     return defaultVisit(node, data);
   }
+  public Object visit(ASTDecVar node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTTestCond node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTWhileIncrementCond node, Object data){
+    return defaultVisit(node, data);
+  }
+  public Object visit(ASTIncrementCond node, Object data){
+    return defaultVisit(node, data);
+  }
   public Object visit(ASTWhile node, Object data){
     return defaultVisit(node, data);
   }
@@ -124,25 +135,5 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTList node, Object data){
     return defaultVisit(node, data);
   }
-
-    @Override
-    public Object visit(ASTDecVar node, Object data)
-    {
-       return defaultVisit(node, data);}
-
-    @Override
-    public Object visit(ASTTestCond node, Object data)
-    {
-        return defaultVisit(node, data); }
-
-    @Override
-    public Object visit(ASTIncrementCond node, Object data)
-    {
-        return defaultVisit(node, data);}
-
-    @Override
-    public Object visit(ASTWhileIncrementCond node, Object data)
-    {
-        return defaultVisit(node, data);}
 }
-/* JavaCC - OriginalChecksum=ae963c837b40111874b6f22044cb5b0c (do not edit this line) */
+/* JavaCC - OriginalChecksum=460d3785430aeeb8276437e3bbdc8e66 (do not edit this line) */

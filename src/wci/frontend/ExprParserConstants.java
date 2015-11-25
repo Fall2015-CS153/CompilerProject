@@ -121,41 +121,45 @@ public interface ExprParserConstants {
   /** RegularExpression Id. */
   int RESERVEDWORDNEW = 58;
   /** RegularExpression Id. */
-  int IDENTIFIER = 59;
+  int RESERVEDWORDPUBLIC = 59;
   /** RegularExpression Id. */
-  int STRING = 60;
+  int RESERVEDWORDVOID = 60;
   /** RegularExpression Id. */
-  int INTEGER = 61;
+  int IDENTIFIER = 61;
   /** RegularExpression Id. */
-  int DECIMALINTEGER = 62;
+  int STRING = 62;
   /** RegularExpression Id. */
-  int OCTALINTEGER = 63;
+  int INTEGER = 63;
   /** RegularExpression Id. */
-  int HEXINTEGER = 64;
+  int DECIMALINTEGER = 64;
   /** RegularExpression Id. */
-  int DOUBLE = 65;
+  int OCTALINTEGER = 65;
   /** RegularExpression Id. */
-  int REALNUMBER = 66;
+  int HEXINTEGER = 66;
   /** RegularExpression Id. */
-  int REAL_NUMBER = 67;
+  int DOUBLE = 67;
   /** RegularExpression Id. */
-  int SINGLEQUOTE = 68;
+  int REALNUMBER = 68;
   /** RegularExpression Id. */
-  int DOUBLEQUOTE = 69;
+  int REAL_NUMBER = 69;
   /** RegularExpression Id. */
-  int HEXLETTERS = 70;
+  int SINGLEQUOTE = 70;
   /** RegularExpression Id. */
-  int DIGIT = 71;
+  int DOUBLEQUOTE = 71;
   /** RegularExpression Id. */
-  int NONZERO = 72;
+  int HEXLETTERS = 72;
   /** RegularExpression Id. */
-  int LETTER = 73;
+  int DIGIT = 73;
   /** RegularExpression Id. */
-  int OCTALS = 74;
+  int NONZERO = 74;
   /** RegularExpression Id. */
-  int ZERO = 75;
+  int LETTER = 75;
   /** RegularExpression Id. */
-  int ERROR = 76;
+  int OCTALS = 76;
+  /** RegularExpression Id. */
+  int ZERO = 77;
+  /** RegularExpression Id. */
+  int ERROR = 78;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -223,6 +227,8 @@ public interface ExprParserConstants {
     "\"set\"",
     "\"list\"",
     "\"new\"",
+    "\"public\"",
+    "\"void\"",
     "<IDENTIFIER>",
     "<STRING>",
     "<INTEGER>",

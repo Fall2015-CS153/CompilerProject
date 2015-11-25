@@ -73,7 +73,7 @@ public class CodeGenerator extends Backend
         objectFile.println();
         
         // Generate code for fields.
-        for (SymTabEntry id : locals) {
+        for (SymTabEntry id : locals) {// this is the loop for field methods
             Definition defn = id.getDefinition();
             
             if (defn == VARIABLE) {
@@ -99,6 +99,14 @@ public class CodeGenerator extends Backend
         objectFile.println(".end method");
         objectFile.println();
         
+         // Visit the parse tree nodes to generate code 
+        // for the  method's compound statement.
+        //add local variables to the stack.
+        // provide code for actual execution.
+        CodeGeneratorVisitor codeVisitor = new CodeGeneratorVisitor();
+        Node rootNode = iCode.getRoot();
+        rootNode.jjtAccept(codeVisitor, programName);
+        
         // Generate the main method header.
         objectFile.println(".method public static main([Ljava/lang/String;)V");
         objectFile.println();
@@ -117,13 +125,7 @@ public class CodeGenerator extends Backend
         objectFile.println();
         objectFile.flush();
 
-        // Visit the parse tree nodes to generate code 
-        // for the main method's compound statement.
-        //add local variables to the stack.
-        // provide code for actual execution.
-        CodeGeneratorVisitor codeVisitor = new CodeGeneratorVisitor();
-        Node rootNode = iCode.getRoot();
-        rootNode.jjtAccept(codeVisitor, programName);
+        objectFile.println();
         
         // Generate the main method epilogue.
         objectFile.println("    getstatic	" + programName +

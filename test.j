@@ -17,6 +17,23 @@
 .limit stack 1
 .end method
 
+.method public static main()V
+    ldc 4
+    ldc 10.2
+    getstatic Test/a I
+    ldc 5
+    imul
+    putstatic Test/a I
+    getstatic Test/a I
+    ldc 5
+    isub
+    putstatic Test/a I
+
+return
+.limit locals 16
+.limit stack 16
+.end method
+
 .method public static main([Ljava/lang/String;)V
 
     new	 RunTimer
@@ -28,24 +45,7 @@
     invokenonvirtual	PascalTextIn/<init>()V
     putstatic	Test/_standardIn LPascalTextIn;
 
-    ldc 4
-    ldc 10.0
-    getstatic Test/a I
-    ldc 5
-    imul
-    putstatic Test/a I
-    getstatic Test/a I
-    ldc 5
-    isub
-    putstatic Test/a I
-    getstatic Test/doDob F
-    ldc 10
-    fdiv
-    putstatic Test/doDob F
-    getstatic Test/doDob F
-    ldc 12
-    fadd
-    putstatic Test/doDob F
+
     getstatic	Test/_runTimer LRunTimer;
     invokevirtual	RunTimer.printElapsedTime()V
 

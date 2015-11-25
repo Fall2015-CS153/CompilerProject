@@ -1,9 +1,9 @@
-Procedure :: first{
+Procedure :: main{
 	int a = 4;
-        double doDob = 10.0;
+        double doDob = 10.2;
         a*=5;
         a-=5;
-        doDob/=10;
-        doDob+=12;
-        
+	
 }
+
+
