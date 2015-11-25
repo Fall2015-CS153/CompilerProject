@@ -13,7 +13,7 @@ public class CodeGeneratorVisitor
      public Object visit(ASTProcedure node, Object data) {
          
          // Generating method call
-         CodeGenerator.objectFile.print(".method public static "+node.getAttribute(VALUE)+"()V");
+         CodeGenerator.objectFile.print(".method public "+node.getAttribute(VALUE)+"()V");
          CodeGenerator.objectFile.println();
          // create stuff inside
          SimpleNode commandsNode = (SimpleNode)node.jjtGetChild(0);

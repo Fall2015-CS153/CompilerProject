@@ -125,7 +125,14 @@ public class CodeGenerator extends Backend
         objectFile.println();
         objectFile.flush();
 
+        //Call to main method
+        // Change the name main to whatever you want to run first
+        objectFile.println(" new "+programName+"\n" +
+"    dup\n" +
+"    invokespecial "+programName+"/<init>()V\n" +
+"    invokevirtual "+programName+"/main()V");
         objectFile.println();
+        
         
         // Generate the main method epilogue.
         objectFile.println("    getstatic	" + programName +

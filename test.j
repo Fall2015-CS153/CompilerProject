@@ -17,7 +17,7 @@
 .limit stack 1
 .end method
 
-.method public static main()V
+.method public main()V
     ldc 4
     ldc 10.2
     getstatic Test/a I
@@ -45,6 +45,10 @@ return
     invokenonvirtual	PascalTextIn/<init>()V
     putstatic	Test/_standardIn LPascalTextIn;
 
+ new Test
+    dup
+    invokespecial Test/<init>()V
+    invokevirtual Test/main()V
 
     getstatic	Test/_runTimer LRunTimer;
     invokevirtual	RunTimer.printElapsedTime()V
