@@ -292,7 +292,9 @@ void Procedure() : {}
         symTabStack.setProgramId(programId);
         index=0;// Every procedure has new indx at 0
 
-}<IDENTIFIER><SSOpenBraces> Commands()
+} <IDENTIFIER>{
+jjtThis.setAttribute(VALUE, token.image);}
+<SSOpenBraces> Commands()
 )
 
 }
