@@ -228,8 +228,8 @@ TOKEN : {
  |<RESERVEDWORDLIST :"list">
 
  |<RESERVEDWORDNEW :"new">
-
-
+|<RESERVEDWORDPUBLIC :"public">
+|<RESERVEDWORDVOID :"void">
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
 |<INTEGER: <DECIMALINTEGER>|<OCTALINTEGER>|<HEXINTEGER>>
@@ -286,11 +286,11 @@ return jjtThis;
 void Procedure() : {}
 {
 (<RESERVEDWORDPROCEDURE>{
-	programId = symTabStack.enterLocal(token.image);
+		programId = symTabStack.enterLocal(token.image);
         programId.setDefinition(DefinitionImpl.PROGRAM);
         programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
         symTabStack.setProgramId(programId);
-	index=0;// Every procedure has new indx at 0
+        index=0;// Every procedure has new indx at 0
 
 }<IDENTIFIER><SSOpenBraces> Commands()
 )
@@ -299,7 +299,7 @@ void Procedure() : {}
 void Commands() : {}
 {
 	(try {
-	(IfPart() | SwitchPart()|Statement()| DataTypes() |For()|While()|Error())* <SSCloseBraces>
+	(IfPart() | SwitchPart()|Statement()| DataTypes()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
 	Commands();// Recursive call to continue error handling
@@ -321,29 +321,25 @@ TypeSpec PrimitiveType() #void: {}
 void IntegerConst() : {}
 {
 	<INTEGER>
-{
+	{
         jjtThis.setTypeSpec(Predefined.integerType);
         jjtThis.setAttribute(VALUE, Integer.parseInt(token.image));
     }
-	
-
 }
 
 void RealConst() : {}
 {
     <REALNUMBER>|<REAL_NUMBER>|<DOUBLE>
-{
+    {
         jjtThis.setTypeSpec(Predefined.doubleType);
         jjtThis.setAttribute(VALUE, Double.parseDouble(token.image));
-}
-	
-
+    }
 }
 
 void StringConst() : {}
 {
 	<STRING>
-{
+	{
         jjtThis.setTypeSpec(Predefined.stringType);
         jjtThis.setAttribute(VALUE, token.image.substring(1,token.image.length()-1));
     }
@@ -353,20 +349,16 @@ void StringConst() : {}
 void Expr()#void: {}
 {
    SimpleExpr() ( (<SSL>|<SSLE>|<SSG>|<SSGE>|<ComparisonEquals>) SimpleExpr() )*
-   
-
-
 }
 void SimpleExpr() #void: {}
 {
  Term() (<SSPlus>  Term() #add(2)|<SSMinus>  Term() #subtract(2)|<SSOr>  Term() #or(2))*
 
 }
+
 void Term () #void: {}
 {
   Factor() ( <SSStar> Factor() #multiply(2)|<SSDivide> Factor() #divide(2)|<SSAnd> Factor() #and(2) )*
-
-
 }
 
 void Factor() #void: {}
@@ -382,7 +374,7 @@ void Factor() #void: {}
 
 void Statement(): {}
 {
-   LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|LOOKAHEAD(3) Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()
+   LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|LOOKAHEAD(3) Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()|For()|While()
 
 
 
@@ -404,68 +396,54 @@ void ElseIfPart() : {}
 void ElsePart() : {}
 {
  <RESERVEDWORDELSE> <SSOpenBraces>  (Statement())* <SSCloseBraces>
-
-
 }
-
-
-
-
 
 void SwitchPart() : {}
 {
      <RESERVEDWORDSWITCH> <SSOpenParen> (variable())<SSComma>(ComparisonOperator()) <SSCloseParen><SSOpenBraces>  (Cases())+ <SSCloseBraces>
-	
-
 }
 void ComparisonOperator() : {}
 {
- <SSAnd>|<SSOr>|<SSNot>|<ComparisonEquals>|<SSL>|<SSLE>|<SSG>|<SSGE>|<SSNE>
-
-
+	<SSAnd>|<SSOr>|<SSNot>|<ComparisonEquals>|<SSL>|<SSLE>|<SSG>|<SSGE>|<SSNE>
 }
 void Cases() : {}
 {
 	<RESERVEDWORDCASE> (Expr()) <SSColon> <SSOpenBraces> (LOOKAHEAD(3)Declaration()|Assignment())* <SSCloseBraces>
-	
-
 }
 void Assignment() : {TypeSpec type;}
 {
-  
-type = variable() 
-<SSEquals> (Expr()) <SSSemiColon>
-
-{
-jjtThis.setTypeSpec(type);
-}
-
-
-
+	type = variable() 
+	<SSEquals> (Expr()) <SSSemiColon>
+	{
+		jjtThis.setTypeSpec(type);
+	}
 }
 
 TypeSpec variable() : {}
 {
-    <IDENTIFIER> {
+    <IDENTIFIER> 
+    {
         SymTabEntry variableId = symTabStack.lookup(token.image);
-	    if(variableId==null){
-		System.out.println("VARIABLE LOOKUP ERROR***");
-                return null;
-	    }else {
-        variableId.appendLineNumber(token.beginLine);
-        TypeSpec type = variableId.getTypeSpec();
-        jjtThis.setTypeSpec(type);
-        jjtThis.setAttribute(ID, variableId);
-        return type;
+	    if(variableId==null)
+	    {
+	    	System.out.println("VARIABLE LOOKUP ERROR***");
+            return null;
 	    }
-            
+	    else 
+	    {
+	    	variableId.appendLineNumber(token.beginLine);
+	    	TypeSpec type = variableId.getTypeSpec();
+	    	jjtThis.setTypeSpec(type);
+	    	jjtThis.setAttribute(ID, variableId);
+	    	return type;
+	    }
     }
-
 }
 
 void variableDecl(TypeSpec type) : {}
 {
-<IDENTIFIER> {
+	<IDENTIFIER> 
+	{
             SymTabEntry variableId = symTabStack.enterLocal(token.image);
             variableId.appendLineNumber(token.beginLine);
             variableId.setIndex(index++);
@@ -473,117 +451,113 @@ void variableDecl(TypeSpec type) : {}
             jjtThis.setAttribute(ID, variableId);
             jjtThis.setTypeSpec(type);
             variableId.setTypeSpec(type);
-        }
+    }
 }
 
 void Declaration(): {TypeSpec type;}
 {
-type=PrimitiveType()
-variableDecl(type) 
+	type=PrimitiveType()
+	variableDecl(type) 
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )
+   {
+   	   jjtThis.setTypeSpec(type);
+   }
+}
+
+void Function(): {}
 {
-jjtThis.setTypeSpec(type);
+	 <RESERVEDWORDPUBLIC> (DataTypes()|PrimitiveType()|<RESERVEDWORDVOID>) <SSOpenParen> ((DataTypes()|PrimitiveType()) variable() (<SSComma> ( (DataTypes()|PrimitiveType()) variable() ) )* )* <SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
 }
-
-}
-
-
 void IncrementStatement(): {TypeSpec type;}
 {
- type =   variable()<SSplusplus><SSSemiColon>
-{
-jjtThis.setTypeSpec(type);
-}
- 
-
+	type =   variable()<SSplusplus><SSSemiColon>
+	{
+		jjtThis.setTypeSpec(type);
+	}
 }
 void DecrementStatement(): {TypeSpec type;}
 {
-type =   variable()<SSminusminus><SSSemiColon>
-{
-{
-jjtThis.setTypeSpec(type);
-}
-}
-
-
+	type =   variable()<SSminusminus><SSSemiColon>
+	{
+		{
+			jjtThis.setTypeSpec(type);
+		}
+	}
 }
 void PlusEqualsStatement(): {TypeSpec type;}
 {
-type =    variable() <SSPlusEquals>(variable()|IntegerConst()) <SSSemiColon>
-{
-jjtThis.setTypeSpec(type);
-}
+	type =    variable() <SSPlusEquals>(variable()|IntegerConst()) <SSSemiColon>
+	{
+		jjtThis.setTypeSpec(type);
+	}
 }
 
 void MinusEqualsStatement():{TypeSpec type;}
 {
-type = variable() <SSMinusEquals> (variable()|IntegerConst())<SSSemiColon>
-{
-jjtThis.setTypeSpec(type);
-}
+	type = variable() <SSMinusEquals> (variable()|IntegerConst())<SSSemiColon>
+	{
+		jjtThis.setTypeSpec(type);
+	}
 }
 void StarEqualsStatement(): {TypeSpec type;}
 {
-type = variable() <SSMultEquals> (variable()|IntegerConst())<SSSemiColon>
-{
-jjtThis.setTypeSpec(type);
-}
+	type = variable() <SSMultEquals> (variable()|IntegerConst())<SSSemiColon>
+	{
+		jjtThis.setTypeSpec(type);
+	}
 }
 void DivideEqualsStatement(): {TypeSpec type;}
 {
-type = variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>
-{
-jjtThis.setTypeSpec(type);
-}
+	type = variable() <SSDivideEquals>(variable()|IntegerConst())<SSSemiColon>
+	{
+		jjtThis.setTypeSpec(type);
+	}
 }
 void For(): {}
 {
-  <RESERVEDWORDFOR> <SSOpenParen>(DecVar()) TestCond()<SSSemiColon> IncrementCond()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
+	<RESERVEDWORDFOR> <SSOpenParen>(DecVar()) TestCond()<SSSemiColon> IncrementCond()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
 }
 
 void DecVar():{}
 {
-Declaration()|Assignment()
+	Declaration()|Assignment()
 }
 
 void TestCond():{}
 {
-Expr()
+	Expr()
 }
 
 void WhileIncrementCond():{}
 {
-<SSTilda>Statement()
+	<SSTilda>Statement()
 }
 
 void IncrementCond():{}
 {
-Statement()
+	Statement()
 }
 
 void While():{}
 {
- <RESERVEDWORDWHILE> <SSOpenParen> TestCond() <SSCloseParen><SSOpenBraces> (Statement())* WhileIncrementCond() <SSCloseBraces>
+	<RESERVEDWORDWHILE> <SSOpenParen> TestCond() <SSCloseParen><SSOpenBraces> (Statement())* WhileIncrementCond() <SSCloseBraces>
 }
 
 void DataTypes() : {}
 {
-(Hashmap()| List() | Set())
-
-
+	(Hashmap()| List() | Set())
 }
 void Hashmap (): {Token t;}
 {
- t = <RESERVEDWORDHASHMAP> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon>
+	t = <RESERVEDWORDHASHMAP> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon>
 }
 void Set (): {Token t;}
 {
-t =  <RESERVEDWORDSET> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>
+	t =  <RESERVEDWORDSET> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>
 }
 void List (): {Token t;}
 {
-t =  <RESERVEDWORDLIST> (variable()) (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>
+	t =  <RESERVEDWORDLIST> (variable()) (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>
 }
 
 // Garbage Code???
@@ -596,5 +570,4 @@ void processVariableDecl(Token token, int index,
     variableId.setDefinition(DefinitionImpl.VARIABLE);
     variableId.appendLineNumber(token.beginLine);
     variableList.add(variableId);
-  
 }
