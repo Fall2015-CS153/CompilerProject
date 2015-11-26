@@ -92,8 +92,10 @@ TOKEN:
 {
 
 <SPECIALSYMBOL:  "@" | "%" | "^" |
- "?"  | "." | "\'"  | "<<" | ">>" | "|=" | "%="|
+ "?" | "\'"  | "<<" | ">>" | "|=" | "%="|
 "&=" | "^="   | "<<=" | ">>=" |"\""   >
+
+|<SSPeriod: ".">
 
 |
 <SSAnd: "&">
@@ -230,6 +232,12 @@ TOKEN : {
  |<RESERVEDWORDNEW :"new">
 |<RESERVEDWORDPUBLIC :"public">
 |<RESERVEDWORDVOID :"void">
+|<DOTGETVAL: ".getVal">|
+<DOTADD: ".add">|
+<DOTREMOVE: ".remove">|
+<DOTSETVAL: ".setVal">|
+<DOTGETINDEX: ".getIndex">
+
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
 |<INTEGER: <DECIMALINTEGER>|<OCTALINTEGER>|<HEXINTEGER>>
@@ -544,6 +552,32 @@ void While():{}
 {
 	<RESERVEDWORDWHILE> <SSOpenParen> TestCond() <SSCloseParen><SSOpenBraces> (Statement())* WhileIncrementCond() <SSCloseBraces>
 }
+
+void DataStructAdd():{}
+{
+	variable() <DOTADD> <SSOpenParen> (variable()|PrimitiveType()) (<SSComma>variable()|PrimitiveType())? <SSCloseParen> <SSSemiColon>
+}
+
+
+void DataStructDelete():{}
+{
+	variable() <DOTREMOVE> <SSOpenParen> (variable()|PrimitiveType()) <SSCloseParen> <SSSemiColon>
+}
+
+void DataStructGetVal():{}
+{
+	variable() <DOTGETVAL> <SSOpenParen> <INTEGER> <SSCloseParen> <SSSemiColon>
+}
+
+void DataStructGetIndex():{}
+{
+	variable() <DOTGETINDEX> <SSOpenParen> (variable()|PrimitiveType()) <SSCloseParen> <SSSemiColon>
+}
+void DataStructSetVal():{}
+{
+	variable() <DOTSETVAL> <SSOpenParen> (variable()|PrimitiveType()) <SSCloseParen> <SSSemiColon>
+}
+
 
 void DataTypes() : {}
 {
