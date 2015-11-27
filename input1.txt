@@ -1,27 +1,31 @@
-Procedure :: first{
-       int intDecl = 9 + 7;
-       double doDecl = 6.554;
+ProgramAwesome{
+Procedure :: main{
+       //  int dek = 9 + 7;
+       double doDecl = 6.5;
        string strDecl= "It finally works";
        boolean boDecl = true;
-       intDecl =5; // this will looked up
+      // dek =5; // this will looked up
        string abc = "dog";
 
        if(4>3){
        int a = 5;}
        elseif(7>4){
-        int a = 7;}
-       else{int c = 8;}
-       intDecl*=10;
-   
+        int b = 7;}
+       else{int c = 8;
+       }
+      // intDecl*=10;
+
        for(int b = 10;b<10;b+=5;){int b2 =9;}
        while(intDecl>11){
-       int a = 7; 
-       ~intDecl+=5;}
-       
-       int multops = 5 + 6 * 3 /4;
-       
+       int a = 7;
+       //intDecl+=5;
+       }
+
+      // int multops = 5 + 6 * 3 /4;
+
 }
 Procedure :: second{
-       int intDecl = 9;
-       double doDecl = 6.554;
+       int intDl = 9;
+       double ds = 6.554;
+}
 }

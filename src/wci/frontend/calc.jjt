@@ -190,7 +190,8 @@ TOKEN:
 
 TOKEN : {
  <RESERVEDWORDPROCEDURE :"Procedure ::">
-
+|
+ <RESERVEDWORDCALL :"Call">
 | <RESERVEDWORDIF :"if">
 
  |<RESERVEDWORDBREAK :"break">
@@ -282,8 +283,16 @@ void Error() : {}
        
 SimpleNode Program() : {}
 {
+<IDENTIFIER> {
+	programId = symTabStack.enterLocal(token.image);
+        programId.setDefinition(DefinitionImpl.PROGRAM);
+        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
+        symTabStack.setProgramId(programId);
+//  deprecated      index=0;// Every procedure has new indx at 0
 
+}<SSOpenBraces>
 (Procedure())*
+<SSCloseBraces>
 {
 
 return jjtThis;
@@ -291,16 +300,17 @@ return jjtThis;
 
 }
 
+void ProcedureCall() :{}
+{
+ <RESERVEDWORDCALL> <IDENTIFIER>{
+jjtThis.setAttribute(VALUE,token.image);
+}
+<SSCloseParen> <SSOpenParen><SSSemiColon>
+}
+
 void Procedure() : {}
 {
-(<RESERVEDWORDPROCEDURE>{
-		programId = symTabStack.enterLocal(token.image);
-        programId.setDefinition(DefinitionImpl.PROGRAM);
-        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
-        symTabStack.setProgramId(programId);
-        index=0;// Every procedure has new indx at 0
-
-} <IDENTIFIER>{
+(<RESERVEDWORDPROCEDURE> <IDENTIFIER>{
 jjtThis.setAttribute(VALUE, token.image);}
 <SSOpenBraces> Commands()
 )
@@ -309,7 +319,7 @@ jjtThis.setAttribute(VALUE, token.image);}
 void Commands() : {}
 {
 	(try {
-	(IfPart() | SwitchPart()|Statement()| DataTypes()|Error())* <SSCloseBraces>
+	(IfPart() | SwitchPart()|Statement()| ProcedureCall()| DataTypes()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
 	Commands();// Recursive call to continue error handling

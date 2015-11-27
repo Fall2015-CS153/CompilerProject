@@ -5,7 +5,9 @@
 .field private static _standardIn LPascalTextIn;
 
 .field private static a I
+.field private static c I
 .field private static doDob F
+.field private static fort F
 
 .method public <init>()V
 
@@ -28,6 +30,15 @@
     ldc 5
     isub
     putstatic Test/a I
+
+return
+.limit locals 16
+.limit stack 16
+.end method
+
+.method public second()V
+    ldc 5
+    ldc 6.0
 
 return
 .limit locals 16

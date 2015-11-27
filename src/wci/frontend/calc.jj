@@ -96,8 +96,10 @@ TOKEN:
 {
 
 <SPECIALSYMBOL:  "@" | "%" | "^" |
- "?"  | "." | "\'"  | "<<" | ">>" | "|=" | "%="|
+ "?" | "\'"  | "<<" | ">>" | "|=" | "%="|
 "&=" | "^="   | "<<=" | ">>=" |"\""   >
+
+|<SSPeriod: ".">
 
 |
 <SSAnd: "&">
@@ -192,7 +194,8 @@ TOKEN:
 
 TOKEN : {
  <RESERVEDWORDPROCEDURE :"Procedure ::">
-
+|
+ <RESERVEDWORDCALL :"Call">
 | <RESERVEDWORDIF :"if">
 
  |<RESERVEDWORDBREAK :"break">
@@ -234,6 +237,12 @@ TOKEN : {
  |<RESERVEDWORDNEW :"new">
 |<RESERVEDWORDPUBLIC :"public">
 |<RESERVEDWORDVOID :"void">
+|<DOTGETVAL: ".getVal">|
+<DOTADD: ".add">|
+<DOTREMOVE: ".remove">|
+<DOTSETVAL: ".setVal">|
+<DOTGETINDEX: ".getIndex">
+
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
 |<INTEGER: <DECIMALINTEGER>|<OCTALINTEGER>|<HEXINTEGER>>
@@ -307,8 +316,16 @@ SimpleNode Program() : {/*@bgen(jjtree) Program */
 {/*@bgen(jjtree) Program */
 try {
 /*@egen*/
+<IDENTIFIER> {
+	programId = symTabStack.enterLocal(token.image);
+        programId.setDefinition(DefinitionImpl.PROGRAM);
+        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
+        symTabStack.setProgramId(programId);
+//  deprecated      index=0;// Every procedure has new indx at 0
 
-(Procedure())*/*@bgen(jjtree)*/
+}<SSOpenBraces>
+(Procedure())*
+<SSCloseBraces>/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
@@ -341,6 +358,26 @@ return jjtn000;
 
 }
 
+void ProcedureCall() :{/*@bgen(jjtree) ProcedureCall */
+  ASTProcedureCall jjtn000 = new ASTProcedureCall(JJTPROCEDURECALL);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) ProcedureCall */
+ try {
+/*@egen*/
+ <RESERVEDWORDCALL> <IDENTIFIER>{
+jjtn000.setAttribute(VALUE,token.image);
+}
+<SSCloseParen> <SSOpenParen><SSSemiColon>/*@bgen(jjtree)*/
+ } finally {
+   if (jjtc000) {
+     jjtree.closeNodeScope(jjtn000, true);
+   }
+ }
+/*@egen*/
+}
+
 void Procedure() : {/*@bgen(jjtree) Procedure */
   ASTProcedure jjtn000 = new ASTProcedure(JJTPROCEDURE);
   boolean jjtc000 = true;
@@ -349,14 +386,7 @@ void Procedure() : {/*@bgen(jjtree) Procedure */
 {/*@bgen(jjtree) Procedure */
 try {
 /*@egen*/
-(<RESERVEDWORDPROCEDURE>{
-		programId = symTabStack.enterLocal(token.image);
-        programId.setDefinition(DefinitionImpl.PROGRAM);
-        programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
-        symTabStack.setProgramId(programId);
-        index=0;// Every procedure has new indx at 0
-
-} <IDENTIFIER>{
+(<RESERVEDWORDPROCEDURE> <IDENTIFIER>{
 jjtn000.setAttribute(VALUE, token.image);}
 <SSOpenBraces> Commands()
 )/*@bgen(jjtree)*/
@@ -391,7 +421,7 @@ void Commands() : {/*@bgen(jjtree) Commands */
         try {
 /*@egen*/
 	(try {
-	(IfPart() | SwitchPart()|Statement()| DataTypes()|Error())* <SSCloseBraces>
+	(IfPart() | SwitchPart()|Statement()| ProcedureCall()| DataTypes()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
 	Commands();// Recursive call to continue error handling
@@ -1499,6 +1529,162 @@ void While():{/*@bgen(jjtree) While */
         }
 /*@egen*/
 }
+
+void DataStructAdd():{/*@bgen(jjtree) DataStructAdd */
+  ASTDataStructAdd jjtn000 = new ASTDataStructAdd(JJTDATASTRUCTADD);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) DataStructAdd */
+        try {
+/*@egen*/
+	variable() <DOTADD> <SSOpenParen> (variable()|PrimitiveType()) (<SSComma>variable()|PrimitiveType())? <SSCloseParen> <SSSemiColon>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+
+void DataStructDelete():{/*@bgen(jjtree) DataStructDelete */
+  ASTDataStructDelete jjtn000 = new ASTDataStructDelete(JJTDATASTRUCTDELETE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) DataStructDelete */
+        try {
+/*@egen*/
+	variable() <DOTREMOVE> <SSOpenParen> (variable()|PrimitiveType()) <SSCloseParen> <SSSemiColon>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void DataStructGetVal():{/*@bgen(jjtree) DataStructGetVal */
+  ASTDataStructGetVal jjtn000 = new ASTDataStructGetVal(JJTDATASTRUCTGETVAL);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) DataStructGetVal */
+        try {
+/*@egen*/
+	variable() <DOTGETVAL> <SSOpenParen> <INTEGER> <SSCloseParen> <SSSemiColon>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
+void DataStructGetIndex():{/*@bgen(jjtree) DataStructGetIndex */
+  ASTDataStructGetIndex jjtn000 = new ASTDataStructGetIndex(JJTDATASTRUCTGETINDEX);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) DataStructGetIndex */
+        try {
+/*@egen*/
+	variable() <DOTGETINDEX> <SSOpenParen> (variable()|PrimitiveType()) <SSCloseParen> <SSSemiColon>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+void DataStructSetVal():{/*@bgen(jjtree) DataStructSetVal */
+  ASTDataStructSetVal jjtn000 = new ASTDataStructSetVal(JJTDATASTRUCTSETVAL);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) DataStructSetVal */
+        try {
+/*@egen*/
+	variable() <DOTSETVAL> <SSOpenParen> (variable()|PrimitiveType()) <SSCloseParen> <SSSemiColon>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/
+}
+
 
 void DataTypes() : {/*@bgen(jjtree) DataTypes */
   ASTDataTypes jjtn000 = new ASTDataTypes(JJTDATATYPES);

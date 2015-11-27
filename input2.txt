@@ -1,9 +1,17 @@
-Procedure :: main{
+ProgramCool{
+    Procedure :: main{
 	int a = 4;
         double doDob = 10.2;
         a*=5;
         a-=5;
 	
-}
+    }
+    Procedure :: second{
+	int c = 5;
+	double fort= 6.0;
 
+    }
+
+
+}
 
