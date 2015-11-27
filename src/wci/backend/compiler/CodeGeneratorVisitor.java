@@ -26,6 +26,13 @@ public class CodeGeneratorVisitor
 ".end method"+"\n");
          return data;
     }
+    public Object visit(ASTProcedureCall node, Object data){
+        CodeGenerator.objectFile.println("new Test\n" +
+"    dup\n" +
+"    invokespecial Test/<init>()V\n" +
+"    invokevirtual Test/"+node.getAttribute(VALUE)+"()V");
+    return data;
+    }
 
     public Object visit(ASTAssignment node, Object data)
     {

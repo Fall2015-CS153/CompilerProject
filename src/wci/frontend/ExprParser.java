@@ -150,8 +150,8 @@ if (jjtc000) {
       jj_consume_token(RESERVEDWORDCALL);
       jj_consume_token(IDENTIFIER);
 jjtn000.setAttribute(VALUE,token.image);
-      jj_consume_token(SSCloseParen);
       jj_consume_token(SSOpenParen);
+      jj_consume_token(SSCloseParen);
       jj_consume_token(SSSemiColon);
     } finally {
 if (jjtc000) {

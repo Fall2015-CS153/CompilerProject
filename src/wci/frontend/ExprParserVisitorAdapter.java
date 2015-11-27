@@ -337,7 +337,7 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
 
     @Override
     public Object visit(ASTProcedureCall node, Object data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return node.childrenAccept(this, data);
     }
    
    

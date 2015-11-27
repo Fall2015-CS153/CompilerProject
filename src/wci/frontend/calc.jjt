@@ -305,7 +305,7 @@ void ProcedureCall() :{}
  <RESERVEDWORDCALL> <IDENTIFIER>{
 jjtThis.setAttribute(VALUE,token.image);
 }
-<SSCloseParen> <SSOpenParen><SSSemiColon>
+ <SSOpenParen><SSCloseParen><SSSemiColon>
 }
 
 void Procedure() : {}

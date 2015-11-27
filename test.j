@@ -31,6 +31,10 @@
     isub
     putstatic Test/a I
 
+
+    getstatic Test
+    invokevirtual Test/second()V
+
 return
 .limit locals 16
 .limit stack 16
@@ -39,8 +43,8 @@ return
 .method public second()V
     ldc 5
     ldc 6.0
-
-return
+    
+ 
 .limit locals 16
 .limit stack 16
 .end method

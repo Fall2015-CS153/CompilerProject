@@ -369,7 +369,7 @@ void ProcedureCall() :{/*@bgen(jjtree) ProcedureCall */
  <RESERVEDWORDCALL> <IDENTIFIER>{
 jjtn000.setAttribute(VALUE,token.image);
 }
-<SSCloseParen> <SSOpenParen><SSSemiColon>/*@bgen(jjtree)*/
+ <SSOpenParen><SSCloseParen><SSSemiColon>/*@bgen(jjtree)*/
  } finally {
    if (jjtc000) {
      jjtree.closeNodeScope(jjtn000, true);
