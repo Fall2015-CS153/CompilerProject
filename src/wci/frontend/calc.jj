@@ -193,6 +193,8 @@ TOKEN:
 }
 
 TOKEN : {
+ <RESERVEDWORDPRINT :"put">
+|
  <RESERVEDWORDPROCEDURE :"Procedure ::">
 |
  <RESERVEDWORDCALL :"Call">
@@ -421,11 +423,11 @@ void Commands() : {/*@bgen(jjtree) Commands */
         try {
 /*@egen*/
 	(try {
-	(IfPart() | SwitchPart()|Statement()| ProcedureCall()| DataTypes()|Error())* <SSCloseBraces>
+	(IfPart() | SwitchPart()|Statement()| ProcedureCall()| DataTypes()|PrintStatement()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
 	Commands();// Recursive call to continue error handling
-    })/*@bgen(jjtree)*/
+    	})/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -447,6 +449,36 @@ void Commands() : {/*@bgen(jjtree) Commands */
         }
 /*@egen*/
 }
+void PrintStatement() : {/*@bgen(jjtree) PrintStatement */
+  ASTPrintStatement jjtn000 = new ASTPrintStatement(JJTPRINTSTATEMENT);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}{/*@bgen(jjtree) PrintStatement */
+try {
+/*@egen*/
+<RESERVEDWORDPRINT> Expr()(<SSComma> Expr())*<SSSemiColon>/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
+/*@egen*/
+}
+//StringConst() | IntegerConst() |RealConst()
 TypeSpec PrimitiveType()      : {}
 {
   <RESERVEDWORDINT> {return Predefined.integerType;}

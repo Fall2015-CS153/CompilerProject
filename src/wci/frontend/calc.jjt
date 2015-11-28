@@ -189,6 +189,8 @@ TOKEN:
 }
 
 TOKEN : {
+ <RESERVEDWORDPRINT :"put">
+|
  <RESERVEDWORDPROCEDURE :"Procedure ::">
 |
  <RESERVEDWORDCALL :"Call">
@@ -319,12 +321,16 @@ jjtThis.setAttribute(VALUE, token.image);}
 void Commands() : {}
 {
 	(try {
-	(IfPart() | SwitchPart()|Statement()| ProcedureCall()| DataTypes()|Error())* <SSCloseBraces>
+	(IfPart() | SwitchPart()|Statement()| ProcedureCall()| DataTypes()|PrintStatement()|Error())* <SSCloseBraces>
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
 	Commands();// Recursive call to continue error handling
-    })
+    	})
 }
+void PrintStatement() : {}{
+<RESERVEDWORDPRINT> Expr()(<SSComma> Expr())*<SSSemiColon>
+}
+//StringConst() | IntegerConst() |RealConst()
 TypeSpec PrimitiveType() #void: {}
 {
   <RESERVEDWORDINT> {return Predefined.integerType;}

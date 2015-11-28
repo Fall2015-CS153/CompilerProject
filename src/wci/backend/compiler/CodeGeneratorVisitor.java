@@ -22,15 +22,38 @@ public class CodeGeneratorVisitor
          //create end
          CodeGenerator.objectFile.println();
          CodeGenerator.objectFile.println("return\n"+".limit locals 16\n" +
-".limit stack 16\n" +
-".end method"+"\n");
+        ".limit stack 32\n" +
+        ".end method"+"\n");
          return data;
     }
+    public Object visit(ASTPrintStatement node, Object data) {
+        Node commandsNode[]=new Node[node.jjtGetNumChildren()];
+        String input[]= new String[node.jjtGetNumChildren()];
+        for(int i=0;i<node.jjtGetNumChildren();i++){
+            commandsNode[i]= node.jjtGetChild(i);
+            input[i]=commandsNode[i].jjtAccept(this, data).toString();
+        }
+
+        CodeGenerator.objectFile.println("\n"+"    getstatic     java/lang/System/out Ljava/io/PrintStream; \n" +
+        "    new       java/lang/StringBuilder \n"+
+        "    dup \n"+
+        ""+ input[0]+"\n" +
+        "    "+
+        "invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V");
+        for (int i=0; i<node.jjtGetNumChildren()-1;i++){
+            CodeGenerator.objectFile.println(input[i+1]+"\n" +
+        "    invokevirtual java/lang/StringBuilder/append("+input[i+1].substring(input[i+1].length()-1)+")Ljava/lang/StringBuilder;");
+        }
+        CodeGenerator.objectFile.println("    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;\n" +
+        "    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
+       
+        return data;
+    }
     public Object visit(ASTProcedureCall node, Object data){
-        CodeGenerator.objectFile.println("new Test\n" +
-"    dup\n" +
-"    invokespecial Test/<init>()V\n" +
-"    invokevirtual Test/"+node.getAttribute(VALUE)+"()V");
+        CodeGenerator.objectFile.println("    new Test\n" +
+        "    dup\n" +
+        "    invokespecial Test/<init>()V\n" +
+        "    invokevirtual Test/"+node.getAttribute(VALUE)+"()V");
     return data;
     }
 
@@ -81,7 +104,8 @@ public class CodeGeneratorVisitor
                 + fieldName + " " + typeCode);
         CodeGenerator.objectFile.flush();
 
-        return data;
+        return "    getstatic " + programName + "/"
+                + fieldName + " " + typeCode;
     }
 
     public Object visit(ASTIntegerConst node, Object data)
@@ -92,7 +116,7 @@ public class CodeGeneratorVisitor
         CodeGenerator.objectFile.println("    ldc " + value);
         CodeGenerator.objectFile.flush();
 
-        return data;
+        return "    ldc \""+value+"\"";
     }
 
     public Object visit(ASTRealConst node, Object data)
@@ -103,9 +127,17 @@ public class CodeGeneratorVisitor
         CodeGenerator.objectFile.println("    ldc " + value);
         CodeGenerator.objectFile.flush();
 
-        return data;
+        return "    ldc \""+value+"\"";
     }
+    public Object visit(ASTStringConst node, Object data){
+        String value = (String) node.getAttribute(VALUE);
 
+        // Emit a load constant instruction.
+        CodeGenerator.objectFile.println("    ldc \"" + value+"\"");
+        CodeGenerator.objectFile.flush();
+        
+        return "    ldc \""+value+"\"";
+    }
     public Object visit(ASTPlusEqualsStatement node, Object data)
     {
         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
@@ -470,4 +502,6 @@ public class CodeGeneratorVisitor
 
         return data;
     }
+   
+    
 }
