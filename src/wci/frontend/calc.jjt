@@ -95,7 +95,6 @@ TOKEN:
  "?" | "\'"  | "<<" | ">>" | "|=" | "%="|
 "&=" | "^="   | "<<=" | ">>=" |"\""   >
 
-|<SSPeriod: ".">
 
 |
 <SSAnd: "&">
@@ -186,6 +185,8 @@ TOKEN:
 <SSColon : ":">
 |
 <SSTilda : "~">
+|
+<SSDot:".">
 }
 
 TOKEN : {
@@ -233,11 +234,11 @@ TOKEN : {
  |<RESERVEDWORDNEW :"new">
 |<RESERVEDWORDPUBLIC :"public">
 |<RESERVEDWORDVOID :"void">
-|<DOTGETVAL: ".getVal">|
-<DOTADD: ".add">|
-<DOTREMOVE: ".remove">|
-<DOTSETVAL: ".setVal">|
-<DOTGETINDEX: ".getIndex">
+|<DOTGETVAL: "getVal">|
+<DOTADD: "add">|
+<DOTREMOVE: "remove">|
+<DOTSETVAL: "setVal">|
+<DOTGETINDEX: "getIndex">
  |<BOOLEAN :"true"|"false"> 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
@@ -328,7 +329,11 @@ void Commands() : {}
 void PrintStatement() : {}{
 <RESERVEDWORDPRINT> Expr()(<SSComma> Expr())*<SSSemiColon>
 }
-//StringConst() | IntegerConst() |RealConst() | BooleanConst()
+
+void Literal() : {}
+{
+StringConst() | IntegerConst() |RealConst() | BooleanConst()
+}
 TypeSpec PrimitiveType() #void: {}
 {
   <RESERVEDWORDINT> {return Predefined.integerType;}
@@ -404,7 +409,11 @@ void Factor() #void: {}
 
 void Statement(): {}
 {
-   LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()|LOOKAHEAD(3)Assignment()|LOOKAHEAD(3) Declaration()|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|StarEqualsStatement()|For()|While()
+   LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()
+|LOOKAHEAD(3)Assignment()|LOOKAHEAD(3) Declaration()
+|LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|LOOKAHEAD(2)StarEqualsStatement()
+|For()|While()
+|LOOKAHEAD(2)DataStructManipulation()
 
 
 
@@ -573,47 +582,119 @@ void While():{}
 	<RESERVEDWORDWHILE> <SSOpenParen> TestCond() <SSCloseParen><SSOpenBraces> (Statement())* WhileIncrementCond() <SSCloseBraces>
 }
 
-void DataStructAdd():{}
+void DataStructManipulation() #void: {}
 {
-	variable() <DOTADD> <SSOpenParen> (variable()|PrimitiveType()) (<SSComma>variable()|PrimitiveType())? <SSCloseParen> <SSSemiColon>
+ LOOKAHEAD(4)SetAdd()| LOOKAHEAD(4)ListAdd()| LOOKAHEAD(4)MapAdd()|
+  LOOKAHEAD(4)SetDelete()| LOOKAHEAD(4)ListDelete()| LOOKAHEAD(4)MapDelete()|
+ LOOKAHEAD(4)SetGetVal()| LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
+  LOOKAHEAD(4)ListGetIndex()|
+  LOOKAHEAD(4)SetSetVal()| LOOKAHEAD(4)ListSetVal()| LOOKAHEAD(4)HashSetVal()
+}
+void SetAdd():{}
+{
+	variable() <SSDot> <DOTADD> <SSOpenParen> (variable()|Literal()) (<SSComma>)(Position()) <SSCloseParen> <SSSemiColon>
+}
+
+void ListAdd():{}
+{
+	variable() <SSDot><DOTADD> <SSOpenBracket> (variable()|Literal()) (<SSComma>)(Position()) <SSCloseBracket> <SSSemiColon>
+}
+
+void MapAdd():{}
+{
+	variable() <SSDot><DOTADD> <SSOpenBraces> (variable()|Literal()) (<SSComma>) (variable()|Literal()) <SSCloseBracket> <SSSemiColon>
+}
+
+void Position():{}
+{
+IntegerConst()
+}
+
+void SetDelete():{}
+{
+	variable() <SSDot><DOTREMOVE> <SSOpenParen> (variable()|Literal()) <SSCloseParen> <SSSemiColon>
+}
+
+void ListDelete():{}
+{
+	variable() <SSDot><DOTREMOVE> <SSOpenBracket> (variable()|Literal()) <SSCloseBracket> <SSSemiColon>
+}
+
+void MapDelete():{}
+{
+	variable() <SSDot><DOTREMOVE> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
+}
+
+void SetGetVal():{}
+{
+	variable() <SSDot><DOTGETVAL> <SSOpenParen> <INTEGER> <SSCloseParen> <SSSemiColon>
+}
+
+void ListGetVal():{}
+{
+	variable() <SSDot><DOTGETVAL> <SSOpenBracket> <INTEGER> <SSCloseBracket> <SSSemiColon>
+}
+void MapGetVal():{}
+{
+	variable() <SSDot><DOTGETVAL> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
 }
 
 
-void DataStructDelete():{}
+void ListGetIndex():{}
 {
-	variable() <DOTREMOVE> <SSOpenParen> (variable()|PrimitiveType()) <SSCloseParen> <SSSemiColon>
+	variable() <SSDot><DOTGETINDEX> <SSOpenBracket> (variable()|Literal()) <SSCloseBracket> <SSSemiColon>
 }
 
-void DataStructGetVal():{}
+void SetSetVal():{}
 {
-	variable() <DOTGETVAL> <SSOpenParen> <INTEGER> <SSCloseParen> <SSSemiColon>
+	variable() <SSDot><DOTSETVAL> <SSOpenParen> (IntegerConst()) <SSCloseParen> <SSSemiColon>
 }
 
-void DataStructGetIndex():{}
+void ListSetVal():{}
 {
-	variable() <DOTGETINDEX> <SSOpenParen> (variable()|PrimitiveType()) <SSCloseParen> <SSSemiColon>
+	variable() <SSDot><DOTSETVAL> <SSOpenBracket> (IntegerConst()) <SSCloseBracket> <SSSemiColon>
 }
-void DataStructSetVal():{}
+
+void HashSetVal():{}
 {
-	variable() <DOTSETVAL> <SSOpenParen> (variable()|PrimitiveType()) <SSCloseParen> <SSSemiColon>
+	variable() <SSDot><DOTSETVAL> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
 }
 
 
-void DataTypes() : {}
+void KeyType() : {}
+{
+	PrimitiveType()
+}
+void ValueType() : {}
+{
+	PrimitiveType()
+}
+void Size() : {}
+{
+    IntegerConst()
+}
+
+void DataTypes() #void : {}
 {
 	(Hashmap()| List() | Set())
 }
-void Hashmap (): {Token t;}
+void Hashmap (): {TypeSpec type;}
 {
-	t = <RESERVEDWORDHASHMAP> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()| <SSEquals><RESERVEDWORDNEW>) <SSSemiColon>
+	<RESERVEDWORDHASHMAP>
+        type = PrimitiveType()
+	variableDecl(type)  <SSOpenBraces> KeyType() <SSComma> ValueType() <SSCloseBraces> <SSSemiColon>
 }
-void Set (): {Token t;}
+void Set (): {TypeSpec type;}
 {
-	t =  <RESERVEDWORDSET> variable() (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals> <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>
+        <RESERVEDWORDSET>
+	type= PrimitiveType()
+	variableDecl(type)   <SSOpenParen> (Size()) <SSCloseParen>  <SSSemiColon>
 }
-void List (): {Token t;}
+void List (): {TypeSpec type;}
 {
-	t =  <RESERVEDWORDLIST> (variable()) (<SSOpenBracket> IntegerConst() <SSCloseBracket> <SSEquals> IntegerConst()|<SSEquals>  <RESERVEDWORDNEW> <SSOpenBracket> IntegerConst() <SSCloseBracket>) <SSSemiColon>
+	<RESERVEDWORDLIST>
+        type = PrimitiveType()
+	variableDecl(type)  <SSOpenBracket> <SSCloseBracket>  <SSSemiColon>
 }
 
 // Garbage Code???

@@ -174,11 +174,6 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
         return node.childrenAccept(this, data);
     }
 
-    @Override
-    public Object visit(ASTDataTypes node, Object data)
-    {
-        return node.childrenAccept(this, data);
-    }
 
     @Override
     public Object visit(ASTHashmap node, Object data)
@@ -307,33 +302,9 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
 
     @Override
     public Object visit(ASTFunction node, Object data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+        return node.childrenAccept(this, data);}
 
-    @Override
-    public Object visit(ASTDataStructAdd node, Object data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
-    @Override
-    public Object visit(ASTDataStructDelete node, Object data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visit(ASTDataStructGetVal node, Object data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visit(ASTDataStructGetIndex node, Object data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Object visit(ASTDataStructSetVal node, Object data) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public Object visit(ASTProcedureCall node, Object data) {
@@ -384,6 +355,106 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
     public Object visit(ASTNotEquals node, Object data) {
         return node.childrenAccept(this, data);
     }
+
+    @Override
+    public Object visit(ASTKeyType node, Object data)
+    {
+       return node.childrenAccept(this, data); }
+
+    @Override
+    public Object visit(ASTValueType node, Object data)
+    {
+       return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTSize node, Object data)
+    {
+        return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTSetAdd node, Object data)
+    {
+      return node.childrenAccept(this, data); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visit(ASTListAdd node, Object data)
+    {
+       return node.childrenAccept(this, data); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visit(ASTSetDelete node, Object data)
+    {
+       return node.childrenAccept(this, data); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visit(ASTListDelete node, Object data)
+    {
+        return node.childrenAccept(this, data);//To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visit(ASTSetGetVal node, Object data)
+    {
+       return node.childrenAccept(this, data); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object visit(ASTListGetVal node, Object data)
+    {
+        return node.childrenAccept(this, data); //To change body of generated methods, choose Tools | Templates.
+    }
+
+   
+
+    @Override
+    public Object visit(ASTListGetIndex node, Object data)
+    {
+        return node.childrenAccept(this, data); //To change body of generated methods, choose Tools | Templates.
+    }
+
+  
+
+
+
+    @Override
+    public Object visit(ASTPosition node, Object data)
+    {
+       return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTLiteral node, Object data)
+    {
+       return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTMapAdd node, Object data)
+    {
+       return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTMapDelete node, Object data)
+    {
+        return node.childrenAccept(this, data);}
+    @Override
+    public Object visit(ASTMapGetVal node, Object data)
+    {
+        return node.childrenAccept(this, data);}
+    @Override
+    public Object visit(ASTSetSetVal node, Object data)
+    {
+        return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTListSetVal node, Object data)
+    {
+        return node.childrenAccept(this, data);}
+    @Override
+    public Object visit(ASTHashSetVal node, Object data)
+    {
+       return node.childrenAccept(this, data);}
    
    
 

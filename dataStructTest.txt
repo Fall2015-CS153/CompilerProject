@@ -1,0 +1,10 @@
+ProgramTest{
+    Procedure :: main{
+      list double a[];
+      a.add[3,4];
+      set int b(4);
+      b.add(2,3);
+
+    }
+}
+

@@ -11,6 +11,7 @@ public interface ExprParserVisitor
   public Object visit(ASTProcedure node, Object data);
   public Object visit(ASTCommands node, Object data);
   public Object visit(ASTPrintStatement node, Object data);
+  public Object visit(ASTLiteral node, Object data);
   public Object visit(ASTIntegerConst node, Object data);
   public Object visit(ASTBooleanConst node, Object data);
   public Object visit(ASTRealConst node, Object data);
@@ -52,14 +53,25 @@ public interface ExprParserVisitor
   public Object visit(ASTWhileIncrementCond node, Object data);
   public Object visit(ASTIncrementCond node, Object data);
   public Object visit(ASTWhile node, Object data);
-  public Object visit(ASTDataStructAdd node, Object data);
-  public Object visit(ASTDataStructDelete node, Object data);
-  public Object visit(ASTDataStructGetVal node, Object data);
-  public Object visit(ASTDataStructGetIndex node, Object data);
-  public Object visit(ASTDataStructSetVal node, Object data);
-  public Object visit(ASTDataTypes node, Object data);
+  public Object visit(ASTSetAdd node, Object data);
+  public Object visit(ASTListAdd node, Object data);
+  public Object visit(ASTMapAdd node, Object data);
+  public Object visit(ASTPosition node, Object data);
+  public Object visit(ASTSetDelete node, Object data);
+  public Object visit(ASTListDelete node, Object data);
+  public Object visit(ASTMapDelete node, Object data);
+  public Object visit(ASTSetGetVal node, Object data);
+  public Object visit(ASTListGetVal node, Object data);
+  public Object visit(ASTMapGetVal node, Object data);
+  public Object visit(ASTListGetIndex node, Object data);
+  public Object visit(ASTSetSetVal node, Object data);
+  public Object visit(ASTListSetVal node, Object data);
+  public Object visit(ASTHashSetVal node, Object data);
+  public Object visit(ASTKeyType node, Object data);
+  public Object visit(ASTValueType node, Object data);
+  public Object visit(ASTSize node, Object data);
   public Object visit(ASTHashmap node, Object data);
   public Object visit(ASTSet node, Object data);
   public Object visit(ASTList node, Object data);
 }
-/* JavaCC - OriginalChecksum=91ed33441f0625a4103c304c7f2b6d0c (do not edit this line) */
+/* JavaCC - OriginalChecksum=cd6034d7c7ae3ec07bf6a9ad8d99bdde (do not edit this line) */
