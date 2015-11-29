@@ -1,0 +1,12 @@
+ProgramTestTwo{
+    Procedure :: main{
+    	int a = 4;
+        put "Printing integer ", a;
+	double b= 5.5;
+	put "Printing double ", b;
+	
+ }
+    Procedure :: second{
+    }
+}
+

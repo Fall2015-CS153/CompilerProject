@@ -8,7 +8,7 @@
 .field private static c I
 .field private static doDob F
 .field private static fort F
-.field private static str F
+.field private static str Ljava/lang/String;
 
 .method public <init>()V
 
@@ -22,16 +22,11 @@
 
 .method public main()V
     ldc 4
+    putstatic Test/a I
     ldc 10.2
+    putstatic Test/doDob F
     ldc "hello"
-    getstatic Test/a I
-    ldc 5
-    imul
-    putstatic Test/a I
-    getstatic Test/a I
-    ldc 5
-    isub
-    putstatic Test/a I
+    putstatic Test/str Ljava/lang/String;
     ldc 5
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
@@ -78,16 +73,16 @@
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
-    ldc "print String error "
-    getstatic Test/str F
+    ldc "print String "
+    getstatic Test/str Ljava/lang/String;
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
     new       java/lang/StringBuilder 
     dup 
-    ldc "print String error "
+    ldc "print String "
     invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/str F
-    invokevirtual java/lang/StringBuilder/append(F)Ljava/lang/StringBuilder;
+    getstatic Test/str Ljava/lang/String;
+    invokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
@@ -107,10 +102,30 @@
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
+    ldc "Exiting FirstProcedure"
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "Exiting FirstProcedure"
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
     new Test
     dup
     invokespecial Test/<init>()V
     invokevirtual Test/second()V
+    ldc "Entering back in first Procedure"
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "Entering back in first Procedure"
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
 
 return
 .limit locals 16
@@ -119,7 +134,19 @@ return
 
 .method public second()V
     ldc 5
+    putstatic Test/c I
     ldc 6.0
+    putstatic Test/fort F
+    ldc "Entered and Leaving second procedure"
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "Entered and Leaving second procedure"
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
 
 return
 .limit locals 16

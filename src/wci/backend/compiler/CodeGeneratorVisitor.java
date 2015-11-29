@@ -28,21 +28,21 @@ public class CodeGeneratorVisitor
     }
     public Object visit(ASTPrintStatement node, Object data) {
         Node commandsNode[]=new Node[node.jjtGetNumChildren()];
-        String input[]= new String[node.jjtGetNumChildren()];
+        String input[][]= new String[node.jjtGetNumChildren()][2];
         for(int i=0;i<node.jjtGetNumChildren();i++){
             commandsNode[i]= node.jjtGetChild(i);
-            input[i]=commandsNode[i].jjtAccept(this, data).toString();
+            input[i]=(String[])(commandsNode[i].jjtAccept(this, data));
         }
 
         CodeGenerator.objectFile.println("\n"+"    getstatic     java/lang/System/out Ljava/io/PrintStream; \n" +
         "    new       java/lang/StringBuilder \n"+
         "    dup \n"+
-        ""+ input[0]+"\n" +
+        ""+ input[0][1]+"\n" +
         "    "+
         "invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V");
         for (int i=0; i<node.jjtGetNumChildren()-1;i++){
-            CodeGenerator.objectFile.println(input[i+1]+"\n" +
-        "    invokevirtual java/lang/StringBuilder/append("+input[i+1].substring(input[i+1].length()-1)+")Ljava/lang/StringBuilder;");
+            CodeGenerator.objectFile.println(input[i+1][0]+"\n" +
+        "    invokevirtual java/lang/StringBuilder/append("+input[i+1][1]+")Ljava/lang/StringBuilder;");
         }
         CodeGenerator.objectFile.println("    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;\n" +
         "    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
@@ -56,7 +56,47 @@ public class CodeGeneratorVisitor
         "    invokevirtual Test/"+node.getAttribute(VALUE)+"()V");
     return data;
     }
+     
+    public Object visit(ASTDeclaration node, Object data){
+        String programName = (String) data;
+        SimpleNode variableNode = (SimpleNode) node.jjtGetChild(0);
+        SimpleNode expressionNode = (SimpleNode) node.jjtGetChild(1);
 
+        // Emit code for the expression.
+        expressionNode.jjtAccept(this, data);
+        TypeSpec expressionType = expressionNode.getTypeSpec();
+
+        // Get the assignment target type.
+        TypeSpec targetType = node.getTypeSpec();
+
+        // Convert an integer value to float if necessary.
+        if ((targetType == Predefined.realType) && (expressionType
+                == Predefined.integerType))
+        {
+            CodeGenerator.objectFile.println("    i2f");
+            CodeGenerator.objectFile.flush();
+        }
+
+        SymTabEntry id = (SymTabEntry) variableNode.getAttribute(ID);
+        String fieldName = id.getName();
+        TypeSpec type = id.getTypeSpec();
+        String typeCode="";
+        if(type==Predefined.integerType){
+            typeCode="I";
+        }else if(type==Predefined.realType|| type==Predefined.floatType|type==Predefined.doubleType){
+            typeCode="F";
+        }else if(type==Predefined.stringType){
+            typeCode= "Ljava/lang/String;";
+        }
+        // Emit the appropriate store instruction.
+        CodeGenerator.objectFile.println("    putstatic " + programName + "/"
+                + fieldName + " " + typeCode);
+        CodeGenerator.objectFile.flush();
+
+        return data;
+    }
+
+    // This is deprecated for some Reason??
     public Object visit(ASTAssignment node, Object data)
     {
         String programName = (String) data;
@@ -97,15 +137,25 @@ public class CodeGeneratorVisitor
         SymTabEntry id = (SymTabEntry) node.getAttribute(ID);
         String fieldName = id.getName();
         TypeSpec type = id.getTypeSpec();
-        String typeCode = type == Predefined.integerType ? "I" : "F";
-
+        String result[]=new String[2];
+        String typeCode="";
+        if(type==Predefined.integerType){
+            typeCode="I";
+        }else if(type==Predefined.realType|| type==Predefined.floatType|type==Predefined.doubleType){
+            typeCode="F";
+        }else if(type==Predefined.stringType){
+            typeCode= "Ljava/lang/String;";
+        }
         // Emit the appropriate load instruction.
         CodeGenerator.objectFile.println("    getstatic " + programName + "/"
                 + fieldName + " " + typeCode);
         CodeGenerator.objectFile.flush();
 
-        return "    getstatic " + programName + "/"
+         
+        result[0]="    getstatic " + programName + "/"
                 + fieldName + " " + typeCode;
+        result[1]=typeCode;
+        return result;
     }
 
     public Object visit(ASTIntegerConst node, Object data)
@@ -115,9 +165,11 @@ public class CodeGeneratorVisitor
         // Emit a load constant instruction.
         CodeGenerator.objectFile.println("    ldc " + value);
         CodeGenerator.objectFile.flush();
-
-        return "    ldc \""+value+"\"";
-    }
+        String result[]=new String[2];
+        result[0]="    ldc \""+value+"\"";
+        result[1]="    ldc \""+value+"\"";
+        return result;
+        }
 
     public Object visit(ASTRealConst node, Object data)
     {
@@ -126,8 +178,10 @@ public class CodeGeneratorVisitor
         // Emit a load constant instruction.
         CodeGenerator.objectFile.println("    ldc " + value);
         CodeGenerator.objectFile.flush();
-
-        return "    ldc \""+value+"\"";
+        String result[]=new String[2];
+        result[0]="    ldc \""+value+"\"";
+        result[1]="    ldc \""+value+"\"";
+        return result;
     }
     public Object visit(ASTStringConst node, Object data){
         String value = (String) node.getAttribute(VALUE);
@@ -135,8 +189,10 @@ public class CodeGeneratorVisitor
         // Emit a load constant instruction.
         CodeGenerator.objectFile.println("    ldc \"" + value+"\"");
         CodeGenerator.objectFile.flush();
-        
-        return "    ldc \""+value+"\"";
+        String result[]=new String[2];
+        result[0]="    ldc \""+value+"\"";
+        result[1]="    ldc \""+value+"\"";
+        return result;
     }
     public Object visit(ASTPlusEqualsStatement node, Object data)
     {

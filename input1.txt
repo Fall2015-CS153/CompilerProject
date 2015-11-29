@@ -3,7 +3,8 @@ Procedure :: main{
        //  int dek = 9 + 7;
        double doDecl = 6.5;
        string strDecl= "It finally works";
-       boolean boDecl = true;
+       // Boolean support has been lost currently
+//       boolean boDecl = true;
       // dek =5; // this will looked up
        string abc = "dog";
 
