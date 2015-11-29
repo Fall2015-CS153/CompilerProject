@@ -33,7 +33,7 @@ public class ExprParser
         symTabStack = SymTabFactory.createSymTabStack();
         Predefined.initialize(symTabStack);
 
- // Parse a Pcl program.
+ // Parse a program.
         Reader    reader = new FileReader(args[0]);
         ExprParser parser = new ExprParser(reader);
 	SimpleNode rootNode= parser.Program();
@@ -379,7 +379,7 @@ void StringConst() : {}
 
 void Expr()#void: {}
 {
-   SimpleExpr() ( (<SSL>|<SSLE>|<SSG>|<SSGE>|<ComparisonEquals>) SimpleExpr() )*
+   SimpleExpr() ( (<SSL>SimpleExpr() #LessThan(2) |<SSLE>SimpleExpr() #LessEquals(2)|<SSG> SimpleExpr() #GreaterThan(2)|<SSGE>SimpleExpr()#GreaterEquals(2)|<ComparisonEquals>SimpleExpr() #Equals(2)))*
 }
 void SimpleExpr() #void: {}
 {
