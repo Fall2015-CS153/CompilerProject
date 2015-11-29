@@ -15,6 +15,7 @@ public interface ExprParserVisitor
   public Object visit(ASTBooleanConst node, Object data);
   public Object visit(ASTRealConst node, Object data);
   public Object visit(ASTStringConst node, Object data);
+  public Object visit(ASTNotEquals node, Object data);
   public Object visit(ASTLessThan node, Object data);
   public Object visit(ASTLessEquals node, Object data);
   public Object visit(ASTGreaterThan node, Object data);
@@ -26,6 +27,7 @@ public interface ExprParserVisitor
   public Object visit(ASTmultiply node, Object data);
   public Object visit(ASTdivide node, Object data);
   public Object visit(ASTand node, Object data);
+  public Object visit(ASTNegate node, Object data);
   public Object visit(ASTStatement node, Object data);
   public Object visit(ASTIfPart node, Object data);
   public Object visit(ASTElseIfPart node, Object data);
@@ -60,4 +62,4 @@ public interface ExprParserVisitor
   public Object visit(ASTSet node, Object data);
   public Object visit(ASTList node, Object data);
 }
-/* JavaCC - OriginalChecksum=3ce85e665857c1e19082927013d99bc3 (do not edit this line) */
+/* JavaCC - OriginalChecksum=91ed33441f0625a4103c304c7f2b6d0c (do not edit this line) */

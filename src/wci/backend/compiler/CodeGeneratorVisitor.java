@@ -802,5 +802,53 @@ public class CodeGeneratorVisitor
         labelGenerator++;
         return data;
     }
+    public Object visit(ASTNotEquals node, Object data)
+    {
+        
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
+
+        TypeSpec type0 = addend0Node.getTypeSpec();
+        TypeSpec type1 = addend1Node.getTypeSpec();
+
+        // Get the boolean type.
+        TypeSpec type = node.getTypeSpec();
+        
+        //String typePrefix = (type == Predefined.booleanType) ? "i" : "f";
+
+        // Emit code for the first expression
+        // with type conversion if necessary.
+        addend0Node.jjtAccept(this, data);
+        /*
+        if ((type == Predefined.realType) && (type0 == Predefined.integerType))
+        {
+            CodeGenerator.objectFile.println("    i2f");
+            CodeGenerator.objectFile.flush();
+        }
+        */
+        // Emit code for the second expression
+        // with type conversion if necessary.
+        addend1Node.jjtAccept(this, data);
+        /*
+        if ((type == Predefined.realType) && (type1 == Predefined.integerType))
+        {
+            CodeGenerator.objectFile.println("    i2f");
+            CodeGenerator.objectFile.flush();
+        }
+                */
+        // Emit the appropriate add instruction.
+        CodeGenerator.objectFile.println("    " + "if_icmpne L00" + labelGenerator);
+        labelGenerator++;
+        CodeGenerator.objectFile.println("    " + "iconst_0"); //push false i hope
+        CodeGenerator.objectFile.println("    " + "goto L00" + labelGenerator);
+        labelGenerator--;
+        CodeGenerator.objectFile.println("L00" + labelGenerator + ":");
+        CodeGenerator.objectFile.println("    " + "iconst_1");
+        labelGenerator++;
+        CodeGenerator.objectFile.println("L00" + labelGenerator + ":");
+        CodeGenerator.objectFile.flush();
+        labelGenerator++;
+        return data;
+    }
     private int labelGenerator = 3;
 }

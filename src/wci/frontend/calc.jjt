@@ -379,7 +379,7 @@ void StringConst() : {}
 
 void Expr()#void: {}
 {
-   SimpleExpr() ( (<SSL>SimpleExpr() #LessThan(2) |<SSLE>SimpleExpr() #LessEquals(2)|<SSG> SimpleExpr() #GreaterThan(2)|<SSGE>SimpleExpr()#GreaterEquals(2)|<ComparisonEquals>SimpleExpr() #Equals(2)))*
+   SimpleExpr() ( (<SSNE>SimpleExpr() #NotEquals(2)| <SSL>SimpleExpr() #LessThan(2) |<SSLE>SimpleExpr() #LessEquals(2)|<SSG> SimpleExpr() #GreaterThan(2)|<SSGE>SimpleExpr()#GreaterEquals(2)|<ComparisonEquals>SimpleExpr() #Equals(2)))*
 }
 void SimpleExpr() #void: {}
 {
@@ -396,7 +396,7 @@ void Factor() #void: {}
 {
     variable()
 |(IntegerConst()|RealConst()|StringConst())
-|(<SSNot>Factor())
+|(<SSNot> Factor()#Negate(1))
 |(<SSOpenParen> Expr() <SSCloseParen>) 
 |BooleanConst()
   
