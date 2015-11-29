@@ -850,5 +850,113 @@ public class CodeGeneratorVisitor
         labelGenerator++;
         return data;
     }
+    public Object visit(ASTIfPart node, Object data)
+    {
+        //Testing for only a single boolean operator for now
+        //Extract operator: !=, <, <=, >, >=, ==
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0); 
+        SimpleNode addend1Node = (SimpleNode) addend0Node.jjtGetChild(0);
+        SimpleNode addend2Node = (SimpleNode) addend0Node.jjtGetChild(0);
+        
+        SimpleNode insideStatement = (SimpleNode) node.jjtGetChild(1).jjtGetChild(0);
+//        SimpleNode elseif = (SimpleNode) node.jjtGetChild(2).jjtGetChild(0); //may have to loop through elseif and elsez later on
+        //SimpleNode elsez = (SimpleNode) node.jjtGetChild(3).jjtGetChild(0); //only supports single statement for now
+        
+        //System.out.println( node.jjtGetChild(1).jjtGetChild(0).toString() );
+        String operation = "";
+        
+        //TypeSpec type0 = addend1Node.getTypeSpec();
+        //TypeSpec type1 = addend2Node.getTypeSpec();
+
+        // Get the boolean type.
+        TypeSpec type = node.getTypeSpec();
+        
+        //String typePrefix = (type == Predefined.booleanType) ? "i" : "f";
+
+        // Emit code for the first expression
+        // with type conversion if necessary.
+        addend0Node.jjtAccept(this, data);
+        labelGenerator++;
+        CodeGenerator.objectFile.println("    " + "ifeq L00" + labelGenerator);//if false
+        insideStatement.jjtAccept(this, data); //CS153 NOTE: Loop through these if there are multiple statements
+        //labelGenerator++;
+        CodeGenerator.objectFile.println("L00" + labelGenerator+ ":");
+        labelGenerator++;
+        //elseif.jjtAccept(this, data);
+        //node.jjtGetChild(3).jjtGetChild(0).jjtAccept(this, data);
+        //System.out.println(elseif.toString());
+        //elsez.jjtAccept(this, data);
+        /*
+        if ((type == Predefined.realType) && (type0 == Predefined.integerType))
+        {
+            CodeGenerator.objectFile.println("    i2f");
+            CodeGenerator.objectFile.flush();
+        }
+        */
+        // Emit code for the second expression
+        // with type conversion if necessary.
+        //addend1Node.jjtAccept(this, data);
+        /*
+        if ((type == Predefined.realType) && (type1 == Predefined.integerType))
+        {
+            CodeGenerator.objectFile.println("    i2f");
+            CodeGenerator.objectFile.flush();
+        }
+                */
+        // Emit the appropriate add instruction.
+        
+        
+        labelGenerator++;
+        CodeGenerator.objectFile.flush();
+        return data;
+    }
+    public Object visit(ASTFor node, Object data)
+    {
+        
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
+
+        TypeSpec type0 = addend0Node.getTypeSpec();
+        TypeSpec type1 = addend1Node.getTypeSpec();
+
+        // Get the boolean type.
+        TypeSpec type = node.getTypeSpec();
+        
+        //String typePrefix = (type == Predefined.booleanType) ? "i" : "f";
+
+        // Emit code for the first expression
+        // with type conversion if necessary.
+        addend0Node.jjtAccept(this, data);
+        /*
+        if ((type == Predefined.realType) && (type0 == Predefined.integerType))
+        {
+            CodeGenerator.objectFile.println("    i2f");
+            CodeGenerator.objectFile.flush();
+        }
+        */
+        // Emit code for the second expression
+        // with type conversion if necessary.
+        addend1Node.jjtAccept(this, data);
+        /*
+        if ((type == Predefined.realType) && (type1 == Predefined.integerType))
+        {
+            CodeGenerator.objectFile.println("    i2f");
+            CodeGenerator.objectFile.flush();
+        }
+                */
+        // Emit the appropriate add instruction.
+        CodeGenerator.objectFile.println("    " + "if_icmpne L00" + labelGenerator);
+        labelGenerator++;
+        CodeGenerator.objectFile.println("    " + "iconst_0"); //push false i hope
+        CodeGenerator.objectFile.println("    " + "goto L00" + labelGenerator);
+        labelGenerator--;
+        CodeGenerator.objectFile.println("L00" + labelGenerator + ":");
+        CodeGenerator.objectFile.println("    " + "iconst_1");
+        labelGenerator++;
+        CodeGenerator.objectFile.println("L00" + labelGenerator + ":");
+        CodeGenerator.objectFile.flush();
+        labelGenerator++;
+        return data;
+    }
     private int labelGenerator = 3;
 }
