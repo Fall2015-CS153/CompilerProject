@@ -212,9 +212,7 @@ TOKEN : {
 
  |<RESERVEDWORDFOR :"for">
 
- |<RESERVEDWORDTRUE :"true">
 
- |<RESERVEDWORDFALSE :"false">
 
 |<RESERVEDWORDINT :"int">
 
@@ -240,7 +238,7 @@ TOKEN : {
 <DOTREMOVE: ".remove">|
 <DOTSETVAL: ".setVal">|
 <DOTGETINDEX: ".getIndex">
-
+ |<BOOLEAN :"true"|"false"> 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
 |<INTEGER: <DECIMALINTEGER>|<OCTALINTEGER>|<HEXINTEGER>>
@@ -330,7 +328,7 @@ void Commands() : {}
 void PrintStatement() : {}{
 <RESERVEDWORDPRINT> Expr()(<SSComma> Expr())*<SSSemiColon>
 }
-//StringConst() | IntegerConst() |RealConst()
+//StringConst() | IntegerConst() |RealConst() | BooleanConst()
 TypeSpec PrimitiveType() #void: {}
 {
   <RESERVEDWORDINT> {return Predefined.integerType;}
@@ -352,7 +350,14 @@ void IntegerConst() : {}
         jjtThis.setAttribute(VALUE, Integer.parseInt(token.image));
     }
 }
-
+void BooleanConst() : {}
+{
+	<BOOLEAN>
+	{
+        jjtThis.setTypeSpec(Predefined.booleanType);
+        jjtThis.setAttribute(VALUE, Boolean.valueOf(token.image));
+    }
+}
 void RealConst() : {}
 {
     <REALNUMBER>|<REAL_NUMBER>|<DOUBLE>
@@ -393,8 +398,7 @@ void Factor() #void: {}
 |(IntegerConst()|RealConst()|StringConst())
 |(<SSNot>Factor())
 |(<SSOpenParen> Expr() <SSCloseParen>) 
-|<RESERVEDWORDTRUE>
-|<RESERVEDWORDFALSE>
+|BooleanConst()
   
 }
 
