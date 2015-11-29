@@ -87,6 +87,8 @@ public class CodeGeneratorVisitor
             typeCode="F";
         }else if(type==Predefined.stringType){
             typeCode= "Ljava/lang/String;";
+        }else if(type==Predefined.booleanType){
+            typeCode="Z";
         }
         // Emit the appropriate store instruction.
         CodeGenerator.objectFile.println("    putstatic " + programName + "/"
@@ -145,6 +147,8 @@ public class CodeGeneratorVisitor
             typeCode="F";
         }else if(type==Predefined.stringType){
             typeCode= "Ljava/lang/String;";
+        }else if(type==Predefined.booleanType){
+            typeCode="Z";
         }
         // Emit the appropriate load instruction.
         CodeGenerator.objectFile.println("    getstatic " + programName + "/"
