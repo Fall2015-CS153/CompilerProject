@@ -156,5 +156,41 @@ public class ExprParserDefaultVisitor implements ExprParserVisitor{
   public Object visit(ASTList node, Object data){
     return defaultVisit(node, data);
   }
+
+    @Override
+    public Object visit(ASTBooleanConst node, Object data) {
+            return defaultVisit(node, data);
+
+    }
+
+    @Override
+    public Object visit(ASTLessThan node, Object data) {
+            return defaultVisit(node, data);
+
+    }
+
+    @Override
+    public Object visit(ASTLessEquals node, Object data) {
+            return defaultVisit(node, data);
+
+    }
+
+    @Override
+    public Object visit(ASTGreaterThan node, Object data) {
+            return defaultVisit(node, data);
+
+    }
+
+    @Override
+    public Object visit(ASTGreaterEquals node, Object data) {
+            return defaultVisit(node, data);
+
+    }
+
+    @Override
+    public Object visit(ASTEquals node, Object data) {
+            return defaultVisit(node, data);
+
+    }
 }
 /* JavaCC - OriginalChecksum=84c00c879539bb2e8539208f74a96b75 (do not edit this line) */
