@@ -238,7 +238,7 @@ public interface ExprParserConstants {
     "\"boolean\"",
     "\"double\"",
     "\"string\"",
-    "\"hashmap\"",
+    "\"map\"",
     "\"set\"",
     "\"list\"",
     "\"new\"",

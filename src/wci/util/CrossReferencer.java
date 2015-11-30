@@ -129,7 +129,7 @@ public class CrossReferencer
         int nestingLevel = entry.getSymTab().getNestingLevel();
         System.out.println(INDENT + "Defined as: " + definition.getText());
         System.out.println(INDENT + "Scope nesting level: " + nestingLevel);
-
+        //System.out.println("definition is " + definition);
         // Print the type specification.
         TypeSpec type = entry.getTypeSpec();
         printType(type);
@@ -203,7 +203,7 @@ public class CrossReferencer
     private void printTypeDetail(TypeSpec type, ArrayList<TypeSpec> recordTypes)
     {
         TypeForm form = type.getForm();
-
+        //System.out.println("Form is " + form);
         switch ((TypeFormImpl) form) {
 
             case ENUMERATION: {
@@ -245,12 +245,40 @@ public class CrossReferencer
                 break;
             }
 
-            case ARRAY: {
+            case LIST: {
                 TypeSpec indexType =
-                    (TypeSpec) type.getAttribute(ARRAY_INDEX_TYPE);
+                    (TypeSpec) type.getAttribute(LIST_INDEX_TYPE);
                 TypeSpec elementType =
-                    (TypeSpec) type.getAttribute(ARRAY_ELEMENT_TYPE);
-                int count = (Integer) type.getAttribute(ARRAY_ELEMENT_COUNT);
+                    (TypeSpec) type.getAttribute(LIST_ELEMENT_TYPE);
+                
+
+                System.out.println(INDENT + "--- INDEX TYPE ---");
+                printType(indexType);
+
+                // Print the index type details only if the type is unnamed.
+                if (indexType.getIdentifier() == null) {
+                    printTypeDetail(indexType, recordTypes);
+                }
+
+                System.out.println(INDENT + "--- ELEMENT TYPE ---");
+                printType(elementType);
+                
+
+                // Print the element type details only if the type is unnamed.
+                if (elementType.getIdentifier() == null) {
+                    printTypeDetail(elementType, recordTypes);
+                }
+
+                break;
+            }
+
+            
+            case SET: {
+                TypeSpec indexType =
+                    (TypeSpec) type.getAttribute(SET_INDEX_TYPE);
+                TypeSpec elementType =
+                    (TypeSpec) type.getAttribute(SET_ELEMENT_TYPE);
+                int count = Integer.parseInt((String)type.getAttribute(SET_ELEMENT_COUNT));
 
                 System.out.println(INDENT + "--- INDEX TYPE ---");
                 printType(indexType);
@@ -271,7 +299,33 @@ public class CrossReferencer
 
                 break;
             }
+            
+             case MAP: {
+                TypeSpec indexType =
+                    (TypeSpec) type.getAttribute(MAP_KEY_TYPE);
+                TypeSpec elementType =
+                    (TypeSpec) type.getAttribute(MAP_VALUE_TYPE);
 
+
+                System.out.println(INDENT + "--- MAP_KEY_TYPE ---");
+                printType(indexType);
+
+                // Print the index type details only if the type is unnamed.
+                if (indexType.getIdentifier() == null) {
+                    printTypeDetail(indexType, recordTypes);
+                }
+
+                System.out.println(INDENT + "--- MAP_VALUE_TYPE ---");
+                printType(elementType);
+
+                // Print the element type details only if the type is unnamed.
+                if (elementType.getIdentifier() == null) {
+                    printTypeDetail(elementType, recordTypes);
+                }
+
+                break;
+            }
+            
             case RECORD: {
                 recordTypes.add(type);
                 break;

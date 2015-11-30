@@ -11,6 +11,8 @@ import wci.util.*;
 
 import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.symtabimpl.DefinitionImpl.*;
+import wci.intermediate.typeimpl.*;
+import static wci.intermediate.typeimpl.TypeKeyImpl.*;
 import static wci.intermediate.symtabimpl.RoutineCodeImpl.*;
 import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
@@ -2848,13 +2850,16 @@ jjtn000.setAttribute(VALUE, token.image);
     }
   }
 
-  static final public void Size() throws ParseException {
-               /*@bgen(jjtree) Size */
+  static final public String Size() throws ParseException {
+                 /*@bgen(jjtree) Size */
   ASTSize jjtn000 = new ASTSize(JJTSIZE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
       IntegerConst();
+  jjtree.closeNodeScope(jjtn000, true);
+  jjtc000 = false;
+    {if (true) return token.image;}
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -2874,6 +2879,7 @@ jjtn000.setAttribute(VALUE, token.image);
         jjtree.closeNodeScope(jjtn000, true);
       }
     }
+    throw new Error("Missing return statement in function");
   }
 
   static final public void DataTypes() throws ParseException {
@@ -2898,16 +2904,29 @@ jjtn000.setAttribute(VALUE, token.image);
                   /*@bgen(jjtree) Hashmap */
                   ASTHashmap jjtn000 = new ASTHashmap(JJTHASHMAP);
                   boolean jjtc000 = true;
-                  jjtree.openNodeScope(jjtn000);TypeSpec type;
+                  jjtree.openNodeScope(jjtn000);TypeSpec type1;TypeSpec type2;
     try {
       jj_consume_token(RESERVEDWORDHASHMAP);
-      type = PrimitiveType();
-      variableDecl(type);
       jj_consume_token(SSOpenBraces);
-      KeyType();
+      type1 = PrimitiveType();
       jj_consume_token(SSComma);
-      ValueType();
+      type2 = PrimitiveType();
       jj_consume_token(SSCloseBraces);
+      jj_consume_token(IDENTIFIER);
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index++);
+            variableId.setDefinition(DefinitionImpl.TYPE);
+
+
+            TypeSpecImpl temp =  new TypeSpecImpl(TypeFormImpl.MAP);
+            temp.setIdentifier(variableId);
+            temp.setAttribute(MAP_KEY_TYPE,type1);
+            temp.setAttribute(MAP_VALUE_TYPE,type2);
+
+            variableId.setTypeSpec(temp);
+            jjtn000.setAttribute(ID, variableId);
+            jjtn000.setTypeSpec(temp);
       jj_consume_token(SSSemiColon);
     } catch (Throwable jjte000) {
           if (jjtc000) {
@@ -2934,33 +2953,48 @@ jjtn000.setAttribute(VALUE, token.image);
               /*@bgen(jjtree) Set */
               ASTSet jjtn000 = new ASTSet(JJTSET);
               boolean jjtc000 = true;
-              jjtree.openNodeScope(jjtn000);TypeSpec type;
+              jjtree.openNodeScope(jjtn000);TypeSpec type;String count;
     try {
       jj_consume_token(RESERVEDWORDSET);
       type = PrimitiveType();
-      variableDecl(type);
       jj_consume_token(SSOpenParen);
-      Size();
+      count = Size();
       jj_consume_token(SSCloseParen);
+      jj_consume_token(IDENTIFIER);
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index++);
+            variableId.setDefinition(DefinitionImpl.TYPE);
+
+
+            TypeSpecImpl temp =  new TypeSpecImpl(TypeFormImpl.SET);
+            temp.setIdentifier(variableId);
+            temp.setAttribute(SET_INDEX_TYPE,type);
+            temp.setAttribute(SET_ELEMENT_TYPE,type);
+            temp.setAttribute(SET_ELEMENT_COUNT,count);
+
+            variableId.setTypeSpec(temp);
+            jjtn000.setAttribute(ID, variableId);
+            jjtn000.setTypeSpec(temp);
       jj_consume_token(SSSemiColon);
     } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            {if (true) throw (RuntimeException)jjte000;}
-          }
-          if (jjte000 instanceof ParseException) {
-            {if (true) throw (ParseException)jjte000;}
-          }
-          {if (true) throw (Error)jjte000;}
+           if (jjtc000) {
+             jjtree.clearNodeScope(jjtn000);
+             jjtc000 = false;
+           } else {
+             jjtree.popNode();
+           }
+           if (jjte000 instanceof RuntimeException) {
+             {if (true) throw (RuntimeException)jjte000;}
+           }
+           if (jjte000 instanceof ParseException) {
+             {if (true) throw (ParseException)jjte000;}
+           }
+           {if (true) throw (Error)jjte000;}
     } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
+           if (jjtc000) {
+             jjtree.closeNodeScope(jjtn000, true);
+           }
     }
   }
 
@@ -2972,7 +3006,20 @@ jjtn000.setAttribute(VALUE, token.image);
     try {
       jj_consume_token(RESERVEDWORDLIST);
       type = PrimitiveType();
-      variableDecl(type);
+      jj_consume_token(IDENTIFIER);
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index++);
+            variableId.setDefinition(DefinitionImpl.TYPE);
+
+            TypeSpecImpl temp =  new TypeSpecImpl(TypeFormImpl.LIST);
+            temp.setIdentifier(variableId);
+            temp.setAttribute(LIST_INDEX_TYPE,type);
+            temp.setAttribute(LIST_ELEMENT_TYPE,type);
+
+            variableId.setTypeSpec(temp);
+            jjtn000.setAttribute(ID, variableId);
+            jjtn000.setTypeSpec(temp);
       jj_consume_token(SSOpenBracket);
       jj_consume_token(SSCloseBracket);
       jj_consume_token(SSSemiColon);

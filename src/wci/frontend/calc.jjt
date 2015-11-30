@@ -16,6 +16,8 @@ import wci.util.*;
 
 import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.symtabimpl.DefinitionImpl.*;
+import wci.intermediate.typeimpl.*;
+import static wci.intermediate.typeimpl.TypeKeyImpl.*;
 import static wci.intermediate.symtabimpl.RoutineCodeImpl.*;
 import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
@@ -225,7 +227,7 @@ TOKEN : {
 
 |<RESERVEDWORDSTRING :"string">
 
-|<RESERVEDWORDHASHMAP :"hashmap">
+|<RESERVEDWORDHASHMAP :"map">
 
 |<RESERVEDWORDSET :"set">
 
@@ -669,32 +671,99 @@ void ValueType() : {}
 {
 	PrimitiveType()
 }
-void Size() : {}
+String Size() : {}
 {
-    IntegerConst()
+    (IntegerConst())
+{
+    return token.image;
+}
 }
 
 void DataTypes() #void : {}
 {
 	(Hashmap()| List() | Set())
 }
-void Hashmap (): {TypeSpec type;}
+
+
+void Hashmap (): {TypeSpec type1;TypeSpec type2;}
 {
 	<RESERVEDWORDHASHMAP>
-        type = PrimitiveType()
-	variableDecl(type)  <SSOpenBraces> KeyType() <SSComma> ValueType() <SSCloseBraces> <SSSemiColon>
+        <SSOpenBraces>
+        type1 = PrimitiveType()
+        <SSComma> 
+        type2 = PrimitiveType()
+        <SSCloseBraces>
+	<IDENTIFIER> 
+	{
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index++);
+            variableId.setDefinition(DefinitionImpl.TYPE);
+            
+           
+            TypeSpecImpl temp =  new TypeSpecImpl(TypeFormImpl.MAP);
+            temp.setIdentifier(variableId);
+            temp.setAttribute(MAP_KEY_TYPE,type1);
+            temp.setAttribute(MAP_VALUE_TYPE,type2);
+
+            variableId.setTypeSpec(temp);
+            jjtThis.setAttribute(ID, variableId);
+            jjtThis.setTypeSpec(temp);
+            
+
+    }     <SSSemiColon>
 }
-void Set (): {TypeSpec type;}
+void Set (): {TypeSpec type;String count;}
 {
-        <RESERVEDWORDSET>
+         <RESERVEDWORDSET>
 	type= PrimitiveType()
-	variableDecl(type)   <SSOpenParen> (Size()) <SSCloseParen>  <SSSemiColon>
+        <SSOpenParen> 
+        count = Size()
+        <SSCloseParen>
+	<IDENTIFIER> 
+{
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index++);
+            variableId.setDefinition(DefinitionImpl.TYPE);
+            
+
+            TypeSpecImpl temp =  new TypeSpecImpl(TypeFormImpl.SET);
+            temp.setIdentifier(variableId);
+            temp.setAttribute(SET_INDEX_TYPE,type);
+            temp.setAttribute(SET_ELEMENT_TYPE,type);
+            temp.setAttribute(SET_ELEMENT_COUNT,count);
+            
+            variableId.setTypeSpec(temp);
+            jjtThis.setAttribute(ID, variableId);
+            jjtThis.setTypeSpec(temp);
+
+           
+            
+    }
+   <SSSemiColon>
 }
 void List (): {TypeSpec type;}
 {
 	<RESERVEDWORDLIST>
         type = PrimitiveType()
-	variableDecl(type)  <SSOpenBracket> <SSCloseBracket>  <SSSemiColon>
+	<IDENTIFIER> 
+	{
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index++);
+            variableId.setDefinition(DefinitionImpl.TYPE);
+            
+            TypeSpecImpl temp =  new TypeSpecImpl(TypeFormImpl.LIST);
+            temp.setIdentifier(variableId);
+            temp.setAttribute(LIST_INDEX_TYPE,type);
+            temp.setAttribute(LIST_ELEMENT_TYPE,type);
+
+            variableId.setTypeSpec(temp);
+            jjtThis.setAttribute(ID, variableId);
+            jjtThis.setTypeSpec(temp);
+            
+    }  <SSOpenBracket> <SSCloseBracket>  <SSSemiColon>
 }
 
 // Garbage Code???

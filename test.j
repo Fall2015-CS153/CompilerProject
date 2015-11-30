@@ -4,8 +4,6 @@
 .field private static _runTimer LRunTimer;
 .field private static _standardIn LPascalTextIn;
 
-.field private static a F
-.field private static b I
 
 .method public <init>()V
 
@@ -18,11 +16,11 @@
 .end method
 
 .method public main()V
-    getstatic Test/a F
+    getstatic Test/a 
     ldc 3
     ldc 4
     ldc 4
-    getstatic Test/b I
+    getstatic Test/b 
     ldc 2
     ldc 3
 

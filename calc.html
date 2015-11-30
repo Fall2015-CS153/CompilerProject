@@ -117,7 +117,7 @@
 | &lt;RESERVEDWORDBOOLEAN: "boolean"&gt;
 | &lt;RESERVEDWORDDOUBLE: "double"&gt;
 | &lt;RESERVEDWORDSTRING: "string"&gt;
-| &lt;RESERVEDWORDHASHMAP: "hashmap"&gt;
+| &lt;RESERVEDWORDHASHMAP: "map"&gt;
 | &lt;RESERVEDWORDSET: "set"&gt;
 | &lt;RESERVEDWORDLIST: "list"&gt;
 | &lt;RESERVEDWORDNEW: "new"&gt;
@@ -282,35 +282,35 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod9">Statement</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod23">IncrementStatement</A> | <A HREF="#prod24">DecrementStatement</A> | <A HREF="#prod25">Assignment</A> | <A HREF="#prod26">Declaration</A> | <A HREF="#prod27">PlusEqualsStatement</A> | <A HREF="#prod28">MinusEqualsStatement</A> | <A HREF="#prod29">DivideEqualsStatement</A> | <A HREF="#prod30">StarEqualsStatement</A> | <A HREF="#prod31">For</A> | <A HREF="#prod32">While</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod23">IncrementStatement</A> | <A HREF="#prod24">DecrementStatement</A> | <A HREF="#prod25">Assignment</A> | <A HREF="#prod26">Declaration</A> | <A HREF="#prod27">PlusEqualsStatement</A> | <A HREF="#prod28">MinusEqualsStatement</A> | <A HREF="#prod29">DivideEqualsStatement</A> | <A HREF="#prod30">StarEqualsStatement</A> | <A HREF="#prod31">For</A> | <A HREF="#prod32">While</A> | <A HREF="#prod33">DataStructManipulation</A> )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod7">IfPart</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDIF&gt; &lt;SSOpenParen&gt; ( <A HREF="#prod12">Expr</A> ) &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod9">Statement</A> )* &lt;SSCloseBraces&gt; ( <A HREF="#prod33">ElseIfPart</A> )* ( <A HREF="#prod34">ElsePart</A> )?</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDIF&gt; &lt;SSOpenParen&gt; ( <A HREF="#prod12">Expr</A> ) &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod9">Statement</A> )* &lt;SSCloseBraces&gt; ( <A HREF="#prod34">ElseIfPart</A> )* ( <A HREF="#prod35">ElsePart</A> )?</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod33">ElseIfPart</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod34">ElseIfPart</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDELSEIF&gt; &lt;SSOpenParen&gt; ( <A HREF="#prod12">Expr</A> ) &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod9">Statement</A> )* &lt;SSCloseBraces&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod34">ElsePart</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod35">ElsePart</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDELSE&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod9">Statement</A> )* &lt;SSCloseBraces&gt;</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod8">SwitchPart</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDSWITCH&gt; &lt;SSOpenParen&gt; ( <A HREF="#prod22">variable</A> ) &lt;SSComma&gt; ( <A HREF="#prod35">ComparisonOperator</A> ) &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod36">Cases</A> )+ &lt;SSCloseBraces&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDSWITCH&gt; &lt;SSOpenParen&gt; ( <A HREF="#prod22">variable</A> ) &lt;SSComma&gt; ( <A HREF="#prod36">ComparisonOperator</A> ) &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod37">Cases</A> )+ &lt;SSCloseBraces&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod35">ComparisonOperator</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod36">ComparisonOperator</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>( &lt;SSAnd&gt; | &lt;SSOr&gt; | &lt;SSNot&gt; | &lt;ComparisonEquals&gt; | &lt;SSL&gt; | &lt;SSLE&gt; | &lt;SSG&gt; | &lt;SSGE&gt; | &lt;SSNE&gt; )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod36">Cases</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod37">Cases</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDCASE&gt; ( <A HREF="#prod12">Expr</A> ) &lt;SSColon&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod26">Declaration</A> | <A HREF="#prod25">Assignment</A> )* &lt;SSCloseBraces&gt;</TD>
 </TR>
@@ -325,17 +325,17 @@
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENTIFIER&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod37">variableDecl</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod38">variableDecl</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;IDENTIFIER&gt;</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod26">Declaration</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod18">PrimitiveType</A> <A HREF="#prod37">variableDecl</A> ( ( ( &lt;SSEquals&gt; ( <A HREF="#prod12">Expr</A> ) &lt;SSSemiColon&gt; ) ) | ( ( &lt;SSComma&gt; &lt;IDENTIFIER&gt; )* &lt;SSSemiColon&gt; ) )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod18">PrimitiveType</A> <A HREF="#prod38">variableDecl</A> ( ( ( &lt;SSEquals&gt; ( <A HREF="#prod12">Expr</A> ) &lt;SSSemiColon&gt; ) ) | ( ( &lt;SSComma&gt; &lt;IDENTIFIER&gt; )* &lt;SSSemiColon&gt; ) )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod38">Function</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod39">Function</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDPUBLIC&gt; ( <A HREF="#prod10">DataTypes</A> | <A HREF="#prod18">PrimitiveType</A> | &lt;RESERVEDWORDVOID&gt; ) &lt;SSOpenParen&gt; ( ( <A HREF="#prod10">DataTypes</A> | <A HREF="#prod18">PrimitiveType</A> ) <A HREF="#prod22">variable</A> ( &lt;SSComma&gt; ( ( <A HREF="#prod10">DataTypes</A> | <A HREF="#prod18">PrimitiveType</A> ) <A HREF="#prod22">variable</A> ) )* )* &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod9">Statement</A> )* &lt;SSCloseBraces&gt;</TD>
 </TR>
@@ -372,42 +372,107 @@
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod31">For</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDFOR&gt; &lt;SSOpenParen&gt; ( <A HREF="#prod39">DecVar</A> ) <A HREF="#prod40">TestCond</A> &lt;SSSemiColon&gt; <A HREF="#prod41">IncrementCond</A> &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod9">Statement</A> )* &lt;SSCloseBraces&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDFOR&gt; &lt;SSOpenParen&gt; ( <A HREF="#prod40">DecVar</A> ) <A HREF="#prod41">TestCond</A> &lt;SSSemiColon&gt; <A HREF="#prod42">IncrementCond</A> &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod9">Statement</A> )* &lt;SSCloseBraces&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod39">DecVar</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod40">DecVar</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod26">Declaration</A> | <A HREF="#prod25">Assignment</A> )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod40">TestCond</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod41">TestCond</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod12">Expr</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod42">WhileIncrementCond</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod43">WhileIncrementCond</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE>&lt;SSTilda&gt; <A HREF="#prod9">Statement</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod41">IncrementCond</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod42">IncrementCond</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod9">Statement</A></TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod32">While</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDWHILE&gt; &lt;SSOpenParen&gt; <A HREF="#prod40">TestCond</A> &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod9">Statement</A> )* <A HREF="#prod42">WhileIncrementCond</A> &lt;SSCloseBraces&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDWHILE&gt; &lt;SSOpenParen&gt; <A HREF="#prod41">TestCond</A> &lt;SSCloseParen&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod9">Statement</A> )* <A HREF="#prod43">WhileIncrementCond</A> &lt;SSCloseBraces&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod43">SetAdd</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod33">DataStructManipulation</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod22">variable</A> &lt;SSDot&gt; &lt;DOTADD&gt; &lt;SSOpenParen&gt; ( <A HREF="#prod22">variable</A> | <A HREF="#prod13">Literal</A> ) ( &lt;SSComma&gt; ) ( <A HREF="#prod44">Position</A> ) &lt;SSCloseParen&gt; &lt;SSSemiColon&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod44">SetAdd</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod45">ListAdd</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod46">MapAdd</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod47">SetDelete</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod48">ListDelete</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod49">MapDelete</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod50">SetGetVal</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod51">ListGetVal</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod52">MapGetVal</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod53">ListGetIndex</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod54">SetSetVal</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod55">ListSetVal</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>|</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod56">HashSetVal</A></TD>
+</TR>
+<TR>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod44">SetAdd</A></TD>
+<TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod22">variable</A> &lt;SSDot&gt; &lt;DOTADD&gt; &lt;SSOpenParen&gt; ( <A HREF="#prod22">variable</A> | <A HREF="#prod13">Literal</A> ) ( &lt;SSComma&gt; ) ( <A HREF="#prod57">Position</A> ) &lt;SSCloseParen&gt; &lt;SSSemiColon&gt;</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod45">ListAdd</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod22">variable</A> &lt;SSDot&gt; &lt;DOTADD&gt; &lt;SSOpenBracket&gt; ( <A HREF="#prod22">variable</A> | <A HREF="#prod13">Literal</A> ) ( &lt;SSComma&gt; ) ( <A HREF="#prod44">Position</A> ) &lt;SSCloseBracket&gt; &lt;SSSemiColon&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod22">variable</A> &lt;SSDot&gt; &lt;DOTADD&gt; &lt;SSOpenBracket&gt; ( <A HREF="#prod22">variable</A> | <A HREF="#prod13">Literal</A> ) ( &lt;SSComma&gt; ) ( <A HREF="#prod57">Position</A> ) &lt;SSCloseBracket&gt; &lt;SSSemiColon&gt;</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod46">MapAdd</A></TD>
@@ -415,7 +480,7 @@
 <TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod22">variable</A> &lt;SSDot&gt; &lt;DOTADD&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod22">variable</A> | <A HREF="#prod13">Literal</A> ) ( &lt;SSComma&gt; ) ( <A HREF="#prod22">variable</A> | <A HREF="#prod13">Literal</A> ) &lt;SSCloseBracket&gt; &lt;SSSemiColon&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod44">Position</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod57">Position</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod15">IntegerConst</A></TD>
 </TR>
@@ -470,39 +535,39 @@
 <TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod22">variable</A> &lt;SSDot&gt; &lt;DOTSETVAL&gt; &lt;SSOpenBraces&gt; ( <A HREF="#prod22">variable</A> | <A HREF="#prod13">Literal</A> ) &lt;SSCloseBraces&gt; &lt;SSSemiColon&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod57">KeyType</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod58">KeyType</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod18">PrimitiveType</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod58">ValueType</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod59">ValueType</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod18">PrimitiveType</A></TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod59">Size</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod60">Size</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE><A HREF="#prod15">IntegerConst</A></TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod15">IntegerConst</A> )</TD>
 </TR>
 <TR>
 <TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod10">DataTypes</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod60">Hashmap</A> | <A HREF="#prod61">List</A> | <A HREF="#prod62">Set</A> )</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>( <A HREF="#prod61">Hashmap</A> | <A HREF="#prod62">List</A> | <A HREF="#prod63">Set</A> )</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod60">Hashmap</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod61">Hashmap</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDHASHMAP&gt; <A HREF="#prod18">PrimitiveType</A> <A HREF="#prod37">variableDecl</A> &lt;SSOpenBraces&gt; <A HREF="#prod57">KeyType</A> &lt;SSComma&gt; <A HREF="#prod58">ValueType</A> &lt;SSCloseBraces&gt; &lt;SSSemiColon&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDHASHMAP&gt; &lt;SSOpenBraces&gt; <A HREF="#prod18">PrimitiveType</A> &lt;SSComma&gt; <A HREF="#prod18">PrimitiveType</A> &lt;SSCloseBraces&gt; &lt;IDENTIFIER&gt; &lt;SSSemiColon&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod62">Set</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod63">Set</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDSET&gt; <A HREF="#prod18">PrimitiveType</A> <A HREF="#prod37">variableDecl</A> &lt;SSOpenParen&gt; ( <A HREF="#prod59">Size</A> ) &lt;SSCloseParen&gt; &lt;SSSemiColon&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDSET&gt; <A HREF="#prod18">PrimitiveType</A> &lt;SSOpenParen&gt; <A HREF="#prod60">Size</A> &lt;SSCloseParen&gt; &lt;IDENTIFIER&gt; &lt;SSSemiColon&gt;</TD>
 </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod61">List</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod62">List</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
-<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDLIST&gt; <A HREF="#prod18">PrimitiveType</A> <A HREF="#prod37">variableDecl</A> &lt;SSOpenBracket&gt; &lt;SSCloseBracket&gt; &lt;SSSemiColon&gt;</TD>
+<TD ALIGN=LEFT VALIGN=BASELINE>&lt;RESERVEDWORDLIST&gt; <A HREF="#prod18">PrimitiveType</A> &lt;IDENTIFIER&gt; &lt;SSOpenBracket&gt; &lt;SSCloseBracket&gt; &lt;SSSemiColon&gt;</TD>
 </TR>
  <!-- Special token -->
  <TR>
@@ -513,7 +578,7 @@
   </TD>
  </TR>
 <TR>
-<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod63">processVariableDecl</A></TD>
+<TD ALIGN=RIGHT VALIGN=BASELINE><A NAME="prod64">processVariableDecl</A></TD>
 <TD ALIGN=CENTER VALIGN=BASELINE>::=</TD>
 <TD ALIGN=LEFT VALIGN=BASELINE><I>java code</I></TD></TR>
 </TABLE>

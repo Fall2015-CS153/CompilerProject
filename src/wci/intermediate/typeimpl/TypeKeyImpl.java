@@ -20,6 +20,15 @@ public enum TypeKeyImpl implements TypeKey
 
     // Array
     ARRAY_INDEX_TYPE, ARRAY_ELEMENT_TYPE, ARRAY_ELEMENT_COUNT,
+    
+    // Array
+    LIST_INDEX_TYPE,LIST_ELEMENT_TYPE, LIST_ELEMENT_COUNT,
+    
+    // Array
+    SET_INDEX_TYPE,SET_ELEMENT_TYPE, SET_ELEMENT_COUNT,
+  
+    // Array
+    MAP_INDEX_TYPE, MAP_KEY_TYPE,MAP_VALUE_TYPE, MAP_ELEMENT_COUNT,
 
     // Record
     RECORD_SYMTAB

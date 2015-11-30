@@ -17,7 +17,7 @@ public enum DefinitionImpl implements Definition
     VALUE_PARM("value parameter"), VAR_PARM("VAR parameter"),
     PROGRAM_PARM("program parameter"),
     PROGRAM, PROCEDURE, FUNCTION,
-    UNDEFINED;
+    UNDEFINED,LIST,SET,MAP;
 
     private String text;
 

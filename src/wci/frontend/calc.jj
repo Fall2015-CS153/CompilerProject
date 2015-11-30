@@ -17,6 +17,8 @@ import wci.util.*;
 
 import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.symtabimpl.DefinitionImpl.*;
+import wci.intermediate.typeimpl.*;
+import static wci.intermediate.typeimpl.TypeKeyImpl.*;
 import static wci.intermediate.symtabimpl.RoutineCodeImpl.*;
 import static wci.intermediate.symtabimpl.SymTabKeyImpl.*;
 import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
@@ -229,7 +231,7 @@ TOKEN : {
 
 |<RESERVEDWORDSTRING :"string">
 
-|<RESERVEDWORDHASHMAP :"hashmap">
+|<RESERVEDWORDHASHMAP :"map">
 
 |<RESERVEDWORDSET :"set">
 
@@ -2310,7 +2312,7 @@ void ValueType() : {/*@bgen(jjtree) ValueType */
         }
 /*@egen*/
 }
-void Size() : {/*@bgen(jjtree) Size */
+String Size() : {/*@bgen(jjtree) Size */
   ASTSize jjtn000 = new ASTSize(JJTSIZE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
@@ -2318,7 +2320,15 @@ void Size() : {/*@bgen(jjtree) Size */
 {/*@bgen(jjtree) Size */
     try {
 /*@egen*/
-    IntegerConst()/*@bgen(jjtree)*/
+    (IntegerConst())/*@bgen(jjtree)*/
+{
+  jjtree.closeNodeScope(jjtn000, true);
+  jjtc000 = false;
+}
+/*@egen*/
+{
+    return token.image;
+}/*@bgen(jjtree)*/
     } catch (Throwable jjte000) {
       if (jjtc000) {
         jjtree.clearNodeScope(jjtn000);
@@ -2345,17 +2355,41 @@ void DataTypes()       : {}
 {
 	(Hashmap()| List() | Set())
 }
+
+
 void Hashmap (): {/*@bgen(jjtree) Hashmap */
                   ASTHashmap jjtn000 = new ASTHashmap(JJTHASHMAP);
                   boolean jjtc000 = true;
                   jjtree.openNodeScope(jjtn000);
-/*@egen*/TypeSpec type;}
+/*@egen*/TypeSpec type1;TypeSpec type2;}
 {/*@bgen(jjtree) Hashmap */
         try {
 /*@egen*/
 	<RESERVEDWORDHASHMAP>
-        type = PrimitiveType()
-	variableDecl(type)  <SSOpenBraces> KeyType() <SSComma> ValueType() <SSCloseBraces> <SSSemiColon>/*@bgen(jjtree)*/
+        <SSOpenBraces>
+        type1 = PrimitiveType()
+        <SSComma> 
+        type2 = PrimitiveType()
+        <SSCloseBraces>
+	<IDENTIFIER> 
+	{
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index++);
+            variableId.setDefinition(DefinitionImpl.TYPE);
+            
+           
+            TypeSpecImpl temp =  new TypeSpecImpl(TypeFormImpl.MAP);
+            temp.setIdentifier(variableId);
+            temp.setAttribute(MAP_KEY_TYPE,type1);
+            temp.setAttribute(MAP_VALUE_TYPE,type2);
+
+            variableId.setTypeSpec(temp);
+            jjtn000.setAttribute(ID, variableId);
+            jjtn000.setTypeSpec(temp);
+            
+
+    }     <SSSemiColon>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -2381,32 +2415,56 @@ void Set (): {/*@bgen(jjtree) Set */
               ASTSet jjtn000 = new ASTSet(JJTSET);
               boolean jjtc000 = true;
               jjtree.openNodeScope(jjtn000);
-/*@egen*/TypeSpec type;}
+/*@egen*/TypeSpec type;String count;}
 {/*@bgen(jjtree) Set */
-        try {
+         try {
 /*@egen*/
-        <RESERVEDWORDSET>
+         <RESERVEDWORDSET>
 	type= PrimitiveType()
-	variableDecl(type)   <SSOpenParen> (Size()) <SSCloseParen>  <SSSemiColon>/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
+        <SSOpenParen> 
+        count = Size()
+        <SSCloseParen>
+	<IDENTIFIER> 
+{
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index++);
+            variableId.setDefinition(DefinitionImpl.TYPE);
+            
+
+            TypeSpecImpl temp =  new TypeSpecImpl(TypeFormImpl.SET);
+            temp.setIdentifier(variableId);
+            temp.setAttribute(SET_INDEX_TYPE,type);
+            temp.setAttribute(SET_ELEMENT_TYPE,type);
+            temp.setAttribute(SET_ELEMENT_COUNT,count);
+            
+            variableId.setTypeSpec(temp);
+            jjtn000.setAttribute(ID, variableId);
+            jjtn000.setTypeSpec(temp);
+
+           
+            
+    }
+   <SSSemiColon>/*@bgen(jjtree)*/
+         } catch (Throwable jjte000) {
+           if (jjtc000) {
+             jjtree.clearNodeScope(jjtn000);
+             jjtc000 = false;
+           } else {
+             jjtree.popNode();
+           }
+           if (jjte000 instanceof RuntimeException) {
+             throw (RuntimeException)jjte000;
+           }
+           if (jjte000 instanceof ParseException) {
+             throw (ParseException)jjte000;
+           }
+           throw (Error)jjte000;
+         } finally {
+           if (jjtc000) {
+             jjtree.closeNodeScope(jjtn000, true);
+           }
+         }
 /*@egen*/
 }
 void List (): {/*@bgen(jjtree) List */
@@ -2419,7 +2477,23 @@ void List (): {/*@bgen(jjtree) List */
 /*@egen*/
 	<RESERVEDWORDLIST>
         type = PrimitiveType()
-	variableDecl(type)  <SSOpenBracket> <SSCloseBracket>  <SSSemiColon>/*@bgen(jjtree)*/
+	<IDENTIFIER> 
+	{
+            SymTabEntry variableId = symTabStack.enterLocal(token.image);
+            variableId.appendLineNumber(token.beginLine);
+            variableId.setIndex(index++);
+            variableId.setDefinition(DefinitionImpl.TYPE);
+            
+            TypeSpecImpl temp =  new TypeSpecImpl(TypeFormImpl.LIST);
+            temp.setIdentifier(variableId);
+            temp.setAttribute(LIST_INDEX_TYPE,type);
+            temp.setAttribute(LIST_ELEMENT_TYPE,type);
+
+            variableId.setTypeSpec(temp);
+            jjtn000.setAttribute(ID, variableId);
+            jjtn000.setTypeSpec(temp);
+            
+    }  <SSOpenBracket> <SSCloseBracket>  <SSSemiColon>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

@@ -20,6 +20,7 @@ class SimpleNode implements Node {
   private String image;
   private TypeSpec TypeSpec;
   private ICodeNodeImpl Attribute = new ICodeNodeImpl();
+  private TypeForm TypeForm;
   
   
   public SimpleNode(int i) {
@@ -165,6 +166,22 @@ class SimpleNode implements Node {
     public Object getAttribute(ICodeKeyImpl a)
     {
         return  Attribute.getAttribute(a);
+    }
+
+    /**
+     * @return the TypeForm
+     */
+    public TypeForm getTypeForm()
+    {
+        return TypeForm;
+    }
+
+    /**
+     * @param TypeForm the TypeForm to set
+     */
+    public void setTypeForm(TypeForm TypeForm)
+    {
+        this.TypeForm = TypeForm;
     }
 
 
