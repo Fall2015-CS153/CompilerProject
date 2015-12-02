@@ -488,7 +488,7 @@ void Literal() : {/*@bgen(jjtree) Literal */
 {/*@bgen(jjtree) Literal */
 try {
 /*@egen*/
-StringConst() | IntegerConst() |RealConst() | BooleanConst()/*@bgen(jjtree)*/
+StringConst() | IntegerConst() |FloatConst() | BooleanConst()|DoubleConst()/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
   if (jjtc000) {
     jjtree.clearNodeScope(jjtn000);
@@ -573,15 +573,41 @@ void BooleanConst() : {/*@bgen(jjtree) BooleanConst */
         }
 /*@egen*/
 }
-void RealConst() : {/*@bgen(jjtree) RealConst */
-  ASTRealConst jjtn000 = new ASTRealConst(JJTREALCONST);
+void FloatConst() : {/*@bgen(jjtree) FloatConst */
+  ASTFloatConst jjtn000 = new ASTFloatConst(JJTFLOATCONST);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
-{/*@bgen(jjtree) RealConst */
+{/*@bgen(jjtree) FloatConst */
     try {
 /*@egen*/
-    <REALNUMBER>|<REAL_NUMBER>|<DOUBLE>/*@bgen(jjtree)*/
+    (<REALNUMBER>|<REAL_NUMBER>)/*@bgen(jjtree)*/
+    {
+      jjtree.closeNodeScope(jjtn000, true);
+      jjtc000 = false;
+    }
+/*@egen*/
+    {
+        jjtn000.setTypeSpec(Predefined.floatType);
+        jjtn000.setAttribute(VALUE, Float.parseFloat(token.image));
+    }/*@bgen(jjtree)*/
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
+}
+
+void DoubleConst() : {/*@bgen(jjtree) DoubleConst */
+  ASTDoubleConst jjtn000 = new ASTDoubleConst(JJTDOUBLECONST);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) DoubleConst */
+    try {
+/*@egen*/
+    <DOUBLE>/*@bgen(jjtree)*/
     {
       jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
@@ -968,7 +994,7 @@ void Term ()      : {}
 void Factor()      : {}
 {
     variable()
-|(IntegerConst()|RealConst()|StringConst())
+|(IntegerConst()|FloatConst()|StringConst()|DoubleConst())
 |(<SSNot>/*@bgen(jjtree) #Negate( 1) */
           {
             ASTNegate jjtn001 = new ASTNegate(JJTNEGATE);

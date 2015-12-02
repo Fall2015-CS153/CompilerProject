@@ -14,7 +14,8 @@ public interface ExprParserVisitor
   public Object visit(ASTLiteral node, Object data);
   public Object visit(ASTIntegerConst node, Object data);
   public Object visit(ASTBooleanConst node, Object data);
-  public Object visit(ASTRealConst node, Object data);
+  public Object visit(ASTFloatConst node, Object data);
+  public Object visit(ASTDoubleConst node, Object data);
   public Object visit(ASTStringConst node, Object data);
   public Object visit(ASTNotEquals node, Object data);
   public Object visit(ASTLessThan node, Object data);
@@ -74,4 +75,4 @@ public interface ExprParserVisitor
   public Object visit(ASTSet node, Object data);
   public Object visit(ASTList node, Object data);
 }
-/* JavaCC - OriginalChecksum=cd6034d7c7ae3ec07bf6a9ad8d99bdde (do not edit this line) */
+/* JavaCC - OriginalChecksum=0692f07c060971486615744415676d25 (do not edit this line) */

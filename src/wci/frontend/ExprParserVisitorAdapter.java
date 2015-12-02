@@ -199,11 +199,7 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
         return node.childrenAccept(this, data);
     }
 
-    @Override
-    public Object visit(ASTRealConst node, Object data)
-    {
-        return node.childrenAccept(this, data);
-    }
+
 
     @Override
     public Object visit(ASTStringConst node, Object data)
@@ -455,6 +451,18 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
     public Object visit(ASTHashSetVal node, Object data)
     {
        return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTDoubleConst node, Object data)
+    {
+          return node.childrenAccept(this, data); }
+    
+     @Override
+    public Object visit(ASTFloatConst node, Object data)
+    {
+          return node.childrenAccept(this, data); }
+
+
 
 
    

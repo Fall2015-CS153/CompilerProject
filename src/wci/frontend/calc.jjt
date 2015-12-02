@@ -334,7 +334,7 @@ void PrintStatement() : {}{
 
 void Literal() : {}
 {
-StringConst() | IntegerConst() |RealConst() | BooleanConst()
+StringConst() | IntegerConst() |FloatConst() | BooleanConst()|DoubleConst()
 }
 TypeSpec PrimitiveType() #void: {}
 {
@@ -365,9 +365,18 @@ void BooleanConst() : {}
         jjtThis.setAttribute(VALUE, Boolean.valueOf(token.image));
     }
 }
-void RealConst() : {}
+void FloatConst() : {}
 {
-    <REALNUMBER>|<REAL_NUMBER>|<DOUBLE>
+    (<REALNUMBER>|<REAL_NUMBER>)
+    {
+        jjtThis.setTypeSpec(Predefined.floatType);
+        jjtThis.setAttribute(VALUE, Float.parseFloat(token.image));
+    }
+}
+
+void DoubleConst() : {}
+{
+    <DOUBLE>
     {
         jjtThis.setTypeSpec(Predefined.doubleType);
         jjtThis.setAttribute(VALUE, Double.parseDouble(token.image));
@@ -402,7 +411,7 @@ void Term () #void: {}
 void Factor() #void: {}
 {
     variable()
-|(IntegerConst()|RealConst()|StringConst())
+|(IntegerConst()|FloatConst()|StringConst()|DoubleConst())
 |(<SSNot> Factor()#Negate(1))
 |(<SSOpenParen> Expr() <SSCloseParen>) 
 |BooleanConst()
