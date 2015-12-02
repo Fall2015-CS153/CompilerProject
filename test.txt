@@ -3,11 +3,13 @@ ProgramTest{
     	int a = 4;
         double doDob = 10.2;
         string str= "hello";
+        boolean bor= true;
         //TESTING PRINTING
         // to print a constant just pass
         put 5;
-        put "hello";
+        put "hello";       
         // to print a variable declare constant then declare as many variables as you want with a comma
+        put "Printing Boolean ", bor;
         put "Printing integer ", a;
         put "printing Double ", doDob;
         put "print String ",str;

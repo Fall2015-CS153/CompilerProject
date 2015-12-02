@@ -161,6 +161,21 @@ public class CodeGeneratorVisitor
         result[1]=typeCode;
         return result;
     }
+     public Object visit(ASTBooleanConst node, Object data){
+        boolean bool =(boolean) node.getAttribute(VALUE);
+        int value=0;// false by default
+        if(bool==true){
+         value=1;
+        }
+        // Emit a load constant instruction.
+        CodeGenerator.objectFile.println("    ldc " + value);
+        CodeGenerator.objectFile.flush();
+        String result[]=new String[2];
+        result[0]="    ldc "+value;
+        result[1]="    ldc "+value;
+        return result;
+     
+    }
 
     public Object visit(ASTIntegerConst node, Object data)
     {
