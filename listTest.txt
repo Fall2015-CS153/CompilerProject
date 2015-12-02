@@ -1,0 +1,15 @@
+ProgramTest{
+    Procedure :: main{
+      list double a[];
+      a.add[4.0];
+      a.remove[4.0];
+      a.getVal[3];
+      a.getIndex[4.0];
+      a.setVal[0,3.0];
+      //set int(4) b;
+      //b.add(2,3);
+      //map{int,int} c;
+
+    }
+}
+

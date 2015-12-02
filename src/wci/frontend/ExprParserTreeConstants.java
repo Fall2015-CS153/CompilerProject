@@ -61,19 +61,17 @@ public interface ExprParserTreeConstants
   public int JJTSETDELETE = 55;
   public int JJTLISTDELETE = 56;
   public int JJTMAPDELETE = 57;
-  public int JJTSETGETVAL = 58;
-  public int JJTLISTGETVAL = 59;
-  public int JJTMAPGETVAL = 60;
-  public int JJTLISTGETINDEX = 61;
-  public int JJTSETSETVAL = 62;
-  public int JJTLISTSETVAL = 63;
-  public int JJTHASHSETVAL = 64;
-  public int JJTKEYTYPE = 65;
-  public int JJTVALUETYPE = 66;
-  public int JJTSIZE = 67;
-  public int JJTHASHMAP = 68;
-  public int JJTSET = 69;
-  public int JJTLIST = 70;
+  public int JJTLISTGETVAL = 58;
+  public int JJTMAPGETVAL = 59;
+  public int JJTLISTGETINDEX = 60;
+  public int JJTLISTSETVAL = 61;
+  public int JJTHASHSETVAL = 62;
+  public int JJTKEYTYPE = 63;
+  public int JJTVALUETYPE = 64;
+  public int JJTSIZE = 65;
+  public int JJTHASHMAP = 66;
+  public int JJTSET = 67;
+  public int JJTLIST = 68;
 
 
   public String[] jjtNodeName = {
@@ -135,11 +133,9 @@ public interface ExprParserTreeConstants
     "SetDelete",
     "ListDelete",
     "MapDelete",
-    "SetGetVal",
     "ListGetVal",
     "MapGetVal",
     "ListGetIndex",
-    "SetSetVal",
     "ListSetVal",
     "HashSetVal",
     "KeyType",
@@ -150,4 +146,4 @@ public interface ExprParserTreeConstants
     "List",
   };
 }
-/* JavaCC - OriginalChecksum=5d0bc1911a1e9cf12ad3298fb73350f5 (do not edit this line) */
+/* JavaCC - OriginalChecksum=6a9d9211e5ea8323195dbd5529fdc826 (do not edit this line) */

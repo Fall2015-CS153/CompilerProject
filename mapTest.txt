@@ -1,0 +1,12 @@
+ProgramTest{
+    Procedure :: main{
+      map{int,int} a;
+      a.add{4,4};
+      a.remove{4};
+      a.getVal{4};
+      a.setVal{0,3};
+      
+
+    }
+}
+

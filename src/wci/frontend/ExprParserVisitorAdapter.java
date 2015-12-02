@@ -391,11 +391,6 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
         return node.childrenAccept(this, data);//To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    public Object visit(ASTSetGetVal node, Object data)
-    {
-       return node.childrenAccept(this, data); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public Object visit(ASTListGetVal node, Object data)
@@ -438,10 +433,7 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
     public Object visit(ASTMapGetVal node, Object data)
     {
         return node.childrenAccept(this, data);}
-    @Override
-    public Object visit(ASTSetSetVal node, Object data)
-    {
-        return node.childrenAccept(this, data);}
+
 
     @Override
     public Object visit(ASTListSetVal node, Object data)

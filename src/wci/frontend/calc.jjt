@@ -597,23 +597,23 @@ void DataStructManipulation() #void: {}
 {
  LOOKAHEAD(4)SetAdd()| LOOKAHEAD(4)ListAdd()| LOOKAHEAD(4)MapAdd()|
   LOOKAHEAD(4)SetDelete()| LOOKAHEAD(4)ListDelete()| LOOKAHEAD(4)MapDelete()|
- LOOKAHEAD(4)SetGetVal()| LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
+ LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
   LOOKAHEAD(4)ListGetIndex()|
-  LOOKAHEAD(4)SetSetVal()| LOOKAHEAD(4)ListSetVal()| LOOKAHEAD(4)HashSetVal()
+  LOOKAHEAD(4)ListSetVal()| LOOKAHEAD(4)HashSetVal()
 }
 void SetAdd():{}
 {
-	variable() <SSDot> <DOTADD> <SSOpenParen> (variable()|Literal()) (<SSComma>)(Position()) <SSCloseParen> <SSSemiColon>
+	variable() <SSDot> <DOTADD> <SSOpenParen> (variable()|Literal())  <SSCloseParen> <SSSemiColon>
 }
 
 void ListAdd():{}
 {
-	variable() <SSDot><DOTADD> <SSOpenBracket> (variable()|Literal()) (<SSComma>)(Position()) <SSCloseBracket> <SSSemiColon>
+	variable() <SSDot><DOTADD> <SSOpenBracket> (variable()|Literal())<SSCloseBracket> <SSSemiColon>
 }
 
 void MapAdd():{}
 {
-	variable() <SSDot><DOTADD> <SSOpenBraces> (variable()|Literal()) (<SSComma>) (variable()|Literal()) <SSCloseBracket> <SSSemiColon>
+	variable() <SSDot><DOTADD> <SSOpenBraces> (variable()|Literal()) (<SSComma>) (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
 }
 
 void Position():{}
@@ -636,10 +636,7 @@ void MapDelete():{}
 	variable() <SSDot><DOTREMOVE> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
 }
 
-void SetGetVal():{}
-{
-	variable() <SSDot><DOTGETVAL> <SSOpenParen> <INTEGER> <SSCloseParen> <SSSemiColon>
-}
+
 
 void ListGetVal():{}
 {
@@ -656,19 +653,15 @@ void ListGetIndex():{}
 	variable() <SSDot><DOTGETINDEX> <SSOpenBracket> (variable()|Literal()) <SSCloseBracket> <SSSemiColon>
 }
 
-void SetSetVal():{}
-{
-	variable() <SSDot><DOTSETVAL> <SSOpenParen> (IntegerConst()) <SSCloseParen> <SSSemiColon>
-}
 
 void ListSetVal():{}
 {
-	variable() <SSDot><DOTSETVAL> <SSOpenBracket> (IntegerConst()) <SSCloseBracket> <SSSemiColon>
+	variable() <SSDot><DOTSETVAL> <SSOpenBracket> (Position()) <SSComma> (variable()|Literal())  <SSCloseBracket> <SSSemiColon>
 }
 
 void HashSetVal():{}
 {
-	variable() <SSDot><DOTSETVAL> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
+	variable() <SSDot><DOTSETVAL> <SSOpenBraces> (variable()|Literal()) <SSComma> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
 }
 
 

@@ -1122,4 +1122,37 @@ public class CodeGeneratorVisitor
 
         return data;
     }
+     
+    /* 
+         public Object visit(ASTPrintStatement node, Object data) {
+        Node commandsNode[]=new Node[node.jjtGetNumChildren()];
+        String input[][]= new String[node.jjtGetNumChildren()][2];
+        for(int i=0;i<node.jjtGetNumChildren();i++){
+            commandsNode[i]= node.jjtGetChild(i);
+            input[i]=(String[])(commandsNode[i].jjtAccept(this, data));
+        }
+
+        CodeGenerator.objectFile.println("\n"+"    getstatic     java/lang/System/out Ljava/io/PrintStream; \n" +
+        "    new       java/lang/StringBuilder \n"+
+        "    dup \n"+
+        ""+ input[0][1]+"\n" +
+        "    "+
+        "invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V");
+        for (int i=0; i<node.jjtGetNumChildren()-1;i++){
+            CodeGenerator.objectFile.println(input[i+1][0]+"\n" +
+        "    invokevirtual java/lang/StringBuilder/append("+input[i+1][1]+")Ljava/lang/StringBuilder;");
+        }
+        CodeGenerator.objectFile.println("    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;\n" +
+        "    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
+       
+        return data;
+    }
+    public Object visit(ASTProcedureCall node, Object data){
+        CodeGenerator.objectFile.println("    new Test\n" +
+        "    dup\n" +
+        "    invokespecial Test/<init>()V\n" +
+        "    invokevirtual Test/"+node.getAttribute(VALUE)+"()V");
+    return data;
+    }
+     */
 }

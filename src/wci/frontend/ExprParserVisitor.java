@@ -61,11 +61,9 @@ public interface ExprParserVisitor
   public Object visit(ASTSetDelete node, Object data);
   public Object visit(ASTListDelete node, Object data);
   public Object visit(ASTMapDelete node, Object data);
-  public Object visit(ASTSetGetVal node, Object data);
   public Object visit(ASTListGetVal node, Object data);
   public Object visit(ASTMapGetVal node, Object data);
   public Object visit(ASTListGetIndex node, Object data);
-  public Object visit(ASTSetSetVal node, Object data);
   public Object visit(ASTListSetVal node, Object data);
   public Object visit(ASTHashSetVal node, Object data);
   public Object visit(ASTKeyType node, Object data);
@@ -75,4 +73,4 @@ public interface ExprParserVisitor
   public Object visit(ASTSet node, Object data);
   public Object visit(ASTList node, Object data);
 }
-/* JavaCC - OriginalChecksum=0692f07c060971486615744415676d25 (do not edit this line) */
+/* JavaCC - OriginalChecksum=41b8b73a184bcd1efac77585006c7f25 (do not edit this line) */

@@ -1839,9 +1839,9 @@ void DataStructManipulation()      : {}
 {
  LOOKAHEAD(4)SetAdd()| LOOKAHEAD(4)ListAdd()| LOOKAHEAD(4)MapAdd()|
   LOOKAHEAD(4)SetDelete()| LOOKAHEAD(4)ListDelete()| LOOKAHEAD(4)MapDelete()|
- LOOKAHEAD(4)SetGetVal()| LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
+ LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
   LOOKAHEAD(4)ListGetIndex()|
-  LOOKAHEAD(4)SetSetVal()| LOOKAHEAD(4)ListSetVal()| LOOKAHEAD(4)HashSetVal()
+  LOOKAHEAD(4)ListSetVal()| LOOKAHEAD(4)HashSetVal()
 }
 void SetAdd():{/*@bgen(jjtree) SetAdd */
   ASTSetAdd jjtn000 = new ASTSetAdd(JJTSETADD);
@@ -1851,7 +1851,7 @@ void SetAdd():{/*@bgen(jjtree) SetAdd */
 {/*@bgen(jjtree) SetAdd */
         try {
 /*@egen*/
-	variable() <SSDot> <DOTADD> <SSOpenParen> (variable()|Literal()) (<SSComma>)(Position()) <SSCloseParen> <SSSemiColon>/*@bgen(jjtree)*/
+	variable() <SSDot> <DOTADD> <SSOpenParen> (variable()|Literal())  <SSCloseParen> <SSSemiColon>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -1882,7 +1882,7 @@ void ListAdd():{/*@bgen(jjtree) ListAdd */
 {/*@bgen(jjtree) ListAdd */
         try {
 /*@egen*/
-	variable() <SSDot><DOTADD> <SSOpenBracket> (variable()|Literal()) (<SSComma>)(Position()) <SSCloseBracket> <SSSemiColon>/*@bgen(jjtree)*/
+	variable() <SSDot><DOTADD> <SSOpenBracket> (variable()|Literal())<SSCloseBracket> <SSSemiColon>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -1913,7 +1913,7 @@ void MapAdd():{/*@bgen(jjtree) MapAdd */
 {/*@bgen(jjtree) MapAdd */
         try {
 /*@egen*/
-	variable() <SSDot><DOTADD> <SSOpenBraces> (variable()|Literal()) (<SSComma>) (variable()|Literal()) <SSCloseBracket> <SSSemiColon>/*@bgen(jjtree)*/
+	variable() <SSDot><DOTADD> <SSOpenBraces> (variable()|Literal()) (<SSComma>) (variable()|Literal()) <SSCloseBraces> <SSSemiColon>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -2060,36 +2060,7 @@ void MapDelete():{/*@bgen(jjtree) MapDelete */
 /*@egen*/
 }
 
-void SetGetVal():{/*@bgen(jjtree) SetGetVal */
-  ASTSetGetVal jjtn000 = new ASTSetGetVal(JJTSETGETVAL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) SetGetVal */
-        try {
-/*@egen*/
-	variable() <SSDot><DOTGETVAL> <SSOpenParen> <INTEGER> <SSCloseParen> <SSSemiColon>/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-}
+
 
 void ListGetVal():{/*@bgen(jjtree) ListGetVal */
   ASTListGetVal jjtn000 = new ASTListGetVal(JJTLISTGETVAL);
@@ -2184,36 +2155,6 @@ void ListGetIndex():{/*@bgen(jjtree) ListGetIndex */
 /*@egen*/
 }
 
-void SetSetVal():{/*@bgen(jjtree) SetSetVal */
-  ASTSetSetVal jjtn000 = new ASTSetSetVal(JJTSETSETVAL);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) SetSetVal */
-        try {
-/*@egen*/
-	variable() <SSDot><DOTSETVAL> <SSOpenParen> (IntegerConst()) <SSCloseParen> <SSSemiColon>/*@bgen(jjtree)*/
-        } catch (Throwable jjte000) {
-          if (jjtc000) {
-            jjtree.clearNodeScope(jjtn000);
-            jjtc000 = false;
-          } else {
-            jjtree.popNode();
-          }
-          if (jjte000 instanceof RuntimeException) {
-            throw (RuntimeException)jjte000;
-          }
-          if (jjte000 instanceof ParseException) {
-            throw (ParseException)jjte000;
-          }
-          throw (Error)jjte000;
-        } finally {
-          if (jjtc000) {
-            jjtree.closeNodeScope(jjtn000, true);
-          }
-        }
-/*@egen*/
-}
 
 void ListSetVal():{/*@bgen(jjtree) ListSetVal */
   ASTListSetVal jjtn000 = new ASTListSetVal(JJTLISTSETVAL);
@@ -2223,7 +2164,7 @@ void ListSetVal():{/*@bgen(jjtree) ListSetVal */
 {/*@bgen(jjtree) ListSetVal */
         try {
 /*@egen*/
-	variable() <SSDot><DOTSETVAL> <SSOpenBracket> (IntegerConst()) <SSCloseBracket> <SSSemiColon>/*@bgen(jjtree)*/
+	variable() <SSDot><DOTSETVAL> <SSOpenBracket> (Position()) <SSComma> (variable()|Literal())  <SSCloseBracket> <SSSemiColon>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -2254,7 +2195,7 @@ void HashSetVal():{/*@bgen(jjtree) HashSetVal */
 {/*@bgen(jjtree) HashSetVal */
         try {
 /*@egen*/
-	variable() <SSDot><DOTSETVAL> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>/*@bgen(jjtree)*/
+	variable() <SSDot><DOTSETVAL> <SSOpenBraces> (variable()|Literal()) <SSComma> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
