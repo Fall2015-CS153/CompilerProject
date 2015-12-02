@@ -21,7 +21,7 @@ public class CodeGeneratorVisitor
          
          //create end
          CodeGenerator.objectFile.println();
-         CodeGenerator.objectFile.println("return\n"+".limit locals 16\n" +
+         CodeGenerator.objectFile.println("return\n"+".limit locals 32\n" +
         ".limit stack 32\n" +
         ".end method"+"\n");
          return data;
@@ -98,7 +98,7 @@ public class CodeGeneratorVisitor
         return data;
     }
 
-    // This is deprecated for some Reason??
+    
     public Object visit(ASTAssignment node, Object data)
     {
         String programName = (String) data;
@@ -301,12 +301,13 @@ public class CodeGeneratorVisitor
 
         TypeSpec type0 = addend0Node.getTypeSpec();
         TypeSpec type1 = addend1Node.getTypeSpec();
+       
 
         // Get the addition type.
         TypeSpec type = node.getTypeSpec();
 
         String typePrefix = (type == Predefined.integerType) ? "i" : "f";
-
+         System.out.println("StaREquals:" +(type == Predefined.integerType));
         // Emit code for the first expression
         // with type conversion if necessary.
         addend0Node.jjtAccept(this, data);
@@ -397,14 +398,15 @@ public class CodeGeneratorVisitor
 
     public Object visit(ASTadd node, Object data)
     {
+        
         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
         SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
-
+        
         TypeSpec type0 = addend0Node.getTypeSpec();
         TypeSpec type1 = addend1Node.getTypeSpec();
-
+        System.out.println(type0 + " " + type1);
         // Get the addition type.
-        TypeSpec type = node.getTypeSpec();
+        TypeSpec type = Predefined.integerType;
 
         String typePrefix = (type == Predefined.integerType) ? "i" : "f";
 
@@ -429,33 +431,36 @@ public class CodeGeneratorVisitor
         // Emit the appropriate add instruction.
         CodeGenerator.objectFile.println("    " + typePrefix + "add");
         CodeGenerator.objectFile.flush();
-        
+        /*
         String typeCode = type == Predefined.integerType ? "I" : "F";
         String programName = (String) data;
 
         SymTabEntry id = (SymTabEntry) ( (SimpleNode)node.jjtGetChild(0)).getAttribute(ID);
         String fieldName = id.getName();
         
-
-        CodeGenerator.objectFile.println("    putstatic " + programName + "/"
-                + node.getAttribute(VALUE) + " " + typeCode);
-        CodeGenerator.objectFile.flush();
+        //System.out.println("Node " + node.getAttribute(VALUE));
+        //CodeGenerator.objectFile.println("    putstatic " + programName + "/"+ node.getAttribute(VALUE) + " " + typeCode);
+        
+        CodeGenerator.objectFile.flush();*/
 
         return data;
+        
+        
+        
     }
 
     public Object visit(ASTsubtract node, Object data)
     {
-      
+        
         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
         SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
-
+        
         TypeSpec type0 = addend0Node.getTypeSpec();
         TypeSpec type1 = addend1Node.getTypeSpec();
-
+        System.out.println(type0 + " " + type1);
         // Get the addition type.
-        TypeSpec type = node.getTypeSpec();
-        
+        TypeSpec type = Predefined.integerType;
+
         String typePrefix = (type == Predefined.integerType) ? "i" : "f";
 
         // Emit code for the first expression
@@ -479,7 +484,17 @@ public class CodeGeneratorVisitor
         // Emit the appropriate add instruction.
         CodeGenerator.objectFile.println("    " + typePrefix + "sub");
         CodeGenerator.objectFile.flush();
+        /*
+        String typeCode = type == Predefined.integerType ? "I" : "F";
+        String programName = (String) data;
 
+        SymTabEntry id = (SymTabEntry) ( (SimpleNode)node.jjtGetChild(0)).getAttribute(ID);
+        String fieldName = id.getName();
+        
+        //System.out.println("Node " + node.getAttribute(VALUE));
+        //CodeGenerator.objectFile.println("    putstatic " + programName + "/"+ node.getAttribute(VALUE) + " " + typeCode);
+        
+        CodeGenerator.objectFile.flush();*/
 
         return data;
     }
@@ -487,15 +502,16 @@ public class CodeGeneratorVisitor
     public Object visit(ASTmultiply node, Object data)
     {
         
+          
         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
         SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
-
+        
         TypeSpec type0 = addend0Node.getTypeSpec();
         TypeSpec type1 = addend1Node.getTypeSpec();
-
+        System.out.println(type0 + " " + type1);
         // Get the addition type.
-        TypeSpec type = node.getTypeSpec();
-       
+        TypeSpec type = Predefined.integerType;
+
         String typePrefix = (type == Predefined.integerType) ? "i" : "f";
 
         // Emit code for the first expression
@@ -519,7 +535,17 @@ public class CodeGeneratorVisitor
         // Emit the appropriate add instruction.
         CodeGenerator.objectFile.println("    " + typePrefix + "mul");
         CodeGenerator.objectFile.flush();
+        /*
+        String typeCode = type == Predefined.integerType ? "I" : "F";
+        String programName = (String) data;
+
+        SymTabEntry id = (SymTabEntry) ( (SimpleNode)node.jjtGetChild(0)).getAttribute(ID);
+        String fieldName = id.getName();
         
+        //System.out.println("Node " + node.getAttribute(VALUE));
+        //CodeGenerator.objectFile.println("    putstatic " + programName + "/"+ node.getAttribute(VALUE) + " " + typeCode);
+        
+        CodeGenerator.objectFile.flush();*/
 
         return data;
     }
@@ -529,13 +555,13 @@ public class CodeGeneratorVisitor
         
         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
         SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
-
+        
         TypeSpec type0 = addend0Node.getTypeSpec();
         TypeSpec type1 = addend1Node.getTypeSpec();
-
+        System.out.println(type0 + " " + type1);
         // Get the addition type.
-        TypeSpec type = node.getTypeSpec();
-        
+        TypeSpec type = Predefined.integerType;
+
         String typePrefix = (type == Predefined.integerType) ? "i" : "f";
 
         // Emit code for the first expression
@@ -559,6 +585,17 @@ public class CodeGeneratorVisitor
         // Emit the appropriate add instruction.
         CodeGenerator.objectFile.println("    " + typePrefix + "div");
         CodeGenerator.objectFile.flush();
+        /*
+        String typeCode = type == Predefined.integerType ? "I" : "F";
+        String programName = (String) data;
+
+        SymTabEntry id = (SymTabEntry) ( (SimpleNode)node.jjtGetChild(0)).getAttribute(ID);
+        String fieldName = id.getName();
+        
+        //System.out.println("Node " + node.getAttribute(VALUE));
+        //CodeGenerator.objectFile.println("    putstatic " + programName + "/"+ node.getAttribute(VALUE) + " " + typeCode);
+        
+        CodeGenerator.objectFile.flush();*/
 
         return data;
     }
@@ -959,4 +996,86 @@ public class CodeGeneratorVisitor
         return data;
     }
     private int labelGenerator = 3;
+    
+    public Object visit(ASTIncrementStatement node, Object data)
+    {
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        System.out.println();
+
+        TypeSpec type0 = addend0Node.getTypeSpec();
+        
+
+        // Get the addition type.
+        TypeSpec type = node.getTypeSpec();
+        String typePrefix = (type == Predefined.integerType) ? "i" : "f";
+
+        // Emit code for the first expression
+        // with type conversion if necessary.
+        addend0Node.jjtAccept(this, data);
+        if ((type == Predefined.realType) && (type0 == Predefined.integerType))
+        {
+            CodeGenerator.objectFile.println("    i2f");
+            CodeGenerator.objectFile.flush();
+        }
+
+        CodeGenerator.objectFile.println("ldc 1");
+
+        // Emit the appropriate add instruction.
+        CodeGenerator.objectFile.println("    " + typePrefix + "add");
+        CodeGenerator.objectFile.flush();
+        //assign the value to itself.
+                
+        String typeCode = type == Predefined.integerType ? "I" : "F";
+        String programName = (String) data;
+
+        SymTabEntry id = (SymTabEntry) ( (SimpleNode)node.jjtGetChild(0)).getAttribute(ID);
+        String fieldName = id.getName();
+
+        CodeGenerator.objectFile.println("    putstatic " + programName + "/"
+                + fieldName + " " + typeCode);
+        CodeGenerator.objectFile.flush();
+
+        return data;
+    }
+    
+     public Object visit(ASTDecrementStatement node, Object data)
+    {
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        System.out.println();
+
+        TypeSpec type0 = addend0Node.getTypeSpec();
+        
+
+        // Get the addition type.
+        TypeSpec type = node.getTypeSpec();
+        String typePrefix = (type == Predefined.integerType) ? "i" : "f";
+
+        // Emit code for the first expression
+        // with type conversion if necessary.
+        addend0Node.jjtAccept(this, data);
+        if ((type == Predefined.realType) && (type0 == Predefined.integerType))
+        {
+            CodeGenerator.objectFile.println("    i2f");
+            CodeGenerator.objectFile.flush();
+        }
+
+        CodeGenerator.objectFile.println("ldc 1");
+
+        // Emit the appropriate add instruction.
+        CodeGenerator.objectFile.println("    " + typePrefix + "sub");
+        CodeGenerator.objectFile.flush();
+        //assign the value to itself.
+                
+        String typeCode = type == Predefined.integerType ? "I" : "F";
+        String programName = (String) data;
+
+        SymTabEntry id = (SymTabEntry) ( (SimpleNode)node.jjtGetChild(0)).getAttribute(ID);
+        String fieldName = id.getName();
+
+        CodeGenerator.objectFile.println("    putstatic " + programName + "/"
+                + fieldName + " " + typeCode);
+        CodeGenerator.objectFile.flush();
+
+        return data;
+    }
 }
