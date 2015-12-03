@@ -243,6 +243,7 @@ TOKEN : {
 <DOTSETVAL: "setVal">|
 <DOTGETINDEX: "getIndex">
 |<DOTGETSIZE: "getSize">
+|<DOTCONTAINS: "contains">
  |<BOOLEAN :"true"|"false"> 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
@@ -609,6 +610,7 @@ void getters() #void:{}
  LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
   LOOKAHEAD(4)ListGetIndex()| LOOKAHEAD(4)ListGetSize()
 |LOOKAHEAD(4)SetGetSize()|LOOKAHEAD(4)MapGetSize()
+|LOOKAHEAD(4) SetContains()
 }
 void SetAdd():{}
 {
@@ -658,6 +660,11 @@ void MapGetVal():{}
 void ListGetIndex():{}
 {
 	variable() <SSDot><DOTGETINDEX> <SSOpenBracket> (variable()|Literal()) <SSCloseBracket> 
+}
+
+void SetContains():{}
+{
+	variable() <SSDot><DOTCONTAINS> <SSOpenParen> (variable()|Literal()) <SSCloseParen> 
 }
 
 void ListGetSize():{}

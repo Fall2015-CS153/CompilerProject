@@ -4,10 +4,9 @@
 .field private static _runTimer LRunTimer;
 .field private static _standardIn LPascalTextIn;
 
-.field private static a Ljava/util/ArrayList;
+.field private static a Ljava/util/HashSet;
 .field private static b Z
-.field private static c Z
-.field private static d I
+.field private static s I
 
 .method public <init>()V
 
@@ -20,30 +19,33 @@
 .end method
 
 .method public main()V
-new  List
+new Set
 dup
 astore_0
 aload_0
-invokespecial List.<init>()V
-invokevirtual List/ListBoolean()Ljava/util/ArrayList;
-putstatic Test/a Ljava/util/ArrayList;
+invokespecial Set.<init>()V
+invokevirtual Set/SetInteger()Ljava/util/HashSet;
+putstatic Test/a Ljava/util/HashSet;
 aload_0
-ldc 1
-invokevirtual List/add(Z)V
+ldc 4
+invokevirtual Set/add(I)V
 aload_0
-ldc 0
-invokevirtual List/add(Z)V
+ldc 5
+invokevirtual Set/add(I)V
 aload_0
-ldc 0
-invokevirtual List/getValBoolean(I)Z
+ldc 4
+invokevirtual Set/remove(I)V
+aload_0
+ldc 4
+invokevirtual Set/contains(I)Z
     putstatic Test/b Z
-    ldc "Val "
+    ldc "Contains "
     getstatic Test/b Z
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
     new       java/lang/StringBuilder 
     dup 
-    ldc "Val "
+    ldc "Contains "
     invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
     getstatic Test/b Z
     invokevirtual java/lang/StringBuilder/append(Z)Ljava/lang/StringBuilder;
@@ -51,58 +53,17 @@ invokevirtual List/getValBoolean(I)Z
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
 aload_0
-ldc 1
-invokevirtual List/getValBoolean(I)Z
-    putstatic Test/c Z
-    ldc "Val "
-    getstatic Test/c Z
+invokevirtual Set/getSize()I
+    putstatic Test/s I
+    ldc "Size "
+    getstatic Test/s I
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
     new       java/lang/StringBuilder 
     dup 
-    ldc "Val "
+    ldc "Size "
     invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/c Z
-    invokevirtual java/lang/StringBuilder/append(Z)Ljava/lang/StringBuilder;
-    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
-    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
-
-aload_0
-ldc 0
-invokevirtual List/remove(Z)V
-aload_0
-ldc 0
-ldc 1
-invokevirtual List/setVal(IZ)V
-aload_0
-ldc 0
-invokevirtual List/getIndex(Z)I
-    putstatic Test/d I
-    ldc "Val "
-    getstatic Test/d I
-
-    getstatic     java/lang/System/out Ljava/io/PrintStream; 
-    new       java/lang/StringBuilder 
-    dup 
-    ldc "Val "
-    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/d I
-    invokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;
-    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
-    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
-
-aload_0
-invokevirtual List/getSize()I
-    putstatic Test/d I
-    ldc "Val "
-    getstatic Test/d I
-
-    getstatic     java/lang/System/out Ljava/io/PrintStream; 
-    new       java/lang/StringBuilder 
-    dup 
-    ldc "Val "
-    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/d I
+    getstatic Test/s I
     invokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
