@@ -247,6 +247,7 @@ TOKEN : {
 <DOTSETVAL: "setVal">|
 <DOTGETINDEX: "getIndex">
 |<DOTGETSIZE: "getSize">
+|<DOTCONTAINS: "contains">
  |<BOOLEAN :"true"|"false"> 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
@@ -1850,6 +1851,7 @@ void getters()      :{}
  LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
   LOOKAHEAD(4)ListGetIndex()| LOOKAHEAD(4)ListGetSize()
 |LOOKAHEAD(4)SetGetSize()|LOOKAHEAD(4)MapGetSize()
+|LOOKAHEAD(4) SetContains()
 }
 void SetAdd():{/*@bgen(jjtree) SetAdd */
   ASTSetAdd jjtn000 = new ASTSetAdd(JJTSETADD);
@@ -2139,6 +2141,37 @@ void ListGetIndex():{/*@bgen(jjtree) ListGetIndex */
         try {
 /*@egen*/
 	variable() <SSDot><DOTGETINDEX> <SSOpenBracket> (variable()|Literal()) <SSCloseBracket>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/ 
+}
+
+void SetContains():{/*@bgen(jjtree) SetContains */
+  ASTSetContains jjtn000 = new ASTSetContains(JJTSETCONTAINS);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) SetContains */
+        try {
+/*@egen*/
+	variable() <SSDot><DOTCONTAINS> <SSOpenParen> (variable()|Literal()) <SSCloseParen>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

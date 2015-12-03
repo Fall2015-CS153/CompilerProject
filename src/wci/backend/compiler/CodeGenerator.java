@@ -91,7 +91,7 @@ public class CodeGenerator extends Backend
                    typeCode="Z";
                 }
                    else{
-                   typeCode= "Ljava/util/ArrayList;";
+                   typeCode= "Ljava/util/HashSet;";
                 }
                 objectFile.println(".field private static " + fieldName + 
                 		           " " + typeCode);

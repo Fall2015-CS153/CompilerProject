@@ -1,6 +1,6 @@
 ProgramTest{
     Procedure :: main{
-    	int a = 4;
+        int a = 4;
         double doDob = 10.2;
         string str= "hello";
         boolean bor= true;
@@ -21,8 +21,8 @@ ProgramTest{
         put "Entering back in first Procedure";
     }
     Procedure :: second{
-	int c = 5;
-	double fort= 6.0;
+        int c = 5;
+        double fort= 6.0;
         put "Entered and Leaving second procedure";
     }
 }
