@@ -978,6 +978,9 @@ public class CodeGeneratorVisitor
         //labelGenerator++;
         CodeGenerator.objectFile.println("L00" + labelGenerator+ ":");
         labelGenerator++;
+        for(int i=0;i<node.jjtGetNumChildren()-2;i++){
+            SimpleNode nextPart=node.jjtGetChild(i+2);
+        }
         //elseif.jjtAccept(this, data);
         //node.jjtGetChild(3).jjtGetChild(0).jjtAccept(this, data);
         //System.out.println(elseif.toString());
