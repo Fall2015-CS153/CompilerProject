@@ -76,7 +76,7 @@ public class CodeGenerator extends Backend
         for (SymTabEntry id : locals) {// this is the loop for field methods
             Definition defn = id.getDefinition();
             
-            if (defn == VARIABLE) {
+            if (defn == VARIABLE||defn == TYPE) {
                 
                 String fieldName = id.getName();
                 TypeSpec type = id.getTypeSpec();
@@ -89,6 +89,9 @@ public class CodeGenerator extends Backend
                     typeCode= "Ljava/lang/String;";
                 }else if(type==Predefined.booleanType){
                    typeCode="Z";
+                }
+                   else{
+                   typeCode= "Ljava/util/ArrayList;";
                 }
                 objectFile.println(".field private static " + fieldName + 
                 		           " " + typeCode);
