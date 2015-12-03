@@ -5,6 +5,7 @@ import wci.intermediate.*;
 import wci.intermediate.symtabimpl.Predefined;
 
 import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
+import static wci.intermediate.typeimpl.TypeKeyImpl.LIST_INDEX_TYPE;
 
 public class CodeGeneratorVisitor
         extends ExprParserVisitorAdapter
@@ -1187,6 +1188,37 @@ public class CodeGeneratorVisitor
                 getAttribute(ID);
         String fieldName = id.getName();
 
+        SimpleNode addend0Node = (SimpleNode) node;
+         TypeSpec type0  = id.getTypeSpec();
+         type0 = (TypeSpec)type0.getAttribute(LIST_INDEX_TYPE);
+        ;
+        //System.out.println("TYPE" + type0 );
+        // Get the addition type.
+        
+        String typePrefix = "";
+        String methodName = "";
+        if (type0 == Predefined.integerType )
+        {
+          typePrefix = "I";
+          methodName = "Integer";
+        }
+        else if (type0 == Predefined.stringType )
+        {
+          typePrefix = "Ljava/lang/String;";
+          methodName = "String";
+        }
+        else if (type0 == Predefined.doubleType || type0 == Predefined.floatType )
+        {
+          typePrefix = "F";
+          methodName = "Float";
+        }
+        else if (type0 == Predefined.booleanType )
+        {
+          typePrefix = "Z";
+          methodName = "Boolean";
+        }
+        System.out.println("TYPE Prefix " + typePrefix  );
+        
         
         CodeGenerator.objectFile.println("new  List");
         CodeGenerator.objectFile.flush();
@@ -1200,7 +1232,7 @@ public class CodeGeneratorVisitor
                 "invokespecial List.<init>()V");
         CodeGenerator.objectFile.flush();
         CodeGenerator.objectFile.println(
-                "invokevirtual List/StringList()Ljava/util/ArrayList;");
+                "invokevirtual List/List"+methodName + "()Ljava/util/ArrayList;");
         CodeGenerator.objectFile.flush();
         CodeGenerator.objectFile.println("putstatic " + programName + "/" + fieldName + " Ljava/util/ArrayList;");
         CodeGenerator.objectFile.flush();
@@ -1213,47 +1245,68 @@ public class CodeGeneratorVisitor
      SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(1);
      addend0Node = (SimpleNode)addend0Node.jjtGetChild(0);
      
-        TypeSpec type0 = addend0Node.getTypeSpec();
-        System.out.println(type0);
         
         SymTabEntry id = (SymTabEntry) ((SimpleNode) node.jjtGetChild(0)).getAttribute(ID);
         String fieldName = id.getName();
         
+         TypeSpec type0 = addend0Node.getTypeSpec();
+        
+        System.out.println("TYPE" + type0 );
+        // Get the addition type.
+        
+        String typePrefix = "";
+        if (type0 == Predefined.integerType )
+        {
+          typePrefix = "I";
+        }
+        else if (type0 == Predefined.stringType )
+        {
+          typePrefix = "Ljava/lang/String;";
+        }
+        else if (type0 == Predefined.doubleType || type0 == Predefined.floatType )
+        {
+          typePrefix = "F";
+        }
+        else if (type0 == Predefined.booleanType )
+        {
+          typePrefix = "Z";
+        }
+        
         CodeGenerator.objectFile.println("aload_" + id.getIndex());
         CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("ldc \"" + addend0Node.getAttribute(VALUE) + "\"");
+        SimpleNode val = addend0Node;
+                if (type0 == Predefined.stringType )
+        {
+        CodeGenerator.objectFile.println("ldc \"" + val.getAttribute(VALUE) + "\"");
         CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("invokevirtual List/add(Ljava/lang/String;)V");
+        }
+        else if(type0 == Predefined.booleanType)
+        {
+            String tmp = "0";
+            System.out.println(val.getAttribute(VALUE));
+            if(val.getAttribute(VALUE).equals(true))
+            {
+                tmp = "1";
+            }         
+            System.out.println(tmp);       
+            CodeGenerator.objectFile.println("ldc " + tmp + "");
         CodeGenerator.objectFile.flush();
-        //load the variable.
-        // Emit code for the first expression
-        // with type conversion if necessary.
-        /*
-        addend0Node.jjtAccept(this, data);
-        CodeGenerator.objectFile.println("");
+        }
+        else
+        {
+           CodeGenerator.objectFile.println("ldc " + val.getAttribute(VALUE) + "");
+        CodeGenerator.objectFile.flush(); 
+        }
+        CodeGenerator.objectFile.println("invokevirtual List/add(" + typePrefix + ")V");
         CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("invokenonvirtual IWrap/<init>(I)V");
-        CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("dup");
-        CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("astore_1");
-        CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("invokevirtual java/util/ArrayList.add(Ljava/lang/Object;)Z");
-        CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("pop");
-        CodeGenerator.objectFile.flush();
-        */
+  
+        
         
 
         return data;
     }
     
-    /*
-    aload_0
-ldc 0
-invokevirtual List/getVal(I)Ljava/lang/Object;
-putstatic Test/b Ljava/lang/Object;
-    */
+   
     
     public Object visit(ASTListGetVal node, Object data)
     {
@@ -1261,17 +1314,48 @@ putstatic Test/b Ljava/lang/Object;
         addend0Node = (SimpleNode)addend0Node.jjtGetChild(0);
         System.out.println(addend0Node);
 
-        TypeSpec type0 = addend0Node.getTypeSpec();
-        System.out.println(type0);
+        
         
         SymTabEntry id = (SymTabEntry) ((SimpleNode) node.jjtGetChild(0)).getAttribute(ID);
-        String fieldName = id.getName();
+        //String fieldName = id.getName();
+        
+        
+        SimpleNode varNode = (SimpleNode) node.jjtGetChild(0);
+         TypeSpec type0  = varNode.getTypeSpec();
+         type0 = (TypeSpec)type0.getAttribute(LIST_INDEX_TYPE);
+        
+        //System.out.println("TYPE" + type0 );
+        // Get the addition type.
+        
+        String typePrefix = "";
+        String methodName = "";
+        if (type0 == Predefined.integerType )
+        {
+          typePrefix = "I";
+          methodName = "Integer";
+        }
+        else if (type0 == Predefined.stringType )
+        {
+          typePrefix = "Ljava/lang/String;";
+          methodName = "String";
+        }
+        else if (type0 == Predefined.doubleType || type0 == Predefined.floatType )
+        {
+          typePrefix = "F";
+          methodName = "Float";
+        }
+        else if (type0 == Predefined.booleanType )
+        {
+          typePrefix = "Z";
+          methodName = "Boolean";
+        }
+        System.out.println("TYPE Prefix " + typePrefix  );
         
         CodeGenerator.objectFile.println("aload_" + id.getIndex());
         CodeGenerator.objectFile.flush();
         CodeGenerator.objectFile.println("ldc " + addend0Node.getAttribute(VALUE));
         CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("invokevirtual List/getVal(I)Ljava/lang/String;");
+        CodeGenerator.objectFile.println("invokevirtual List/getVal" + methodName + "(I)" + typePrefix );
         CodeGenerator.objectFile.flush();
         return data;
     }
@@ -1282,16 +1366,59 @@ putstatic Test/b Ljava/lang/Object;
         addend0Node = (SimpleNode)addend0Node.jjtGetChild(0);
         System.out.println(addend0Node);
 
-        TypeSpec type0 = addend0Node.getTypeSpec();
-        System.out.println(type0);
         SymTabEntry id = (SymTabEntry) ((SimpleNode) node.jjtGetChild(0)).getAttribute(ID);
         String fieldName = id.getName();
         
+        
+         TypeSpec type0 = addend0Node.getTypeSpec();
+        
+        System.out.println("TYPE" + type0 );
+        // Get the addition type.
+        
+        String typePrefix = "";
+        if (type0 == Predefined.integerType )
+        {
+          typePrefix = "I";
+        }
+        else if (type0 == Predefined.stringType )
+        {
+          typePrefix = "Ljava/lang/String;";
+        }
+        else if (type0 == Predefined.doubleType || type0 == Predefined.floatType )
+        {
+          typePrefix = "F";
+        }
+        else if (type0 == Predefined.booleanType )
+        {
+          typePrefix = "Z";
+        }
+        
         CodeGenerator.objectFile.println("aload_" + id.getIndex());
         CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("ldc \"" + addend0Node.getAttribute(VALUE) + "\"");
+       SimpleNode val = addend0Node;
+                if (type0 == Predefined.stringType )
+        {
+        CodeGenerator.objectFile.println("ldc \"" + val.getAttribute(VALUE) + "\"");
         CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("invokevirtual List/remove(Ljava/lang/String;)V");
+        }
+        else if(type0 == Predefined.booleanType)
+        {
+            String tmp = "0";
+            System.out.println(val.getAttribute(VALUE));
+            if(val.getAttribute(VALUE).equals(true))
+            {
+                tmp = "1";
+            }         
+            System.out.println(tmp);        
+            CodeGenerator.objectFile.println("ldc " + tmp + "");
+        CodeGenerator.objectFile.flush();
+        }
+        else
+        {
+           CodeGenerator.objectFile.println("ldc " + val.getAttribute(VALUE) + "");
+        CodeGenerator.objectFile.flush(); 
+        }
+        CodeGenerator.objectFile.println("invokevirtual List/remove(" + typePrefix + ")V");
         CodeGenerator.objectFile.flush();
         return data;
     }
@@ -1300,19 +1427,66 @@ putstatic Test/b Ljava/lang/Object;
     {
         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(1);
         addend0Node = (SimpleNode)addend0Node.jjtGetChild(0);
-        System.out.println(addend0Node);
+        //System.out.println(addend0Node);
 
         TypeSpec type0 = addend0Node.getTypeSpec();
-        System.out.println(type0);
+        
+        System.out.println("TYPE" + type0 );
+        // Get the addition type.
+        
+        String typePrefix = "";
+        if (type0 == Predefined.integerType )
+        {
+          typePrefix = "I";
+        }
+        else if (type0 == Predefined.stringType )
+        {
+          typePrefix = "Ljava/lang/String;";
+        }
+        else if (type0 == Predefined.doubleType || type0 == Predefined.floatType )
+        {
+          typePrefix = "F";
+        }
+        else if (type0 == Predefined.booleanType )
+        {
+          typePrefix = "Z";
+        }
+
         
         SymTabEntry id = (SymTabEntry) ((SimpleNode) node.jjtGetChild(0)).getAttribute(ID);
         String fieldName = id.getName();
+
+        
+        
+        //get the base type to get the type of the identifier
+        
         
         CodeGenerator.objectFile.println("aload_" + id.getIndex());
         CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("ldc \"" + addend0Node.getAttribute(VALUE) + "\"");
+        SimpleNode val = addend0Node;
+                if (type0 == Predefined.stringType )
+        {
+        CodeGenerator.objectFile.println("ldc \"" + val.getAttribute(VALUE) + "\"");
         CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("invokevirtual List/getIndex(Ljava/lang/String;)I");
+        }
+        else if(type0 == Predefined.booleanType)
+        {
+            String tmp = "0";
+            System.out.println(val.getAttribute(VALUE));
+            if(val.getAttribute(VALUE).equals(true))
+            {
+                tmp = "1";
+            }         
+            System.out.println(tmp);       
+            CodeGenerator.objectFile.println("ldc " + tmp + "");
+        CodeGenerator.objectFile.flush();
+        }
+        else
+        {
+           CodeGenerator.objectFile.println("ldc " + val.getAttribute(VALUE) + "");
+        CodeGenerator.objectFile.flush(); 
+        }
+        CodeGenerator.objectFile.println("invokevirtual List/getIndex("+ typePrefix + ")I");
         CodeGenerator.objectFile.flush();
         return data;
     }
@@ -1329,17 +1503,59 @@ putstatic Test/b Ljava/lang/Object;
         
          SymTabEntry id = (SymTabEntry) ((SimpleNode) node.jjtGetChild(0)).getAttribute(ID);
         String fieldName = id.getName();
-        
+        //TypeSpec a = val.getTypeSpec();
+        //System.out.println(a.baseType());
        
-
+         TypeSpec type0 = val.getTypeSpec();
+        
+        System.out.println("TYPE" + type0 );
+        // Get the addition type.
+        
+        String typePrefix = "";
+        if (type0 == Predefined.integerType )
+        {
+          typePrefix = "I";
+        }
+        else if (type0 == Predefined.stringType )
+        {
+          typePrefix = "Ljava/lang/String;";
+        }
+        else if (type0 == Predefined.doubleType || type0 == Predefined.floatType )
+        {
+          typePrefix = "F";
+        }
+        else if (type0 == Predefined.booleanType )
+        {
+          typePrefix = "Z";
+        }
         
         CodeGenerator.objectFile.println("aload_" + id.getIndex());
         CodeGenerator.objectFile.flush();
         CodeGenerator.objectFile.println("ldc " + pos.getAttribute(VALUE) + "");
         CodeGenerator.objectFile.flush();
+        if (type0 == Predefined.stringType )
+        {
         CodeGenerator.objectFile.println("ldc \"" + val.getAttribute(VALUE) + "\"");
         CodeGenerator.objectFile.flush();
-        CodeGenerator.objectFile.println("invokevirtual List/setVal(ILjava/lang/String;)V");
+        }
+        else if(type0 == Predefined.booleanType)
+        {
+            String tmp = "0";
+            System.out.println(val.getAttribute(VALUE));
+            if(val.getAttribute(VALUE).equals(true))
+            {
+                tmp = "1";
+            }         
+            System.out.println(tmp); 
+            CodeGenerator.objectFile.println("ldc " + tmp + "");
+        CodeGenerator.objectFile.flush();
+        }
+        else
+        {
+           CodeGenerator.objectFile.println("ldc " + val.getAttribute(VALUE) + "");
+        CodeGenerator.objectFile.flush(); 
+        }
+        CodeGenerator.objectFile.println("invokevirtual List/setVal(I" + typePrefix + ")V");
         CodeGenerator.objectFile.flush();
         return data;
     }

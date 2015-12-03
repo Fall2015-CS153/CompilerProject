@@ -5,8 +5,8 @@
 .field private static _standardIn LPascalTextIn;
 
 .field private static a Ljava/util/ArrayList;
-.field private static b Ljava/lang/String;
-.field private static c Ljava/lang/String;
+.field private static b Z
+.field private static c Z
 .field private static d I
 
 .method public <init>()V
@@ -25,58 +25,58 @@ dup
 astore_0
 aload_0
 invokespecial List.<init>()V
-invokevirtual List/StringList()Ljava/util/ArrayList;
+invokevirtual List/ListBoolean()Ljava/util/ArrayList;
 putstatic Test/a Ljava/util/ArrayList;
 aload_0
-ldc "abc"
-invokevirtual List/add(Ljava/lang/String;)V
-aload_0
-ldc "cde"
-invokevirtual List/add(Ljava/lang/String;)V
+ldc 1
+invokevirtual List/add(Z)V
 aload_0
 ldc 0
-invokevirtual List/getVal(I)Ljava/lang/String;
-    putstatic Test/b Ljava/lang/String;
+invokevirtual List/add(Z)V
+aload_0
+ldc 0
+invokevirtual List/getValBoolean(I)Z
+    putstatic Test/b Z
     ldc "Val "
-    getstatic Test/b Ljava/lang/String;
+    getstatic Test/b Z
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
     new       java/lang/StringBuilder 
     dup 
     ldc "Val "
     invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/b Ljava/lang/String;
-    invokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    getstatic Test/b Z
+    invokevirtual java/lang/StringBuilder/append(Z)Ljava/lang/StringBuilder;
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
 aload_0
 ldc 1
-invokevirtual List/getVal(I)Ljava/lang/String;
-    putstatic Test/c Ljava/lang/String;
+invokevirtual List/getValBoolean(I)Z
+    putstatic Test/c Z
     ldc "Val "
-    getstatic Test/c Ljava/lang/String;
+    getstatic Test/c Z
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
     new       java/lang/StringBuilder 
     dup 
     ldc "Val "
     invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/c Ljava/lang/String;
-    invokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    getstatic Test/c Z
+    invokevirtual java/lang/StringBuilder/append(Z)Ljava/lang/StringBuilder;
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
 aload_0
-ldc "cde"
-invokevirtual List/remove(Ljava/lang/String;)V
+ldc 0
+invokevirtual List/remove(Z)V
 aload_0
 ldc 0
-ldc "what"
-invokevirtual List/setVal(ILjava/lang/String;)V
+ldc 1
+invokevirtual List/setVal(IZ)V
 aload_0
-ldc "what"
-invokevirtual List/getIndex(Ljava/lang/String;)I
+ldc 0
+invokevirtual List/getIndex(Z)I
     putstatic Test/d I
     ldc "Val "
     getstatic Test/d I

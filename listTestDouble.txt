@@ -1,0 +1,19 @@
+ProgramTest{
+    Procedure :: main{
+      list boolean a[];
+      a.add[true];
+      a.add[false];
+      boolean b = a.getVal[0];
+      put "Val ", b;
+      boolean c = a.getVal[1];
+      put "Val ", c;
+      a.remove[false];
+      a.setVal[0,true];
+      int d = a.getIndex[false];
+      put "Val ", d;
+      d = a.getSize[];
+      put "Val ", d;
+
+    }
+}
+
