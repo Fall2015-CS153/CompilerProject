@@ -4,10 +4,12 @@
 .field private static _runTimer LRunTimer;
 .field private static _standardIn LPascalTextIn;
 
-.field private static a Ljava/util/ArrayList;
-.field private static b Ljava/lang/String;
-.field private static c Ljava/lang/String;
-.field private static d I
+.field private static a I
+.field private static bor Z
+.field private static c I
+.field private static doDob F
+.field private static fort F
+.field private static str Ljava/lang/String;
 
 .method public <init>()V
 
@@ -20,93 +22,163 @@
 .end method
 
 .method public main()V
-new  List
-dup
-astore_0
-aload_0
-invokespecial List.<init>()V
-invokevirtual List/StringList()Ljava/util/ArrayList;
-putstatic Test/a Ljava/util/ArrayList;
-aload_0
-ldc "abc"
-invokevirtual List/add(Ljava/lang/String;)V
-aload_0
-ldc "cde"
-invokevirtual List/add(Ljava/lang/String;)V
-aload_0
-ldc 0
-invokevirtual List/getVal(I)Ljava/lang/String;
-    putstatic Test/b Ljava/lang/String;
-    ldc "Val "
-    getstatic Test/b Ljava/lang/String;
+    ldc 4
+    putstatic Test/a I
+    ldc 10.2
+    putstatic Test/doDob F
+    ldc "hello"
+    putstatic Test/str Ljava/lang/String;
+    ldc 1
+    putstatic Test/bor Z
+    ldc 5
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
     new       java/lang/StringBuilder 
     dup 
-    ldc "Val "
+    ldc "5"
     invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/b Ljava/lang/String;
-    invokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
-aload_0
-ldc 1
-invokevirtual List/getVal(I)Ljava/lang/String;
-    putstatic Test/c Ljava/lang/String;
-    ldc "Val "
-    getstatic Test/c Ljava/lang/String;
+    pop
+    ldc "hello"
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
     new       java/lang/StringBuilder 
     dup 
-    ldc "Val "
+    ldc "hello"
     invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/c Ljava/lang/String;
-    invokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
-aload_0
-ldc "cde"
-invokevirtual List/remove(Ljava/lang/String;)V
-aload_0
-ldc 0
-ldc "what"
-invokevirtual List/setVal(ILjava/lang/String;)V
-aload_0
-ldc "what"
-invokevirtual List/getIndex(Ljava/lang/String;)I
-    putstatic Test/d I
-    ldc "Val "
-    getstatic Test/d I
+    pop
+    ldc "Printing Boolean "
+    getstatic Test/bor Z
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
     new       java/lang/StringBuilder 
     dup 
-    ldc "Val "
+    ldc "Printing Boolean "
     invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/d I
+    getstatic Test/bor Z
+    invokevirtual java/lang/StringBuilder/append(Z)Ljava/lang/StringBuilder;
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
+    pop
+    pop
+    ldc "Printing integer "
+    getstatic Test/a I
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "Printing integer "
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    getstatic Test/a I
     invokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
-aload_0
-invokevirtual List/getSize()I
-    putstatic Test/d I
-    ldc "Val "
-    getstatic Test/d I
+    pop
+    pop
+    ldc "printing Double "
+    getstatic Test/doDob F
 
     getstatic     java/lang/System/out Ljava/io/PrintStream; 
     new       java/lang/StringBuilder 
     dup 
-    ldc "Val "
+    ldc "printing Double "
     invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic Test/d I
-    invokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;
+    getstatic Test/doDob F
+    invokevirtual java/lang/StringBuilder/append(F)Ljava/lang/StringBuilder;
     invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
+    pop
+    pop
+    ldc "print String "
+    getstatic Test/str Ljava/lang/String;
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "print String "
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    getstatic Test/str Ljava/lang/String;
+    invokevirtual java/lang/StringBuilder/append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
+    pop
+    pop
+    ldc "multiple variable "
+    getstatic Test/a I
+    getstatic Test/doDob F
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "multiple variable "
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    getstatic Test/a I
+    invokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;
+    getstatic Test/doDob F
+    invokevirtual java/lang/StringBuilder/append(F)Ljava/lang/StringBuilder;
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
+    pop
+    pop
+    pop
+    ldc "Exiting FirstProcedure"
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "Exiting FirstProcedure"
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
+    pop
+    new Test
+    dup
+    invokespecial Test/<init>()V
+    invokevirtual Test/second()V
+    ldc "Entering back in first Procedure"
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "Entering back in first Procedure"
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
+    pop
+
+return
+.limit locals 32
+.limit stack 32
+.end method
+
+.method public second()V
+    ldc 5
+    putstatic Test/c I
+    ldc 6.0
+    putstatic Test/fort F
+    ldc "Entered and Leaving second procedure"
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "Entered and Leaving second procedure"
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
+    pop
 
 return
 .limit locals 32

@@ -54,6 +54,11 @@ public class CodeGeneratorVisitor
                 "    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;\n"
                 + "    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V\n");
 
+        //Delete garbage on stack
+        for (int i = 0; i < node.jjtGetNumChildren(); i++)
+        {
+            CodeGenerator.objectFile.println("    pop");
+        }
         return data;
     }
 
@@ -988,23 +993,14 @@ public class CodeGeneratorVisitor
 
     public Object visit(ASTIfPart node, Object data)
     {
-        //Testing for only a single boolean operator for now
-        //Extract operator: !=, <, <=, >, >=, ==
+                                          
         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
-        SimpleNode addend1Node = (SimpleNode) addend0Node.jjtGetChild(0);
-        SimpleNode addend2Node = (SimpleNode) addend0Node.jjtGetChild(0);
+        
 
-        SimpleNode insideStatement = (SimpleNode) node.jjtGetChild(1).
-                jjtGetChild(0);
-//        SimpleNode elseif = (SimpleNode) node.jjtGetChild(2).jjtGetChild(0); //may have to loop through elseif and elsez later on
-        //SimpleNode elsez = (SimpleNode) node.jjtGetChild(3).jjtGetChild(0); //only supports single statement for now
-
-        //System.out.println( node.jjtGetChild(1).jjtGetChild(0).toString() );
+        SimpleNode insideCommands = (SimpleNode) node.jjtGetChild(1);
+    
         String operation = "";
 
-        //TypeSpec type0 = addend1Node.getTypeSpec();
-        //TypeSpec type1 = addend2Node.getTypeSpec();
-        // Get the boolean type.
         TypeSpec type = node.getTypeSpec();
 
         //String typePrefix = (type == Predefined.booleanType) ? "i" : "f";
@@ -1013,12 +1009,14 @@ public class CodeGeneratorVisitor
         addend0Node.jjtAccept(this, data);
         labelGenerator++;
         CodeGenerator.objectFile.println("    " + "ifeq L00" + labelGenerator);//if false
-        insideStatement.jjtAccept(this, data); //CS153 NOTE: Loop through these if there are multiple statements
+        insideCommands.jjtAccept(this, data); //CS153 NOTE: Loop through these if there are multiple statements
         //labelGenerator++;
+        CodeGenerator.objectFile.println("    " + "goto L00" + finallabelGenerator);
         CodeGenerator.objectFile.println("L00" + labelGenerator + ":");
         labelGenerator++;
         for(int i=0;i<node.jjtGetNumChildren()-2;i++){
-            SimpleNode nextPart=node.jjtGetChild(i+2);
+            SimpleNode nextPart=(SimpleNode)node.jjtGetChild(i+2);
+            nextPart.jjtAccept(this, data);
         }
         //elseif.jjtAccept(this, data);
         //node.jjtGetChild(3).jjtGetChild(0).jjtAccept(this, data);
@@ -1044,7 +1042,31 @@ public class CodeGeneratorVisitor
         // Emit the appropriate add instruction.
 
         labelGenerator++;
+        CodeGenerator.objectFile.println("L00" + finallabelGenerator + ":");
+        finallabelGenerator++;
         CodeGenerator.objectFile.flush();
+        return data;
+    }
+    public Object visit(ASTElseIfPart node, Object data){
+         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+         SimpleNode insideCommands = (SimpleNode) node.jjtGetChild(1);
+         addend0Node.jjtAccept(this, data);
+        
+        CodeGenerator.objectFile.println("    " + "ifeq L00" + labelGenerator);//if false
+        insideCommands.jjtAccept(this, data); //CS153 NOTE: Loop through these if there are multiple statements
+        CodeGenerator.objectFile.println("    " + "goto L00" + finallabelGenerator);
+        //labelGenerator++;
+        CodeGenerator.objectFile.println("L00" + labelGenerator + ":");
+        labelGenerator++;
+        return data;
+    }
+    public Object visit(ASTElsePart node, Object data){
+        SimpleNode insideCommands = (SimpleNode) node.jjtGetChild(0);
+        CodeGenerator.objectFile.println("    " + "iconst_1");
+        CodeGenerator.objectFile.println("    " + "ifeq L00" + labelGenerator);//if false
+        insideCommands.jjtAccept(this, data); //CS153 NOTE: Loop through these if there are multiple statements
+        CodeGenerator.objectFile.println("L00" + labelGenerator + ":");
+        labelGenerator++;
         return data;
     }
 
@@ -1097,7 +1119,7 @@ public class CodeGeneratorVisitor
         return data;
     }
     private int labelGenerator = 3;
-
+    private int finallabelGenerator=100;
     public Object visit(ASTIncrementStatement node, Object data)
     {
         SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);

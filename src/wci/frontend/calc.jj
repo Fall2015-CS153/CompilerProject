@@ -393,7 +393,7 @@ try {
 /*@egen*/
 (<RESERVEDWORDPROCEDURE> <IDENTIFIER>{
 jjtn000.setAttribute(VALUE, token.image);}
-<SSOpenBraces> Commands()
+<SSOpenBraces> Commands() <SSCloseBraces>
 )/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
   if (jjtc000) {
@@ -426,7 +426,7 @@ void Commands() : {/*@bgen(jjtree) Commands */
         try {
 /*@egen*/
 	(try {
-	(IfPart() | SwitchPart()|Statement()| ProcedureCall()| DataTypes()|PrintStatement()|Error())* <SSCloseBraces>
+	(IfPart() | SwitchPart()|For()|While()|Statement()| ProcedureCall()| DataTypes()|PrintStatement()|Error())*
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
 	Commands();// Recursive call to continue error handling
@@ -1043,7 +1043,6 @@ void Statement(): {/*@bgen(jjtree) Statement */
    LOOKAHEAD(3)IncrementStatement()|LOOKAHEAD(3)DecrementStatement()
 |LOOKAHEAD(3)Assignment()|LOOKAHEAD(3) Declaration()
 |LOOKAHEAD(2)PlusEqualsStatement()|LOOKAHEAD(2)MinusEqualsStatement()|LOOKAHEAD(2)DivideEqualsStatement()|LOOKAHEAD(2)StarEqualsStatement()
-|For()|While()
 |LOOKAHEAD(2)DataStructManipulation()/*@bgen(jjtree)*/
    } catch (Throwable jjte000) {
      if (jjtc000) {
@@ -1077,7 +1076,7 @@ void IfPart() : {/*@bgen(jjtree) IfPart */
 {/*@bgen(jjtree) IfPart */
   try {
 /*@egen*/
-  <RESERVEDWORDIF> <SSOpenParen> (Expr()) <SSCloseParen> <SSOpenBraces> (Statement())* <SSCloseBraces> (ElseIfPart())* (ElsePart())?/*@bgen(jjtree)*/
+  <RESERVEDWORDIF> <SSOpenParen> (Expr()) <SSCloseParen> <SSOpenBraces> Commands() <SSCloseBraces> (ElseIfPart())* (ElsePart())?/*@bgen(jjtree)*/
   } catch (Throwable jjte000) {
     if (jjtc000) {
       jjtree.clearNodeScope(jjtn000);
@@ -1110,7 +1109,7 @@ void ElseIfPart() : {/*@bgen(jjtree) ElseIfPart */
 {/*@bgen(jjtree) ElseIfPart */
  try {
 /*@egen*/
- <RESERVEDWORDELSEIF> <SSOpenParen> (Expr()) <SSCloseParen><SSOpenBraces>  (Statement())* <SSCloseBraces>/*@bgen(jjtree)*/
+ <RESERVEDWORDELSEIF> <SSOpenParen> (Expr()) <SSCloseParen><SSOpenBraces>  Commands() <SSCloseBraces>/*@bgen(jjtree)*/
  } catch (Throwable jjte000) {
    if (jjtc000) {
      jjtree.clearNodeScope(jjtn000);
@@ -1143,7 +1142,7 @@ void ElsePart() : {/*@bgen(jjtree) ElsePart */
 {/*@bgen(jjtree) ElsePart */
  try {
 /*@egen*/
- <RESERVEDWORDELSE> <SSOpenBraces>  (Statement())* <SSCloseBraces>/*@bgen(jjtree)*/
+ <RESERVEDWORDELSE> <SSOpenBraces>  Commands() <SSCloseBraces>/*@bgen(jjtree)*/
  } catch (Throwable jjte000) {
    if (jjtc000) {
      jjtree.clearNodeScope(jjtn000);
