@@ -2,6 +2,7 @@ options{
     NODE_EXTENDS="wci.intermediate.icodeimpl.ICodeNodeImpl";
     MULTI=true;
     VISITOR=true;
+DEBUG_PARSER=true;
 }
 PARSER_BEGIN(ExprParser)
 package wci.frontend;
@@ -241,6 +242,7 @@ TOKEN : {
 <DOTREMOVE: "remove">|
 <DOTSETVAL: "setVal">|
 <DOTGETINDEX: "getIndex">
+|<DOTGETSIZE: "getSize">
  |<BOOLEAN :"true"|"false"> 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
@@ -395,7 +397,7 @@ void StringConst() : {}
 
 void Expr()#void: {}
 {
-   SimpleExpr() ( (<SSNE>SimpleExpr() #NotEquals(2)| <SSL>SimpleExpr() #LessThan(2) |<SSLE>SimpleExpr() #LessEquals(2)|<SSG> SimpleExpr() #GreaterThan(2)|<SSGE>SimpleExpr()#GreaterEquals(2)|<ComparisonEquals>SimpleExpr() #Equals(2)))*
+   SimpleExpr() ( (<SSNE>SimpleExpr() #NotEquals(2)| <SSL>SimpleExpr() #LessThan(2) |<SSLE>SimpleExpr() #LessEquals(2)|<SSG> SimpleExpr() #GreaterThan(2)|<SSGE>SimpleExpr()#GreaterEquals(2)|<ComparisonEquals>SimpleExpr() #Equals(2)))* 
 }
 void SimpleExpr() #void: {}
 {
@@ -410,11 +412,13 @@ void Term () #void: {}
 
 void Factor() #void: {}
 {
-    variable()
+LOOKAHEAD(3)getters()
+|   LOOKAHEAD(3) variable()
 |(IntegerConst()|FloatConst()|StringConst()|DoubleConst())
 |(<SSNot> Factor()#Negate(1))
 |(<SSOpenParen> Expr() <SSCloseParen>) 
 |BooleanConst()
+
   
 }
 
@@ -597,9 +601,14 @@ void DataStructManipulation() #void: {}
 {
  LOOKAHEAD(4)SetAdd()| LOOKAHEAD(4)ListAdd()| LOOKAHEAD(4)MapAdd()|
   LOOKAHEAD(4)SetDelete()| LOOKAHEAD(4)ListDelete()| LOOKAHEAD(4)MapDelete()|
- LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
-  LOOKAHEAD(4)ListGetIndex()|
   LOOKAHEAD(4)ListSetVal()| LOOKAHEAD(4)HashSetVal()
+}
+
+void getters() #void:{}
+{
+ LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
+  LOOKAHEAD(4)ListGetIndex()| LOOKAHEAD(4)ListGetSize()
+|LOOKAHEAD(4)SetGetSize()|LOOKAHEAD(4)MapGetSize()
 }
 void SetAdd():{}
 {
@@ -636,23 +645,35 @@ void MapDelete():{}
 	variable() <SSDot><DOTREMOVE> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
 }
 
-
-
 void ListGetVal():{}
 {
-	variable() <SSDot><DOTGETVAL> <SSOpenBracket> <INTEGER> <SSCloseBracket> <SSSemiColon>
+	variable() <SSDot><DOTGETVAL> <SSOpenBracket> (Position()) <SSCloseBracket> 
 }
 void MapGetVal():{}
 {
-	variable() <SSDot><DOTGETVAL> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
+	variable() <SSDot><DOTGETVAL> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> 
 }
 
 
 void ListGetIndex():{}
 {
-	variable() <SSDot><DOTGETINDEX> <SSOpenBracket> (variable()|Literal()) <SSCloseBracket> <SSSemiColon>
+	variable() <SSDot><DOTGETINDEX> <SSOpenBracket> (variable()|Literal()) <SSCloseBracket> 
 }
 
+void ListGetSize():{}
+{
+	variable() <SSDot><DOTGETSIZE> <SSOpenBracket> <SSCloseBracket> 
+}
+
+void SetGetSize():{}
+{
+	variable() <SSDot><DOTGETSIZE> <SSOpenParen> <SSCloseParen> 
+}
+
+void MapGetSize():{}
+{
+	variable() <SSDot><DOTGETSIZE> <SSOpenBraces>  <SSCloseBraces> 
+}
 
 void ListSetVal():{}
 {

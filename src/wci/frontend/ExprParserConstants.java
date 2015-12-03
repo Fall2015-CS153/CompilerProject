@@ -137,43 +137,45 @@ public interface ExprParserConstants {
   /** RegularExpression Id. */
   int DOTGETINDEX = 66;
   /** RegularExpression Id. */
-  int BOOLEAN = 67;
+  int DOTGETSIZE = 67;
   /** RegularExpression Id. */
-  int IDENTIFIER = 68;
+  int BOOLEAN = 68;
   /** RegularExpression Id. */
-  int STRING = 69;
+  int IDENTIFIER = 69;
   /** RegularExpression Id. */
-  int INTEGER = 70;
+  int STRING = 70;
   /** RegularExpression Id. */
-  int DECIMALINTEGER = 71;
+  int INTEGER = 71;
   /** RegularExpression Id. */
-  int OCTALINTEGER = 72;
+  int DECIMALINTEGER = 72;
   /** RegularExpression Id. */
-  int HEXINTEGER = 73;
+  int OCTALINTEGER = 73;
   /** RegularExpression Id. */
-  int DOUBLE = 74;
+  int HEXINTEGER = 74;
   /** RegularExpression Id. */
-  int REALNUMBER = 75;
+  int DOUBLE = 75;
   /** RegularExpression Id. */
-  int REAL_NUMBER = 76;
+  int REALNUMBER = 76;
   /** RegularExpression Id. */
-  int SINGLEQUOTE = 77;
+  int REAL_NUMBER = 77;
   /** RegularExpression Id. */
-  int DOUBLEQUOTE = 78;
+  int SINGLEQUOTE = 78;
   /** RegularExpression Id. */
-  int HEXLETTERS = 79;
+  int DOUBLEQUOTE = 79;
   /** RegularExpression Id. */
-  int DIGIT = 80;
+  int HEXLETTERS = 80;
   /** RegularExpression Id. */
-  int NONZERO = 81;
+  int DIGIT = 81;
   /** RegularExpression Id. */
-  int LETTER = 82;
+  int NONZERO = 82;
   /** RegularExpression Id. */
-  int OCTALS = 83;
+  int LETTER = 83;
   /** RegularExpression Id. */
-  int ZERO = 84;
+  int OCTALS = 84;
   /** RegularExpression Id. */
-  int ERROR = 85;
+  int ZERO = 85;
+  /** RegularExpression Id. */
+  int ERROR = 86;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -249,6 +251,7 @@ public interface ExprParserConstants {
     "\"remove\"",
     "\"setVal\"",
     "\"getIndex\"",
+    "\"getSize\"",
     "<BOOLEAN>",
     "<IDENTIFIER>",
     "<STRING>",
