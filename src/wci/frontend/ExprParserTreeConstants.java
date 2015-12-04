@@ -70,12 +70,13 @@ public interface ExprParserTreeConstants
   public int JJTMAPGETSIZE = 64;
   public int JJTLISTSETVAL = 65;
   public int JJTHASHSETVAL = 66;
-  public int JJTKEYTYPE = 67;
-  public int JJTVALUETYPE = 68;
-  public int JJTSIZE = 69;
-  public int JJTHASHMAP = 70;
-  public int JJTSET = 71;
-  public int JJTLIST = 72;
+  public int JJTVALUE = 67;
+  public int JJTKEYTYPE = 68;
+  public int JJTVALUETYPE = 69;
+  public int JJTSIZE = 70;
+  public int JJTHASHMAP = 71;
+  public int JJTSET = 72;
+  public int JJTLIST = 73;
 
 
   public String[] jjtNodeName = {
@@ -146,6 +147,7 @@ public interface ExprParserTreeConstants
     "MapGetSize",
     "ListSetVal",
     "HashSetVal",
+    "value",
     "KeyType",
     "ValueType",
     "Size",
@@ -154,4 +156,4 @@ public interface ExprParserTreeConstants
     "List",
   };
 }
-/* JavaCC - OriginalChecksum=1dc28bd91317a1dbfbe62f91ef4d4c74 (do not edit this line) */
+/* JavaCC - OriginalChecksum=8c3386be60ff270265dc78e944dc6dcc (do not edit this line) */

@@ -627,37 +627,37 @@ void getters() #void:{}
 }
 void SetAdd():{}
 {
-	variable() <SSDot> <DOTADD> <SSOpenParen> (variable()|Literal())  <SSCloseParen> <SSSemiColon>
+	variable() <SSDot> <DOTADD> <SSOpenParen> (value())  <SSCloseParen> <SSSemiColon>
 }
 
 void ListAdd():{}
 {
-	variable() <SSDot><DOTADD> <SSOpenBracket> (variable()|Literal())<SSCloseBracket> <SSSemiColon>
+	variable() <SSDot><DOTADD> <SSOpenBracket> (value()) <SSCloseBracket> <SSSemiColon>
 }
 
 void MapAdd():{}
 {
-	variable() <SSDot><DOTADD> <SSOpenBraces> (variable()|Literal()) (<SSComma>) (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
+	variable() <SSDot><DOTADD> <SSOpenBraces> (value())  (<SSComma>) (value())  <SSCloseBraces> <SSSemiColon>
 }
 
 void Position():{}
 {
-IntegerConst()|variable()
+Expr()
 }
 
 void SetDelete():{}
 {
-	variable() <SSDot><DOTREMOVE> <SSOpenParen> (variable()|Literal()) <SSCloseParen> <SSSemiColon>
+	variable() <SSDot><DOTREMOVE> <SSOpenParen>(value())  <SSCloseParen> <SSSemiColon>
 }
 
 void ListDelete():{}
 {
-	variable() <SSDot><DOTREMOVE> <SSOpenBracket> (variable()|Literal()) <SSCloseBracket> <SSSemiColon>
+	variable() <SSDot><DOTREMOVE> <SSOpenBracket>(value()) <SSCloseBracket> <SSSemiColon>
 }
 
 void MapDelete():{}
 {
-	variable() <SSDot><DOTREMOVE> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
+	variable() <SSDot><DOTREMOVE> <SSOpenBraces> (value())  <SSCloseBraces> <SSSemiColon>
 }
 
 void ListGetVal():{}
@@ -666,18 +666,18 @@ void ListGetVal():{}
 }
 void MapGetVal():{}
 {
-	variable() <SSDot><DOTGETVAL> <SSOpenBraces> (variable()|Literal()) <SSCloseBraces> 
+	variable() <SSDot><DOTGETVAL> <SSOpenBraces> (Position()) <SSCloseBraces> 
 }
 
 
 void ListGetIndex():{}
 {
-	variable() <SSDot><DOTGETINDEX> <SSOpenBracket> (variable()|Literal()) <SSCloseBracket> 
+	variable() <SSDot><DOTGETINDEX> <SSOpenBracket> (value())  <SSCloseBracket> 
 }
 
 void SetContains():{}
 {
-	variable() <SSDot><DOTCONTAINS> <SSOpenParen> (variable()|Literal()) <SSCloseParen> 
+	variable() <SSDot><DOTCONTAINS> <SSOpenParen> (value())  <SSCloseParen> 
 }
 
 void ListGetSize():{}
@@ -697,14 +697,18 @@ void MapGetSize():{}
 
 void ListSetVal():{}
 {
-	variable() <SSDot><DOTSETVAL> <SSOpenBracket> (Position()) <SSComma> (variable()|Literal())  <SSCloseBracket> <SSSemiColon>
+	variable() <SSDot><DOTSETVAL> <SSOpenBracket> (Position()) <SSComma> (value())  <SSCloseBracket> <SSSemiColon>
 }
 
 void HashSetVal():{}
 {
-	variable() <SSDot><DOTSETVAL> <SSOpenBraces> (variable()|Literal()) <SSComma> (variable()|Literal()) <SSCloseBraces> <SSSemiColon>
+	variable() <SSDot><DOTSETVAL> <SSOpenBraces> (Position()) <SSComma> (value()) <SSCloseBraces> <SSSemiColon>
 }
 
+void value():{}
+{
+Expr()
+}
 
 void KeyType() : {}
 {
@@ -716,7 +720,7 @@ void ValueType() : {}
 }
 String Size() : {}
 {
-    (IntegerConst())
+    Expr()
 {
     return token.image;
 }

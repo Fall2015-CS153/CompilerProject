@@ -1,14 +1,16 @@
 ProgramTest{
     Procedure :: main{
       list string a[];
-      a.add["abc"];
+      string name = "abc";
+      a.add[name];
       a.add["cde"];
-      string b = a.getVal[0];
+      int pos = 0;
+      string b = a.getVal[pos];
       put "Val ", b;
       string c = a.getVal[1];
       put "Val ", c;
       a.remove["cde"];
-      a.setVal[0,"what"];
+      a.setVal[pos,"what"];
       int d = a.getIndex["what"];
       put "Val ", d;
       d = a.getSize[];
