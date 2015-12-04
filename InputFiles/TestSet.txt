@@ -1,10 +1,9 @@
 ProgramTest{
     Procedure :: main{
-      set int(4) a;
-      a.add(4);
-      a.add(5);
-      a.remove(4);
-      boolean b = a.contains(4);
+      set string(3) a;
+      a.add("a");
+      a.add("b");
+      boolean b = a.contains("b");
       put "Contains ",b;
       int s = a.getSize();
       put "Size ", s;

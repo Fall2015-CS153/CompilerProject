@@ -1,0 +1,14 @@
+ProgramTest{
+    Procedure :: main{
+      map{int,int} a;
+      a.add{4,4};
+      a.add{3,4};
+      a.remove{3};
+      int b = a.getVal{4};
+      put "B is ", b;
+      int siz = a.getSize{};
+      put "Size is ",siz ;     
+
+    }
+}
+

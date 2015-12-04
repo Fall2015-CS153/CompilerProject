@@ -25,6 +25,10 @@ import static wci.intermediate.icodeimpl.ICodeKeyImpl.*;
 
 public class ExprParser
 {
+
+    private static final String SOURCE_SUFFIX = ".txt";
+    private static final String OUTPUT_SUFFIX = ".j";
+
     private static SymTabStack symTabStack;
     private static SymTabEntry programId;
     private static int index=0;
@@ -59,9 +63,18 @@ public class ExprParser
         ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
         treePrinter.print(symTabStack);
 
+        // Process the source file path which ends in .pcl
+        // and create the output file path which ends in .j
+        String sourceFilePath = args[0];
+        int truncatedLength = sourceFilePath.length() - SOURCE_SUFFIX.length();
+        int suffixIndex = sourceFilePath.lastIndexOf(SOURCE_SUFFIX);
+        String objectFilePath = (suffixIndex == truncatedLength)
+            ?  "OutputFiles/" +sourceFilePath.substring(0, truncatedLength) +OUTPUT_SUFFIX
+            : "OutputFiles/" + sourceFilePath + OUTPUT_SUFFIX;
+
         // Create the compiler backend and generate code.
         Backend backend = BackendFactory.createBackend("compile");
-        backend.process(iCode, symTabStack, "test.j");
+        backend.process(iCode, symTabStack, objectFilePath);
 	}
 
 
@@ -604,6 +617,7 @@ void DataStructManipulation() #void: {}
   LOOKAHEAD(4)ListSetVal()| LOOKAHEAD(4)HashSetVal()
 }
 
+
 void getters() #void:{}
 {
  LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
@@ -628,7 +642,7 @@ void MapAdd():{}
 
 void Position():{}
 {
-IntegerConst()
+IntegerConst()|variable()
 }
 
 void SetDelete():{}
