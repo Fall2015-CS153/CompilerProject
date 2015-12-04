@@ -1679,7 +1679,7 @@ void For(): {/*@bgen(jjtree) For */
 {/*@bgen(jjtree) For */
         try {
 /*@egen*/
-	<RESERVEDWORDFOR> <SSOpenParen>(DecVar()) TestCond()<SSSemiColon> IncrementCond()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>/*@bgen(jjtree)*/
+	<RESERVEDWORDFOR> <SSOpenParen>(DecVar()) TestCond()<SSSemiColon> IncrementCond()<SSCloseParen><SSOpenBraces> Commands() <SSCloseBraces>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

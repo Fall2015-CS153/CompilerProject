@@ -1084,8 +1084,10 @@ public class CodeGeneratorVisitor
     public Object visit(ASTFor node, Object data)
     {
 
-        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);//variable decl
         SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
+        SimpleNode addend2Node = (SimpleNode) node.jjtGetChild(2);
+        SimpleNode addend3Node = (SimpleNode) node.jjtGetChild(3);
 
         TypeSpec type0 = addend0Node.getTypeSpec();
         TypeSpec type1 = addend1Node.getTypeSpec();
@@ -1096,7 +1098,7 @@ public class CodeGeneratorVisitor
         //String typePrefix = (type == Predefined.booleanType) ? "i" : "f";
         // Emit code for the first expression
         // with type conversion if necessary.
-        addend0Node.jjtAccept(this, data);
+        addend0Node.jjtAccept(this, data);// accept the variable i
         /*
          if ((type == Predefined.realType) && (type0 == Predefined.integerType))
          {
@@ -1106,7 +1108,11 @@ public class CodeGeneratorVisitor
          */
         // Emit code for the second expression
         // with type conversion if necessary.
-        addend1Node.jjtAccept(this, data);
+        int currentLoopValue=looplabelGenerator;
+        looplabelGenerator++;
+        CodeGenerator.objectFile.println("L"+currentLoopValue +"0:"
+                );
+        addend1Node.jjtAccept(this, data);// accept the other variable
         /*
          if ((type == Predefined.realType) && (type1 == Predefined.integerType))
          {
@@ -1115,22 +1121,28 @@ public class CodeGeneratorVisitor
          }
          */
         // Emit the appropriate add instruction.
-        CodeGenerator.objectFile.println("    " + "if_icmpne L00"
-                + labelGenerator);
-        labelGenerator++;
-        CodeGenerator.objectFile.println("    " + "iconst_0"); //push false i hope
-        CodeGenerator.objectFile.println("    " + "goto L00" + labelGenerator);
-        labelGenerator--;
-        CodeGenerator.objectFile.println("L00" + labelGenerator + ":");
-        CodeGenerator.objectFile.println("    " + "iconst_1");
-        labelGenerator++;
-        CodeGenerator.objectFile.println("L00" + labelGenerator + ":");
+        int basiclabel= labelGenerator;
+        labelGenerator+=20;
+        CodeGenerator.objectFile.println("    " + "ifne L00"
+                + basiclabel);
+        basiclabel++;
+        //CodeGenerator.objectFile.println("    " + "iconst_0"); //push false i hope
+        CodeGenerator.objectFile.println("    " + "goto L00" + basiclabel);
+        basiclabel--;
+        CodeGenerator.objectFile.println("L00" + basiclabel + ":");
+        //CodeGenerator.objectFile.println("    " + "iconst_1");
+        basiclabel++;
+        addend3Node.jjtAccept(this, data);
+        addend2Node.jjtAccept(this, data);
+        CodeGenerator.objectFile.println("    " + "goto L"+currentLoopValue+"0");
+        CodeGenerator.objectFile.println("L00" + basiclabel + ":");
         CodeGenerator.objectFile.flush();
-        labelGenerator++;
+        basiclabel++;
         return data;
     }
     private int labelGenerator = 3;
     private int finallabelGenerator = 100;
+    private int looplabelGenerator =1;
 
     public Object visit(ASTIncrementStatement node, Object data)
     {
@@ -1153,7 +1165,7 @@ public class CodeGeneratorVisitor
             CodeGenerator.objectFile.flush();
         }
 
-        CodeGenerator.objectFile.println("ldc 1");
+        CodeGenerator.objectFile.println("    ldc 1");
 
         // Emit the appropriate add instruction.
         CodeGenerator.objectFile.println("    " + typePrefix + "add");

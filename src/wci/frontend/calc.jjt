@@ -587,7 +587,7 @@ void DivideEqualsStatement(): {TypeSpec type;}
 }
 void For(): {}
 {
-	<RESERVEDWORDFOR> <SSOpenParen>(DecVar()) TestCond()<SSSemiColon> IncrementCond()<SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
+	<RESERVEDWORDFOR> <SSOpenParen>(DecVar()) TestCond()<SSSemiColon> IncrementCond()<SSCloseParen><SSOpenBraces> Commands() <SSCloseBraces>
 }
 
 void DecVar():{}
