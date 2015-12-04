@@ -64,6 +64,9 @@ public interface ExprParserVisitor
   public Object visit(ASTListGetVal node, Object data);
   public Object visit(ASTMapGetVal node, Object data);
   public Object visit(ASTListGetIndex node, Object data);
+  public Object visit(ASTStringGetIndex node, Object data);
+  public Object visit(ASTStringGetSize node, Object data);
+  public Object visit(ASTStringSubstring node, Object data);
   public Object visit(ASTSetContains node, Object data);
   public Object visit(ASTListGetSize node, Object data);
   public Object visit(ASTSetGetSize node, Object data);
@@ -78,4 +81,4 @@ public interface ExprParserVisitor
   public Object visit(ASTSet node, Object data);
   public Object visit(ASTList node, Object data);
 }
-/* JavaCC - OriginalChecksum=dccac9d6d248932ec565c7fdc1e6dc0f (do not edit this line) */
+/* JavaCC - OriginalChecksum=dc68e25a6b1d91c42184de6ad8558d60 (do not edit this line) */

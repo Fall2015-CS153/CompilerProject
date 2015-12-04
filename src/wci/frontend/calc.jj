@@ -126,6 +126,9 @@ TOKEN:
 <SSNot: "!">
 
 |
+<SSDollar : "$">
+
+|
 <SSL: "<">
 
 |
@@ -261,6 +264,7 @@ TOKEN : {
 <DOTGETINDEX: "getIndex">
 |<DOTGETSIZE: "getSize">
 |<DOTCONTAINS: "contains">
+|<DOTSUBSTRING: "substring">
  |<BOOLEAN :"true"|"false"> 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
@@ -1042,6 +1046,7 @@ LOOKAHEAD(3)getters()
 /*@egen*/          )
 |(<SSOpenParen> Expr() <SSCloseParen>) 
 |BooleanConst()
+
 
   
 }
@@ -1866,7 +1871,12 @@ void getters()      :{}
   LOOKAHEAD(4)ListGetIndex()| LOOKAHEAD(4)ListGetSize()
 |LOOKAHEAD(4)SetGetSize()|LOOKAHEAD(4)MapGetSize()
 |LOOKAHEAD(4) SetContains()
+|LOOKAHEAD(4) StringSubstring()
+|LOOKAHEAD(4) StringGetIndex()
+|LOOKAHEAD(4) StringGetSize()
 }
+
+
 void SetAdd():{/*@bgen(jjtree) SetAdd */
   ASTSetAdd jjtn000 = new ASTSetAdd(JJTSETADD);
   boolean jjtc000 = true;
@@ -2176,6 +2186,100 @@ void ListGetIndex():{/*@bgen(jjtree) ListGetIndex */
         }
 /*@egen*/ 
 }
+
+void StringGetIndex():{/*@bgen(jjtree) StringGetIndex */
+  ASTStringGetIndex jjtn000 = new ASTStringGetIndex(JJTSTRINGGETINDEX);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) StringGetIndex */
+        try {
+/*@egen*/
+	variable() <SSDot><DOTGETINDEX> <SSDollar> (value())  <SSDollar>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/ 
+}
+
+void StringGetSize():{/*@bgen(jjtree) StringGetSize */
+  ASTStringGetSize jjtn000 = new ASTStringGetSize(JJTSTRINGGETSIZE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) StringGetSize */
+        try {
+/*@egen*/
+	variable() <SSDot><DOTGETSIZE> <SSDollar>  <SSDollar>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/ 
+}
+
+void StringSubstring():{/*@bgen(jjtree) StringSubstring */
+  ASTStringSubstring jjtn000 = new ASTStringSubstring(JJTSTRINGSUBSTRING);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) StringSubstring */
+        try {
+/*@egen*/
+	variable() <SSDot><DOTSUBSTRING> <SSDollar> (Position()) <SSComma> (value()) <SSDollar>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/ 
+}
+
 
 void SetContains():{/*@bgen(jjtree) SetContains */
   ASTSetContains jjtn000 = new ASTSetContains(JJTSETCONTAINS);

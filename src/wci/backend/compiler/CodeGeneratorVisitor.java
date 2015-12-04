@@ -145,6 +145,7 @@ public class CodeGeneratorVisitor
         }
 
         SymTabEntry id = (SymTabEntry) variableNode.getAttribute(ID);
+        //System.out.println("ID : "+variableNode);
         String fieldName = id.getName();
         TypeSpec type = id.getTypeSpec();
         String typeCode = type == Predefined.integerType ? "I" : "F";
@@ -1271,7 +1272,7 @@ public class CodeGeneratorVisitor
         CodeGenerator.objectFile.flush();
         SimpleNode val = addend0Node;
         addend0Node.jjtAccept(this, data);
-       
+
         CodeGenerator.objectFile.println("invokevirtual List/add(" + typePrefix
                 + ")V");
         CodeGenerator.objectFile.flush();
@@ -1324,8 +1325,8 @@ public class CodeGeneratorVisitor
         CodeGenerator.objectFile.println("aload_" + id.getIndex());
         CodeGenerator.objectFile.flush();
         SimpleNode val = addend0Node;
-  addend0Node.jjtAccept(this, data);
-       
+        addend0Node.jjtAccept(this, data);
+
         CodeGenerator.objectFile.println("invokevirtual List/remove("
                 + typePrefix + ")V");
         CodeGenerator.objectFile.flush();
@@ -1350,7 +1351,7 @@ public class CodeGeneratorVisitor
         CodeGenerator.objectFile.println("aload_" + id.getIndex());
         CodeGenerator.objectFile.flush();
         SimpleNode val = addend0Node;
-         addend0Node.jjtAccept(this, data);
+        addend0Node.jjtAccept(this, data);
         CodeGenerator.objectFile.println("invokevirtual List/getIndex("
                 + typePrefix + ")I");
         CodeGenerator.objectFile.flush();
@@ -1410,7 +1411,7 @@ public class CodeGeneratorVisitor
         String fieldName = id.getName();
         TypeSpec type0 = id.getTypeSpec();
         type0 = (TypeSpec) type0.getAttribute(SET_INDEX_TYPE);
-        
+
         SimpleNode size = (SimpleNode) node.jjtGetChild(0);
 
         //System.out.println("TYPE" + type0 );
@@ -1740,6 +1741,55 @@ public class CodeGeneratorVisitor
                 + ")" + typePrefix1);
         CodeGenerator.objectFile.flush();
 
+        return data;
+    }
+
+    public Object visit(ASTStringGetSize node, Object data)
+    {
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        //System.out.println(addend0Node);
+
+        addend0Node.jjtAccept(this, data);
+
+        CodeGenerator.objectFile.println(
+                "invokevirtual java/lang/String.length()I");
+        CodeGenerator.objectFile.flush();
+        return data;
+    }
+
+    public Object visit(ASTStringGetIndex node, Object data)
+    {
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
+        addend1Node = (SimpleNode) addend1Node.jjtGetChild(0);
+        //System.out.println(addend0Node);
+        // Get the addition type.
+        String typePrefix = "Ljava/lang/String";
+
+        //get the base type to get the type of the identifier
+        addend0Node.jjtAccept(this, data);
+        addend1Node.jjtAccept(this, data);
+        CodeGenerator.objectFile.println("invokevirtual java/lang/String.indexOf("
+               +"Ljava/lang/String;"+")I");
+        CodeGenerator.objectFile.flush();
+        return data;
+    }
+
+    public Object visit(ASTStringSubstring node, Object data)
+    {
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
+        SimpleNode addend2Node = (SimpleNode) node.jjtGetChild(2);
+        //System.out.println(addend0Node);
+        // Get the addition type.
+        
+
+        //get the base type to get the type of the identifier
+        addend0Node.jjtAccept(this, data);
+        addend1Node.jjtAccept(this, data);
+        addend2Node.jjtAccept(this, data);
+        CodeGenerator.objectFile.println("invokevirtual java/lang/String.substring(II)Ljava/lang/String;");
+        CodeGenerator.objectFile.flush();
         return data;
     }
 }

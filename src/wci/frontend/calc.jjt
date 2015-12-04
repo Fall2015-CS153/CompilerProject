@@ -122,6 +122,9 @@ TOKEN:
 <SSNot: "!">
 
 |
+<SSDollar : "$">
+
+|
 <SSL: "<">
 
 |
@@ -257,6 +260,7 @@ TOKEN : {
 <DOTGETINDEX: "getIndex">
 |<DOTGETSIZE: "getSize">
 |<DOTCONTAINS: "contains">
+|<DOTSUBSTRING: "substring">
  |<BOOLEAN :"true"|"false"> 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
@@ -432,6 +436,7 @@ LOOKAHEAD(3)getters()
 |(<SSNot> Factor()#Negate(1))
 |(<SSOpenParen> Expr() <SSCloseParen>) 
 |BooleanConst()
+
 
   
 }
@@ -624,7 +629,12 @@ void getters() #void:{}
   LOOKAHEAD(4)ListGetIndex()| LOOKAHEAD(4)ListGetSize()
 |LOOKAHEAD(4)SetGetSize()|LOOKAHEAD(4)MapGetSize()
 |LOOKAHEAD(4) SetContains()
+|LOOKAHEAD(4) StringSubstring()
+|LOOKAHEAD(4) StringGetIndex()
+|LOOKAHEAD(4) StringGetSize()
 }
+
+
 void SetAdd():{}
 {
 	variable() <SSDot> <DOTADD> <SSOpenParen> (value())  <SSCloseParen> <SSSemiColon>
@@ -674,6 +684,22 @@ void ListGetIndex():{}
 {
 	variable() <SSDot><DOTGETINDEX> <SSOpenBracket> (value())  <SSCloseBracket> 
 }
+
+void StringGetIndex():{}
+{
+	variable() <SSDot><DOTGETINDEX> <SSDollar> (value())  <SSDollar> 
+}
+
+void StringGetSize():{}
+{
+	variable() <SSDot><DOTGETSIZE> <SSDollar>  <SSDollar> 
+}
+
+void StringSubstring():{}
+{
+	variable() <SSDot><DOTSUBSTRING> <SSDollar> (Position()) <SSComma> (value()) <SSDollar> 
+}
+
 
 void SetContains():{}
 {
