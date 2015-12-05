@@ -1551,6 +1551,23 @@ CodeGenerator.objectFile.println("    " + "goto L00" + basiclabel);
         CodeGenerator.objectFile.flush();
         return data;
     }
+    
+     public Object visit(ASTSetGetString node, Object data)
+    {
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        //System.out.println(addend0Node);
+
+        SymTabEntry id = (SymTabEntry) addend0Node.getAttribute(ID);
+
+        TypeSpec type0 = addend0Node.getTypeSpec();
+
+        CodeGenerator.objectFile.println("aload_" + id.getIndex());
+        CodeGenerator.objectFile.flush();
+        //addend0Node.jjtAccept(this, data);
+        CodeGenerator.objectFile.println("invokevirtual Set/getString()Ljava/lang/String;");
+        CodeGenerator.objectFile.flush();
+        return data;
+    }
 
     public Object visit(ASTSetContains node, Object data)
     {
@@ -1575,6 +1592,34 @@ CodeGenerator.objectFile.println("    " + "goto L00" + basiclabel);
         addend0Node.jjtAccept(this, data);
         SimpleNode val = addend0Node;
         CodeGenerator.objectFile.println("invokevirtual Set/contains("
+                + typePrefix + ")Z");
+        CodeGenerator.objectFile.flush();
+        return data;
+    }
+    
+    public Object visit(ASTMapContains node, Object data)
+    {
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(1);
+        addend0Node = (SimpleNode) addend0Node.jjtGetChild(0);
+        //System.out.println(addend0Node);
+
+        SimpleNode key = (SimpleNode) node.jjtGetChild(0);
+        SymTabEntry id = (SymTabEntry) key.getAttribute(ID);
+
+        TypeSpec type0 = id.getTypeSpec();
+        type0 = (TypeSpec) type0.getAttribute(MAP_KEY_TYPE);
+
+        System.out.println("TYPE" + type0);
+        // Get the addition type.
+
+        String typePrefix = getTypePrefix(type0);
+
+        //get the base type to get the type of the identifier
+        CodeGenerator.objectFile.println("aload_" + id.getIndex());
+        CodeGenerator.objectFile.flush();
+        addend0Node.jjtAccept(this, data);
+        SimpleNode val = addend0Node;
+        CodeGenerator.objectFile.println("invokevirtual Map/contains("
                 + typePrefix + ")Z");
         CodeGenerator.objectFile.flush();
         return data;
@@ -1704,6 +1749,23 @@ CodeGenerator.objectFile.println("    " + "goto L00" + basiclabel);
         CodeGenerator.objectFile.flush();
         return data;
     }
+    
+    public Object visit(ASTMapGetString node, Object data)
+    {
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        //System.out.println(addend0Node);
+
+        SymTabEntry id = (SymTabEntry) addend0Node.getAttribute(ID);
+        String fieldName = id.getName();
+
+        TypeSpec type0 = addend0Node.getTypeSpec();
+
+        CodeGenerator.objectFile.println("aload_" + id.getIndex());
+        CodeGenerator.objectFile.flush();
+        CodeGenerator.objectFile.println("invokevirtual Map/getString()Ljava/lang/String;");
+        CodeGenerator.objectFile.flush();
+        return data;
+    }
 
     private String getTypePrefix(TypeSpec type0)
     {
@@ -1827,6 +1889,33 @@ CodeGenerator.objectFile.println("    " + "goto L00" + basiclabel);
         addend1Node.jjtAccept(this, data);
         addend2Node.jjtAccept(this, data);
         CodeGenerator.objectFile.println("invokevirtual java/lang/String.substring(II)Ljava/lang/String;");
+        CodeGenerator.objectFile.flush();
+        return data;
+    }
+    
+     public Object visit(ASTStringAppend node, Object data)
+    {
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);
+        SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
+        addend1Node = (SimpleNode) addend1Node.jjtGetChild(0);
+        //System.out.println(addend0Node);
+        // Get the addition type.
+        String typePrefix = "Ljava/lang/String";
+
+        //get the base type to get the type of the identifier
+        
+                addend0Node.jjtAccept(this, data);
+                
+         CodeGenerator.objectFile.println("getstatic     java/lang/System/out Ljava/io/PrintStream;");
+         CodeGenerator.objectFile.flush();
+         CodeGenerator.objectFile.println( "    new       java/lang/StringBuilder " );
+         CodeGenerator.objectFile.flush();
+         CodeGenerator.objectFile.println("dup");
+         CodeGenerator.objectFile.flush();
+         CodeGenerator.objectFile.println("invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V");
+        CodeGenerator.objectFile.flush();
+        addend1Node.jjtAccept(this, data);
+         CodeGenerator.objectFile.println("invokevirtual java/lang/StringBuilder.append(Ljava/lang/String;)Ljava/lang/String;");
         CodeGenerator.objectFile.flush();
         return data;
     }

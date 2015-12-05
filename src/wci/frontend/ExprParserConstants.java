@@ -141,47 +141,51 @@ public interface ExprParserConstants {
   /** RegularExpression Id. */
   int DOTGETSIZE = 68;
   /** RegularExpression Id. */
-  int DOTCONTAINS = 69;
+  int DOTGETSTRING = 69;
   /** RegularExpression Id. */
-  int DOTSUBSTRING = 70;
+  int DOTCONTAINS = 70;
   /** RegularExpression Id. */
-  int BOOLEAN = 71;
+  int DOTSUBSTRING = 71;
   /** RegularExpression Id. */
-  int IDENTIFIER = 72;
+  int DOTAPPEND = 72;
   /** RegularExpression Id. */
-  int STRING = 73;
+  int BOOLEAN = 73;
   /** RegularExpression Id. */
-  int INTEGER = 74;
+  int IDENTIFIER = 74;
   /** RegularExpression Id. */
-  int DECIMALINTEGER = 75;
+  int STRING = 75;
   /** RegularExpression Id. */
-  int OCTALINTEGER = 76;
+  int INTEGER = 76;
   /** RegularExpression Id. */
-  int HEXINTEGER = 77;
+  int DECIMALINTEGER = 77;
   /** RegularExpression Id. */
-  int DOUBLE = 78;
+  int OCTALINTEGER = 78;
   /** RegularExpression Id. */
-  int REALNUMBER = 79;
+  int HEXINTEGER = 79;
   /** RegularExpression Id. */
-  int REAL_NUMBER = 80;
+  int DOUBLE = 80;
   /** RegularExpression Id. */
-  int SINGLEQUOTE = 81;
+  int REALNUMBER = 81;
   /** RegularExpression Id. */
-  int DOUBLEQUOTE = 82;
+  int REAL_NUMBER = 82;
   /** RegularExpression Id. */
-  int HEXLETTERS = 83;
+  int SINGLEQUOTE = 83;
   /** RegularExpression Id. */
-  int DIGIT = 84;
+  int DOUBLEQUOTE = 84;
   /** RegularExpression Id. */
-  int NONZERO = 85;
+  int HEXLETTERS = 85;
   /** RegularExpression Id. */
-  int LETTER = 86;
+  int DIGIT = 86;
   /** RegularExpression Id. */
-  int OCTALS = 87;
+  int NONZERO = 87;
   /** RegularExpression Id. */
-  int ZERO = 88;
+  int LETTER = 88;
   /** RegularExpression Id. */
-  int ERROR = 89;
+  int OCTALS = 89;
+  /** RegularExpression Id. */
+  int ZERO = 90;
+  /** RegularExpression Id. */
+  int ERROR = 91;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -259,8 +263,10 @@ public interface ExprParserConstants {
     "\"setVal\"",
     "\"getIndex\"",
     "\"getSize\"",
+    "\"getString\"",
     "\"contains\"",
     "\"substring\"",
+    "\"append\"",
     "<BOOLEAN>",
     "<IDENTIFIER>",
     "<STRING>",
