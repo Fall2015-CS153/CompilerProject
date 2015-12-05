@@ -26,12 +26,15 @@ BubbleSort{
              swappedThisTime = true;
             }
           }
+          if(swappedThisTime==false){
+          i= size+2;//exit the loop
+          }
     }
-
+    put "Printing sorted order";
      for(int w=0; w<size; w++;){
       int tempVal = a.getVal[w];
       put " ", tempVal ;
-}
+    }
 
  }
 }

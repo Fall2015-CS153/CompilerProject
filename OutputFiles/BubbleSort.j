@@ -145,6 +145,33 @@ L00100:
     putstatic BubbleSort/j I
     goto L20
 L0028:
+    getstatic BubbleSort/swappedThisTime Z
+    ldc 0
+    if_icmpeq L0052
+    iconst_0
+    goto L0053
+L0052:
+    iconst_1
+L0053:
+    ifeq L0055
+    getstatic BubbleSort/size I
+    ldc 2
+    iadd
+    putstatic BubbleSort/i I
+    ldc "quick exit"
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "quick exit"
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
+    pop
+    goto L00101
+L0055:
+L00101:
     getstatic BubbleSort/i I
     ldc 1
     iadd
@@ -156,15 +183,15 @@ L006:
 L30:
     getstatic BubbleSort/w I
     getstatic BubbleSort/size I
-    if_icmplt L0052
+    if_icmplt L0057
     iconst_0
-    goto L0053
-L0052:
+    goto L0058
+L0057:
     iconst_1
-L0053:
-    ifne L0054
-    goto L0055
-L0054:
+L0058:
+    ifne L0059
+    goto L0060
+L0059:
 aload_0
     getstatic BubbleSort/w I
 invokevirtual List/getValInteger(I)I
@@ -189,7 +216,7 @@ invokevirtual List/getValInteger(I)I
     iadd
     putstatic BubbleSort/w I
     goto L30
-L0055:
+L0060:
 
 return
 .limit locals 32
