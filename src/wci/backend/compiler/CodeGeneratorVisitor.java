@@ -29,7 +29,7 @@ public class CodeGeneratorVisitor
         //create end
         CodeGenerator.objectFile.println();
         CodeGenerator.objectFile.println("return\n" + ".limit locals 32\n"
-                + ".limit stack 32\n" + ".end method" + "\n");
+                + ".limit stack 40\n" + ".end method" + "\n");
         return data;
     }
 
@@ -148,7 +148,21 @@ public class CodeGeneratorVisitor
         //System.out.println("ID : "+variableNode);
         String fieldName = id.getName();
         TypeSpec type = id.getTypeSpec();
-        String typeCode = type == Predefined.integerType ? "I" : "F";
+        String typeCode = "";
+        if (type == Predefined.integerType)
+        {
+            typeCode = "I";
+        } else if (type == Predefined.realType || type == Predefined.floatType
+                || type == Predefined.doubleType)
+        {
+            typeCode = "F";
+        } else if (type == Predefined.stringType)
+        {
+            typeCode = "Ljava/lang/String;";
+        } else if (type == Predefined.booleanType)
+        {
+            typeCode = "Z";
+        }
 
         // Emit the appropriate store instruction.
         CodeGenerator.objectFile.println("    putstatic " + programName + "/"
