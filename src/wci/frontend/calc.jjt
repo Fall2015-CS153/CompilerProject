@@ -536,10 +536,6 @@ void Declaration(): {TypeSpec type;}
    }
 }
 
-void Function(): {}
-{
-	 <RESERVEDWORDPUBLIC> (DataTypes()|PrimitiveType()|<RESERVEDWORDVOID>) <SSOpenParen> ((DataTypes()|PrimitiveType()) variable() (<SSComma> ( (DataTypes()|PrimitiveType()) variable() ) )* )* <SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>
-}
 void IncrementStatement(): {TypeSpec type;}
 {
 	type =   variable()<SSplusplus><SSSemiColon>
@@ -612,7 +608,7 @@ void IncrementCond():{}
 
 void While():{}
 {
-	<RESERVEDWORDWHILE> <SSOpenParen> TestCond() <SSCloseParen><SSOpenBraces> (Statement())* WhileIncrementCond() <SSCloseBraces>
+	<RESERVEDWORDWHILE> <SSOpenParen> (Expr()) <SSCloseParen><SSOpenBraces> Commands() <SSCloseBraces>
 }
 
 void DataStructManipulation() #void: {}

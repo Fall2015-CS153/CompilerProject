@@ -1109,17 +1109,8 @@ public class CodeGeneratorVisitor
         // Get the boolean type.
         TypeSpec type = node.getTypeSpec();
 
-        //String typePrefix = (type == Predefined.booleanType) ? "i" : "f";
-        // Emit code for the first expression
-        // with type conversion if necessary.
         addend0Node.jjtAccept(this, data);// accept the variable i
-        /*
-         if ((type == Predefined.realType) && (type0 == Predefined.integerType))
-         {
-         CodeGenerator.objectFile.println("    i2f");
-         CodeGenerator.objectFile.flush();
-         }
-         */
+      
         // Emit code for the second expression
         // with type conversion if necessary.
         int currentLoopValue=looplabelGenerator;
@@ -1127,20 +1118,12 @@ public class CodeGeneratorVisitor
         CodeGenerator.objectFile.println("L"+currentLoopValue +"0:"
                 );
         addend1Node.jjtAccept(this, data);// accept the other variable
-        /*
-         if ((type == Predefined.realType) && (type1 == Predefined.integerType))
-         {
-         CodeGenerator.objectFile.println("    i2f");
-         CodeGenerator.objectFile.flush();
-         }
-         */
         // Emit the appropriate add instruction.
         int basiclabel= labelGenerator;
         labelGenerator+=20;
         CodeGenerator.objectFile.println("    " + "ifne L00"
                 + basiclabel);
         basiclabel++;
-        //CodeGenerator.objectFile.println("    " + "iconst_0"); //push false i hope
         CodeGenerator.objectFile.println("    " + "goto L00" + basiclabel);
         basiclabel--;
         CodeGenerator.objectFile.println("L00" + basiclabel + ":");
@@ -1154,6 +1137,35 @@ public class CodeGeneratorVisitor
         basiclabel++;
         return data;
     }
+    public Object visit(ASTWhile node, Object data){
+      
+        SimpleNode addend0Node = (SimpleNode) node.jjtGetChild(0);//variable decl
+        SimpleNode addend1Node = (SimpleNode) node.jjtGetChild(1);
+        
+        
+        int currentLoopValue=looplabelGenerator;
+        looplabelGenerator++;
+        CodeGenerator.objectFile.println("L"+currentLoopValue +"0:"
+                );
+        addend0Node.jjtAccept(this, data);// accept the variable i
+        // Emit the appropriate add instruction.
+        int basiclabel= labelGenerator;
+        labelGenerator+=10;
+CodeGenerator.objectFile.println("    " + "goto L00" + basiclabel);
+        basiclabel--;
+        CodeGenerator.objectFile.println("L00" + basiclabel + ":");
+        //CodeGenerator.objectFile.println("    " + "iconst_1");
+        basiclabel++;
+        addend1Node.jjtAccept(this, data);
+        
+        CodeGenerator.objectFile.println("    " + "goto L"+currentLoopValue+"0");
+        CodeGenerator.objectFile.println("L00" + basiclabel + ":");
+        CodeGenerator.objectFile.flush();
+        basiclabel++;
+        return data;
+    }
+    
+    
     private int labelGenerator = 3;
     private int finallabelGenerator = 100;
     private int looplabelGenerator =1;
