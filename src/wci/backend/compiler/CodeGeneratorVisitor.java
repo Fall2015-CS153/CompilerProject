@@ -68,9 +68,10 @@ public class CodeGeneratorVisitor
 
     public Object visit(ASTProcedureCall node, Object data)
     {
-        CodeGenerator.objectFile.println("    new Test\n" + "    dup\n"
-                + "    invokespecial Test/<init>()V\n"
-                + "    invokevirtual Test/" + node.getAttribute(VALUE) + "()V");
+        String programName = (String) data;
+        CodeGenerator.objectFile.println("    new "+programName+"\n" + "    dup\n"
+                + "    invokespecial "+programName+"/<init>()V\n"
+                + "    invokevirtual "+programName+"/" + node.getAttribute(VALUE) + "()V");
         return data;
     }
 
@@ -225,14 +226,23 @@ public class CodeGeneratorVisitor
 
     public Object visit(ASTIntegerConst node, Object data)
     {
-        int value = (Integer) node.getAttribute(VALUE);
 
-        // Emit a load constant instruction.
-        CodeGenerator.objectFile.println("    ldc " + value);
-        CodeGenerator.objectFile.flush();
         String result[] = new String[2];
-        result[0] = "    ldc \"" + value + "\"";
-        result[1] = "    ldc \"" + value + "\"";
+        
+        
+        if( node.getAttribute(VALUE).getClass()==Integer.class){
+            int value = (Integer) node.getAttribute(VALUE);
+            // Emit a load constant instruction.
+            CodeGenerator.objectFile.println("    ldc " + value);
+            CodeGenerator.objectFile.flush();
+            result[0] = "    ldc \"" + value + "\"";
+            result[1] = "    ldc \"" + value + "\"";
+        }else{// take input
+            String programName = (String) data;
+            CodeGenerator.objectFile.println("    getstatic " + programName + "/"
+                + "_standardIn LPascalTextIn;" );
+            CodeGenerator.objectFile.println("    invokevirtual PascalTextIn.readInteger()I");
+        }
         return result;
     }
 

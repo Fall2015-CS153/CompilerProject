@@ -1,0 +1,8 @@
+TestInput{
+    Procedure :: main{
+    int b=5;
+    int a = readInt;
+    put "Printing input ", a;
+}
+}
+

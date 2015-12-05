@@ -209,6 +209,8 @@ TOKEN:
 }
 
 TOKEN : {
+<RESERVEDWORDREADINT :"readInt">
+|
  <RESERVEDWORDPRINT :"put">
 |
  <RESERVEDWORDPROCEDURE :"Procedure ::">
@@ -249,7 +251,6 @@ TOKEN : {
 |<RESERVEDWORDSET :"set">
 
  |<RESERVEDWORDLIST :"list">
-
  |<RESERVEDWORDNEW :"new">
 |<RESERVEDWORDPUBLIC :"public">
 |<RESERVEDWORDVOID :"void">
@@ -373,10 +374,12 @@ TypeSpec PrimitiveType() #void: {}
 
 void IntegerConst() : {}
 {
-	<INTEGER>
+	(<INTEGER>
 	{
         jjtThis.setTypeSpec(Predefined.integerType);
         jjtThis.setAttribute(VALUE, Integer.parseInt(token.image));
+    })|<RESERVEDWORDREADINT>{
+        jjtThis.setAttribute(VALUE, "Input");
     }
 }
 void BooleanConst() : {}

@@ -83,109 +83,111 @@ public interface ExprParserConstants {
   /** RegularExpression Id. */
   int SSDot = 39;
   /** RegularExpression Id. */
-  int RESERVEDWORDPRINT = 40;
+  int RESERVEDWORDREADINT = 40;
   /** RegularExpression Id. */
-  int RESERVEDWORDPROCEDURE = 41;
+  int RESERVEDWORDPRINT = 41;
   /** RegularExpression Id. */
-  int RESERVEDWORDCALL = 42;
+  int RESERVEDWORDPROCEDURE = 42;
   /** RegularExpression Id. */
-  int RESERVEDWORDIF = 43;
+  int RESERVEDWORDCALL = 43;
   /** RegularExpression Id. */
-  int RESERVEDWORDBREAK = 44;
+  int RESERVEDWORDIF = 44;
   /** RegularExpression Id. */
-  int RESERVEDWORDELSE = 45;
+  int RESERVEDWORDBREAK = 45;
   /** RegularExpression Id. */
-  int RESERVEDWORDELSEIF = 46;
+  int RESERVEDWORDELSE = 46;
   /** RegularExpression Id. */
-  int RESERVEDWORDRETURN = 47;
+  int RESERVEDWORDELSEIF = 47;
   /** RegularExpression Id. */
-  int RESERVEDWORDCASE = 48;
+  int RESERVEDWORDRETURN = 48;
   /** RegularExpression Id. */
-  int RESERVEDWORDSWITCH = 49;
+  int RESERVEDWORDCASE = 49;
   /** RegularExpression Id. */
-  int RESERVEDWORDWHILE = 50;
+  int RESERVEDWORDSWITCH = 50;
   /** RegularExpression Id. */
-  int RESERVEDWORDFOR = 51;
+  int RESERVEDWORDWHILE = 51;
   /** RegularExpression Id. */
-  int RESERVEDWORDINT = 52;
+  int RESERVEDWORDFOR = 52;
   /** RegularExpression Id. */
-  int RESERVEDWORDFLOAT = 53;
+  int RESERVEDWORDINT = 53;
   /** RegularExpression Id. */
-  int RESERVEDWORDBOOLEAN = 54;
+  int RESERVEDWORDFLOAT = 54;
   /** RegularExpression Id. */
-  int RESERVEDWORDDOUBLE = 55;
+  int RESERVEDWORDBOOLEAN = 55;
   /** RegularExpression Id. */
-  int RESERVEDWORDSTRING = 56;
+  int RESERVEDWORDDOUBLE = 56;
   /** RegularExpression Id. */
-  int RESERVEDWORDHASHMAP = 57;
+  int RESERVEDWORDSTRING = 57;
   /** RegularExpression Id. */
-  int RESERVEDWORDSET = 58;
+  int RESERVEDWORDHASHMAP = 58;
   /** RegularExpression Id. */
-  int RESERVEDWORDLIST = 59;
+  int RESERVEDWORDSET = 59;
   /** RegularExpression Id. */
-  int RESERVEDWORDNEW = 60;
+  int RESERVEDWORDLIST = 60;
   /** RegularExpression Id. */
-  int RESERVEDWORDPUBLIC = 61;
+  int RESERVEDWORDNEW = 61;
   /** RegularExpression Id. */
-  int RESERVEDWORDVOID = 62;
+  int RESERVEDWORDPUBLIC = 62;
   /** RegularExpression Id. */
-  int DOTGETVAL = 63;
+  int RESERVEDWORDVOID = 63;
   /** RegularExpression Id. */
-  int DOTADD = 64;
+  int DOTGETVAL = 64;
   /** RegularExpression Id. */
-  int DOTREMOVE = 65;
+  int DOTADD = 65;
   /** RegularExpression Id. */
-  int DOTSETVAL = 66;
+  int DOTREMOVE = 66;
   /** RegularExpression Id. */
-  int DOTGETINDEX = 67;
+  int DOTSETVAL = 67;
   /** RegularExpression Id. */
-  int DOTGETSIZE = 68;
+  int DOTGETINDEX = 68;
   /** RegularExpression Id. */
-  int DOTGETSTRING = 69;
+  int DOTGETSIZE = 69;
   /** RegularExpression Id. */
-  int DOTCONTAINS = 70;
+  int DOTGETSTRING = 70;
   /** RegularExpression Id. */
-  int DOTSUBSTRING = 71;
+  int DOTCONTAINS = 71;
   /** RegularExpression Id. */
-  int DOTAPPEND = 72;
+  int DOTSUBSTRING = 72;
   /** RegularExpression Id. */
-  int BOOLEAN = 73;
+  int DOTAPPEND = 73;
   /** RegularExpression Id. */
-  int IDENTIFIER = 74;
+  int BOOLEAN = 74;
   /** RegularExpression Id. */
-  int STRING = 75;
+  int IDENTIFIER = 75;
   /** RegularExpression Id. */
-  int INTEGER = 76;
+  int STRING = 76;
   /** RegularExpression Id. */
-  int DECIMALINTEGER = 77;
+  int INTEGER = 77;
   /** RegularExpression Id. */
-  int OCTALINTEGER = 78;
+  int DECIMALINTEGER = 78;
   /** RegularExpression Id. */
-  int HEXINTEGER = 79;
+  int OCTALINTEGER = 79;
   /** RegularExpression Id. */
-  int DOUBLE = 80;
+  int HEXINTEGER = 80;
   /** RegularExpression Id. */
-  int REALNUMBER = 81;
+  int DOUBLE = 81;
   /** RegularExpression Id. */
-  int REAL_NUMBER = 82;
+  int REALNUMBER = 82;
   /** RegularExpression Id. */
-  int SINGLEQUOTE = 83;
+  int REAL_NUMBER = 83;
   /** RegularExpression Id. */
-  int DOUBLEQUOTE = 84;
+  int SINGLEQUOTE = 84;
   /** RegularExpression Id. */
-  int HEXLETTERS = 85;
+  int DOUBLEQUOTE = 85;
   /** RegularExpression Id. */
-  int DIGIT = 86;
+  int HEXLETTERS = 86;
   /** RegularExpression Id. */
-  int NONZERO = 87;
+  int DIGIT = 87;
   /** RegularExpression Id. */
-  int LETTER = 88;
+  int NONZERO = 88;
   /** RegularExpression Id. */
-  int OCTALS = 89;
+  int LETTER = 89;
   /** RegularExpression Id. */
-  int ZERO = 90;
+  int OCTALS = 90;
   /** RegularExpression Id. */
-  int ERROR = 91;
+  int ZERO = 91;
+  /** RegularExpression Id. */
+  int ERROR = 92;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -234,6 +236,7 @@ public interface ExprParserConstants {
     "\":\"",
     "\"~\"",
     "\".\"",
+    "\"readInt\"",
     "\"put\"",
     "\"Procedure ::\"",
     "\"Call\"",

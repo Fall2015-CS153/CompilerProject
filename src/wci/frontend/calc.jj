@@ -213,6 +213,8 @@ TOKEN:
 }
 
 TOKEN : {
+<RESERVEDWORDREADINT :"readInt">
+|
  <RESERVEDWORDPRINT :"put">
 |
  <RESERVEDWORDPROCEDURE :"Procedure ::">
@@ -253,7 +255,6 @@ TOKEN : {
 |<RESERVEDWORDSET :"set">
 
  |<RESERVEDWORDLIST :"list">
-
  |<RESERVEDWORDNEW :"new">
 |<RESERVEDWORDPUBLIC :"public">
 |<RESERVEDWORDVOID :"void">
@@ -553,7 +554,7 @@ void IntegerConst() : {/*@bgen(jjtree) IntegerConst */
 {/*@bgen(jjtree) IntegerConst */
         try {
 /*@egen*/
-	<INTEGER>/*@bgen(jjtree)*/
+	(<INTEGER>/*@bgen(jjtree)*/
         {
           jjtree.closeNodeScope(jjtn000, true);
           jjtc000 = false;
@@ -562,6 +563,13 @@ void IntegerConst() : {/*@bgen(jjtree) IntegerConst */
 	{
         jjtn000.setTypeSpec(Predefined.integerType);
         jjtn000.setAttribute(VALUE, Integer.parseInt(token.image));
+    })|<RESERVEDWORDREADINT>/*@bgen(jjtree)*/
+                            {
+                              jjtree.closeNodeScope(jjtn000, true);
+                              jjtc000 = false;
+                            }
+/*@egen*/{
+        jjtn000.setAttribute(VALUE, "Input");
     }/*@bgen(jjtree)*/
         } finally {
           if (jjtc000) {
