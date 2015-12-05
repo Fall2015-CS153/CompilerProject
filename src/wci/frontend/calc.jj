@@ -1412,36 +1412,6 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
 /*@egen*/
 }
 
-void Function(): {/*@bgen(jjtree) Function */
-  ASTFunction jjtn000 = new ASTFunction(JJTFUNCTION);
-  boolean jjtc000 = true;
-  jjtree.openNodeScope(jjtn000);
-/*@egen*/}
-{/*@bgen(jjtree) Function */
-         try {
-/*@egen*/
-	 <RESERVEDWORDPUBLIC> (DataTypes()|PrimitiveType()|<RESERVEDWORDVOID>) <SSOpenParen> ((DataTypes()|PrimitiveType()) variable() (<SSComma> ( (DataTypes()|PrimitiveType()) variable() ) )* )* <SSCloseParen><SSOpenBraces> (Statement())* <SSCloseBraces>/*@bgen(jjtree)*/
-         } catch (Throwable jjte000) {
-           if (jjtc000) {
-             jjtree.clearNodeScope(jjtn000);
-             jjtc000 = false;
-           } else {
-             jjtree.popNode();
-           }
-           if (jjte000 instanceof RuntimeException) {
-             throw (RuntimeException)jjte000;
-           }
-           if (jjte000 instanceof ParseException) {
-             throw (ParseException)jjte000;
-           }
-           throw (Error)jjte000;
-         } finally {
-           if (jjtc000) {
-             jjtree.closeNodeScope(jjtn000, true);
-           }
-         }
-/*@egen*/
-}
 void IncrementStatement(): {/*@bgen(jjtree) IncrementStatement */
                             ASTIncrementStatement jjtn000 = new ASTIncrementStatement(JJTINCREMENTSTATEMENT);
                             boolean jjtc000 = true;
@@ -1836,7 +1806,7 @@ void While():{/*@bgen(jjtree) While */
 {/*@bgen(jjtree) While */
         try {
 /*@egen*/
-	<RESERVEDWORDWHILE> <SSOpenParen> TestCond() <SSCloseParen><SSOpenBraces> (Statement())* WhileIncrementCond() <SSCloseBraces>/*@bgen(jjtree)*/
+	<RESERVEDWORDWHILE> <SSOpenParen> (Expr()) <SSCloseParen><SSOpenBraces> Commands() <SSCloseBraces>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

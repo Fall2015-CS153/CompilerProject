@@ -1149,12 +1149,15 @@ public class CodeGeneratorVisitor
                 );
         addend0Node.jjtAccept(this, data);// accept the variable i
         // Emit the appropriate add instruction.
+        
         int basiclabel= labelGenerator;
         labelGenerator+=10;
+         CodeGenerator.objectFile.println("    " + "ifne L00"
+                + basiclabel);
+        basiclabel++;
 CodeGenerator.objectFile.println("    " + "goto L00" + basiclabel);
         basiclabel--;
         CodeGenerator.objectFile.println("L00" + basiclabel + ":");
-        //CodeGenerator.objectFile.println("    " + "iconst_1");
         basiclabel++;
         addend1Node.jjtAccept(this, data);
         
