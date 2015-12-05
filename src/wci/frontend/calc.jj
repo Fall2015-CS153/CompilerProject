@@ -263,8 +263,10 @@ TOKEN : {
 <DOTSETVAL: "setVal">|
 <DOTGETINDEX: "getIndex">
 |<DOTGETSIZE: "getSize">
+|<DOTGETSTRING: "getString">
 |<DOTCONTAINS: "contains">
 |<DOTSUBSTRING: "substring">
+|<DOTAPPEND: "append">
  |<BOOLEAN :"true"|"false"> 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
@@ -1870,8 +1872,11 @@ void getters()      :{}
  LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
   LOOKAHEAD(4)ListGetIndex()| LOOKAHEAD(4)ListGetSize()
 |LOOKAHEAD(4)SetGetSize()|LOOKAHEAD(4)MapGetSize()
+|LOOKAHEAD(4)SetGetString()|LOOKAHEAD(4)MapGetString()
 |LOOKAHEAD(4) SetContains()
+|LOOKAHEAD(4) MapContains()
 |LOOKAHEAD(4) StringSubstring()
+|LOOKAHEAD(4) StringAppend()
 |LOOKAHEAD(4) StringGetIndex()
 |LOOKAHEAD(4) StringGetSize()
 }
@@ -2280,6 +2285,37 @@ void StringSubstring():{/*@bgen(jjtree) StringSubstring */
 /*@egen*/ 
 }
 
+void StringAppend():{/*@bgen(jjtree) StringAppend */
+  ASTStringAppend jjtn000 = new ASTStringAppend(JJTSTRINGAPPEND);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) StringAppend */
+        try {
+/*@egen*/
+	variable() <SSDot><DOTAPPEND> <SSDollar> (value()) <SSDollar>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/ 
+}
+
 
 void SetContains():{/*@bgen(jjtree) SetContains */
   ASTSetContains jjtn000 = new ASTSetContains(JJTSETCONTAINS);
@@ -2290,6 +2326,37 @@ void SetContains():{/*@bgen(jjtree) SetContains */
         try {
 /*@egen*/
 	variable() <SSDot><DOTCONTAINS> <SSOpenParen> (value())  <SSCloseParen>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/ 
+}
+
+void MapContains():{/*@bgen(jjtree) MapContains */
+  ASTMapContains jjtn000 = new ASTMapContains(JJTMAPCONTAINS);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) MapContains */
+        try {
+/*@egen*/
+	variable() <SSDot><DOTCONTAINS> <SSOpenBraces> (value())  <SSCloseBraces>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -2383,6 +2450,68 @@ void MapGetSize():{/*@bgen(jjtree) MapGetSize */
         try {
 /*@egen*/
 	variable() <SSDot><DOTGETSIZE> <SSOpenBraces>  <SSCloseBraces>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/ 
+}
+
+void SetGetString():{/*@bgen(jjtree) SetGetString */
+  ASTSetGetString jjtn000 = new ASTSetGetString(JJTSETGETSTRING);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) SetGetString */
+        try {
+/*@egen*/
+	variable() <SSDot><DOTGETSTRING> <SSOpenParen> <SSCloseParen>/*@bgen(jjtree)*/
+        } catch (Throwable jjte000) {
+          if (jjtc000) {
+            jjtree.clearNodeScope(jjtn000);
+            jjtc000 = false;
+          } else {
+            jjtree.popNode();
+          }
+          if (jjte000 instanceof RuntimeException) {
+            throw (RuntimeException)jjte000;
+          }
+          if (jjte000 instanceof ParseException) {
+            throw (ParseException)jjte000;
+          }
+          throw (Error)jjte000;
+        } finally {
+          if (jjtc000) {
+            jjtree.closeNodeScope(jjtn000, true);
+          }
+        }
+/*@egen*/ 
+}
+
+void MapGetString():{/*@bgen(jjtree) MapGetString */
+  ASTMapGetString jjtn000 = new ASTMapGetString(JJTMAPGETSTRING);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) MapGetString */
+        try {
+/*@egen*/
+	variable() <SSDot><DOTGETSTRING> <SSOpenBraces>  <SSCloseBraces>/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);

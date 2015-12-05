@@ -259,8 +259,10 @@ TOKEN : {
 <DOTSETVAL: "setVal">|
 <DOTGETINDEX: "getIndex">
 |<DOTGETSIZE: "getSize">
+|<DOTGETSTRING: "getString">
 |<DOTCONTAINS: "contains">
 |<DOTSUBSTRING: "substring">
+|<DOTAPPEND: "append">
  |<BOOLEAN :"true"|"false"> 
 | <IDENTIFIER : <LETTER> (<LETTER> | <DIGIT> )*>
 |<STRING:(<SINGLEQUOTE>|<DOUBLEQUOTE>)(<LETTER>|<DIGIT>|(<IGNORE>)*|<SPECIALSYMBOL> |<IGNORE> (<SINGLEQUOTE>|<DOUBLEQUOTE>))*  >
@@ -628,8 +630,11 @@ void getters() #void:{}
  LOOKAHEAD(4)ListGetVal() | LOOKAHEAD(4)MapGetVal() |
   LOOKAHEAD(4)ListGetIndex()| LOOKAHEAD(4)ListGetSize()
 |LOOKAHEAD(4)SetGetSize()|LOOKAHEAD(4)MapGetSize()
+|LOOKAHEAD(4)SetGetString()|LOOKAHEAD(4)MapGetString()
 |LOOKAHEAD(4) SetContains()
+|LOOKAHEAD(4) MapContains()
 |LOOKAHEAD(4) StringSubstring()
+|LOOKAHEAD(4) StringAppend()
 |LOOKAHEAD(4) StringGetIndex()
 |LOOKAHEAD(4) StringGetSize()
 }
@@ -700,10 +705,20 @@ void StringSubstring():{}
 	variable() <SSDot><DOTSUBSTRING> <SSDollar> (Position()) <SSComma> (value()) <SSDollar> 
 }
 
+void StringAppend():{}
+{
+	variable() <SSDot><DOTAPPEND> <SSDollar> (value()) <SSDollar> 
+}
+
 
 void SetContains():{}
 {
 	variable() <SSDot><DOTCONTAINS> <SSOpenParen> (value())  <SSCloseParen> 
+}
+
+void MapContains():{}
+{
+	variable() <SSDot><DOTCONTAINS> <SSOpenBraces> (value())  <SSCloseBraces> 
 }
 
 void ListGetSize():{}
@@ -719,6 +734,16 @@ void SetGetSize():{}
 void MapGetSize():{}
 {
 	variable() <SSDot><DOTGETSIZE> <SSOpenBraces>  <SSCloseBraces> 
+}
+
+void SetGetString():{}
+{
+	variable() <SSDot><DOTGETSTRING> <SSOpenParen> <SSCloseParen> 
+}
+
+void MapGetString():{}
+{
+	variable() <SSDot><DOTGETSTRING> <SSOpenBraces>  <SSCloseBraces> 
 }
 
 void ListSetVal():{}
