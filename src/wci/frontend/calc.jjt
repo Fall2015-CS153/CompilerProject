@@ -209,6 +209,8 @@ TOKEN:
 }
 
 TOKEN : {
+<RESERVEDWORDLOCAL : "local">
+|
 <RESERVEDWORDREADINT :"readInt">
 |
  <RESERVEDWORDPRINT :"put">
@@ -533,6 +535,9 @@ void variableDecl(TypeSpec type) : {}
 
 void Declaration(): {TypeSpec type;}
 {
+        (<RESERVEDWORDLOCAL>{
+                jjtThis.setAttribute(VALUE, "Local");
+        })?
 	type=PrimitiveType()
 	variableDecl(type) 
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )

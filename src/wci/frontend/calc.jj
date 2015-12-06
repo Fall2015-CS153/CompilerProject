@@ -213,6 +213,8 @@ TOKEN:
 }
 
 TOKEN : {
+<RESERVEDWORDLOCAL : "local">
+|
 <RESERVEDWORDREADINT :"readInt">
 |
  <RESERVEDWORDPRINT :"put">
@@ -1387,6 +1389,9 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
 {/*@bgen(jjtree) Declaration */
         try {
 /*@egen*/
+        (<RESERVEDWORDLOCAL>{
+                jjtn000.setAttribute(VALUE, "Local");
+        })?
 	type=PrimitiveType()
 	variableDecl(type) 
    (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )/*@bgen(jjtree)*/

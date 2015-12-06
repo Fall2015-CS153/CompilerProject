@@ -87,7 +87,9 @@ public class CodeGeneratorVisitor
 
         // Get the assignment target type.
         TypeSpec targetType = node.getTypeSpec();
-
+        if(node.getAttribute(VALUE)==null){
+            
+        
         // Convert an integer value to float if necessary.
         if (((targetType == Predefined.doubleType) || (targetType
                 == Predefined.floatType)) && (expressionType
@@ -96,7 +98,7 @@ public class CodeGeneratorVisitor
             CodeGenerator.objectFile.println("    i2f");
             CodeGenerator.objectFile.flush();
         }
-
+        
         SymTabEntry id = (SymTabEntry) variableNode.getAttribute(ID);
         String fieldName = id.getName();
         TypeSpec type = id.getTypeSpec();
@@ -118,6 +120,9 @@ public class CodeGeneratorVisitor
         // Emit the appropriate store instruction.
         CodeGenerator.objectFile.println("    putstatic " + programName + "/"
                 + fieldName + " " + typeCode);
+        }else{// local variable
+            CodeGenerator.objectFile.println("");
+        }
         CodeGenerator.objectFile.flush();
 
         return data;
