@@ -3,7 +3,7 @@
                                                             
                
                  
-DEBUG_PARSER=true;
+DEBUG_PARSER=false;
 }
 PARSER_BEGIN(ExprParser)
 package wci.frontend;
@@ -36,6 +36,7 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
     private static SymTabStack symTabStack;
     private static SymTabEntry programId;
     private static int index=0;
+    private static boolean errorThrown = false;
 
     public static void main(String[] args)
         throws Exception
@@ -75,10 +76,14 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
         String objectFilePath = (suffixIndex == truncatedLength)
             ?  "OutputFiles/" +sourceFilePath.substring(0, truncatedLength) +OUTPUT_SUFFIX
             : "OutputFiles/" + sourceFilePath + OUTPUT_SUFFIX;
-
-        // Create the compiler backend and generate code.
-        Backend backend = BackendFactory.createBackend("compile");
-        backend.process(iCode, symTabStack, objectFilePath);
+        if(errorThrown==false){
+            // Create the compiler backend and generate code.
+            Backend backend = BackendFactory.createBackend("compile");
+            backend.process(iCode, symTabStack, objectFilePath);
+            System.out.println("Parsing has ended and .j file has been generated!");            
+        }else{// Print error
+            System.out.println("Error(s) have been thrown, please fix and recompile");
+        }
 	}
 
 
@@ -88,7 +93,7 @@ PARSER_END(ExprParser)
 
 
 SKIP : {
-   <IGNORE : [" " , "\n"]> |
+   <IGNORE : [" " , "\n", "\t"]> |
    <SINGLELINECOMMENT: "//" (~["\n","\r"])* ("\n"|"\r"|"\r\n")>
 | < NEWLINE: ["\n", "\r"] >
 }
@@ -293,7 +298,7 @@ TOKEN : {
  | <#LETTER : ["a"-"z","A"-"Z","_"]>
  | <#OCTALS: ["0"-"7"]>
  | <#ZERO : ["0"]>
- | <ERROR   : ~["\r", "\n"]>
+ | <ERROR   : (~["\r", "\n"])>
 }
 
 JAVACODE
@@ -308,11 +313,11 @@ String handleError(Token token)
                        " after \"" + token.image + "\"");
 
     Token t;
-  
+
     
         t = getNextToken();
    
-
+    errorThrown = true;// throw error so we do not compile backend
     return t.image;/*@bgen(jjtree)*/
  } finally {
    if (jjtc000) {
@@ -347,6 +352,8 @@ SimpleNode Program() : {/*@bgen(jjtree) Program */
 {/*@bgen(jjtree) Program */
 try {
 /*@egen*/
+
+//(try{
 <IDENTIFIER> {
 	programId = symTabStack.enterLocal(token.image);
         programId.setDefinition(DefinitionImpl.PROGRAM);
@@ -362,6 +369,10 @@ try {
   jjtc000 = false;
 }
 /*@egen*/
+//}catch(ParseException ex){
+//handleError(ex.currentToken);
+//System.out.println("Main Program Structure thrown!");
+//})
 {
 
 return jjtn000;
@@ -528,7 +539,7 @@ void Commands() : {/*@bgen(jjtree) Commands */
         try {
 /*@egen*/
 	(try {
-	(IfPart() | SwitchPart()|For()|While()|Statement()| ProcedureCall()| DataTypes()|PrintStatement()|Error())*
+	(IfPart() | SwitchPart()|For()|While()|Statement()| ProcedureCall()| DataTypes()|PrintStatement()|Error() )*
 	}catch (ParseException ex) {
         handleError(ex.currentToken);
 	Commands();// Recursive call to continue error handling
@@ -1409,7 +1420,7 @@ TypeSpec variable() : {/*@bgen(jjtree) variable */
         SymTabEntry variableId = symTabStack.lookup(token.image);
 	    if(variableId==null)
 	    {
-	    	System.out.println("VARIABLE LOOKUP ERROR***");
+	    	System.out.println("VARIABLE LOOKUP ERROR*** -> "+ token.image);
             return null;
 	    }
 	    else 
@@ -1473,7 +1484,7 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
         })?
 	type=PrimitiveType()
 	variableDecl(type) 
-   (LOOKAHEAD(2)((<SSEquals> (Expr()) <SSSemiColon>)) |( (<SSComma> <IDENTIFIER>)*  <SSSemiColon> ) )/*@bgen(jjtree)*/
+   (LOOKAHEAD(2)((<SSEquals> (Expr()) (<SSSemiColon>))) |( (<SSComma> <IDENTIFIER>)*  (<SSSemiColon>))  )/*@bgen(jjtree)*/
    {
      jjtree.closeNodeScope(jjtn000, true);
      jjtc000 = false;

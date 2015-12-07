@@ -10,10 +10,27 @@ BubbleSort{
     a.add[5];
     a.add[7];
     a.add[8];
+
+
+     
+
+
+
+
     boolean swappedThisTime = true;
     int swapVal = a.getVal[0];
-  
     int size = a.getSize[];
+
+    put "Printing unsorted order";
+     for(int k=0; k<size; k++;){
+      int tempVal = a.getVal[k];
+      put " ", tempVal ;
+    }
+    put "";
+    put "";
+
+
+    
     for(int i=0; (i<(size-1)); i++;){
           for(int j=0; j<size-1; j++;){
            swappedThisTime = false;

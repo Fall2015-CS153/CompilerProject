@@ -4,7 +4,7 @@
 .field private static _runTimer LRunTimer;
 .field private static _standardIn LPascalTextIn;
 
-.field private static a I
+.field private static a Z
 .field private static i I
 .field private static j I
 
@@ -32,6 +32,8 @@
     invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 
     pop
+    ldc 1
+    putstatic TestFor/a Z
     ldc 3
     ldc 5
     if_icmplt L003
@@ -46,6 +48,7 @@ L004:
 L10:
     getstatic TestFor/i I
     ldc 10
+    getstatic TestFor/a Z
     if_icmplt L006
     iconst_0
     goto L007
@@ -129,14 +132,14 @@ L00101:
 
 return
 .limit locals 32
-.limit stack 32
+.limit stack 40
 .end method
 
 .method public second()V
 
 return
 .limit locals 32
-.limit stack 32
+.limit stack 40
 .end method
 
 .method public static main([Ljava/lang/String;)V
