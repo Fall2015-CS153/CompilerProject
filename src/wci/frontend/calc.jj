@@ -120,6 +120,9 @@ TOKEN:
 <SSAnd: "&">
 
 |
+<SSFunc: "`">
+
+|
 <SSOr: "|">
 
 |
@@ -397,7 +400,21 @@ void ProcedureCall() :{/*@bgen(jjtree) ProcedureCall */
  <RESERVEDWORDCALL> <IDENTIFIER>{
 jjtn000.setAttribute(VALUE,token.image);
 }
- <SSOpenParen><SSCloseParen><SSSemiColon>/*@bgen(jjtree)*/
+ (ValuePass())?<SSSemiColon>/*@bgen(jjtree)*/
+ } catch (Throwable jjte000) {
+   if (jjtc000) {
+     jjtree.clearNodeScope(jjtn000);
+     jjtc000 = false;
+   } else {
+     jjtree.popNode();
+   }
+   if (jjte000 instanceof RuntimeException) {
+     throw (RuntimeException)jjte000;
+   }
+   if (jjte000 instanceof ParseException) {
+     throw (ParseException)jjte000;
+   }
+   throw (Error)jjte000;
  } finally {
    if (jjtc000) {
      jjtree.closeNodeScope(jjtn000, true);
@@ -416,7 +433,7 @@ try {
 /*@egen*/
 (<RESERVEDWORDPROCEDURE> <IDENTIFIER>{
 jjtn000.setAttribute(VALUE, token.image);}
-<SSOpenBraces> Commands() <SSCloseBraces>
+(Parameters())?<SSOpenBraces> Commands() <SSCloseBraces>
 )/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
   if (jjtc000) {
@@ -438,8 +455,71 @@ jjtn000.setAttribute(VALUE, token.image);}
   }
 }
 /*@egen*/
-
 }
+
+void Parameters():{/*@bgen(jjtree) Parameters */
+                   ASTParameters jjtn000 = new ASTParameters(JJTPARAMETERS);
+                   boolean jjtc000 = true;
+                   jjtree.openNodeScope(jjtn000);
+/*@egen*/TypeSpec type;}
+{/*@bgen(jjtree) Parameters */
+try {
+/*@egen*/
+<SSFunc>(type=PrimitiveType()
+	variableDecl(type) )*<SSFunc>/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
+/*@egen*/
+}
+
+void ValuePass():{/*@bgen(jjtree) ValuePass */
+  ASTValuePass jjtn000 = new ASTValuePass(JJTVALUEPASS);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
+{/*@bgen(jjtree) ValuePass */
+try {
+/*@egen*/
+<SSFunc>(variable())*<SSFunc>/*@bgen(jjtree)*/
+} catch (Throwable jjte000) {
+  if (jjtc000) {
+    jjtree.clearNodeScope(jjtn000);
+    jjtc000 = false;
+  } else {
+    jjtree.popNode();
+  }
+  if (jjte000 instanceof RuntimeException) {
+    throw (RuntimeException)jjte000;
+  }
+  if (jjte000 instanceof ParseException) {
+    throw (ParseException)jjte000;
+  }
+  throw (Error)jjte000;
+} finally {
+  if (jjtc000) {
+    jjtree.closeNodeScope(jjtn000, true);
+  }
+}
+/*@egen*/
+}
+
 void Commands() : {/*@bgen(jjtree) Commands */
   ASTCommands jjtn000 = new ASTCommands(JJTCOMMANDS);
   boolean jjtc000 = true;

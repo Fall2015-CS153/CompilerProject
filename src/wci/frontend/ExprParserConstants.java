@@ -21,175 +21,177 @@ public interface ExprParserConstants {
   /** RegularExpression Id. */
   int SSAnd = 8;
   /** RegularExpression Id. */
-  int SSOr = 9;
+  int SSFunc = 9;
   /** RegularExpression Id. */
-  int SSNot = 10;
+  int SSOr = 10;
   /** RegularExpression Id. */
-  int SSDollar = 11;
+  int SSNot = 11;
   /** RegularExpression Id. */
-  int SSL = 12;
+  int SSDollar = 12;
   /** RegularExpression Id. */
-  int SSLE = 13;
+  int SSL = 13;
   /** RegularExpression Id. */
-  int SSG = 14;
+  int SSLE = 14;
   /** RegularExpression Id. */
-  int SSGE = 15;
+  int SSG = 15;
   /** RegularExpression Id. */
-  int SSNE = 16;
+  int SSGE = 16;
   /** RegularExpression Id. */
-  int SSPlus = 17;
+  int SSNE = 17;
   /** RegularExpression Id. */
-  int SSMinus = 18;
+  int SSPlus = 18;
   /** RegularExpression Id. */
-  int SSStar = 19;
+  int SSMinus = 19;
   /** RegularExpression Id. */
-  int SSDivide = 20;
+  int SSStar = 20;
   /** RegularExpression Id. */
-  int SSplusplus = 21;
+  int SSDivide = 21;
   /** RegularExpression Id. */
-  int SSminusminus = 22;
+  int SSplusplus = 22;
   /** RegularExpression Id. */
-  int SSSemiColon = 23;
+  int SSminusminus = 23;
   /** RegularExpression Id. */
-  int SSPlusEquals = 24;
+  int SSSemiColon = 24;
   /** RegularExpression Id. */
-  int SSMinusEquals = 25;
+  int SSPlusEquals = 25;
   /** RegularExpression Id. */
-  int SSMultEquals = 26;
+  int SSMinusEquals = 26;
   /** RegularExpression Id. */
-  int SSDivideEquals = 27;
+  int SSMultEquals = 27;
   /** RegularExpression Id. */
-  int SSEquals = 28;
+  int SSDivideEquals = 28;
   /** RegularExpression Id. */
-  int SSOpenParen = 29;
+  int SSEquals = 29;
   /** RegularExpression Id. */
-  int SSCloseParen = 30;
+  int SSOpenParen = 30;
   /** RegularExpression Id. */
-  int SSOpenBraces = 31;
+  int SSCloseParen = 31;
   /** RegularExpression Id. */
-  int SSCloseBraces = 32;
+  int SSOpenBraces = 32;
   /** RegularExpression Id. */
-  int SSOpenBracket = 33;
+  int SSCloseBraces = 33;
   /** RegularExpression Id. */
-  int SSCloseBracket = 34;
+  int SSOpenBracket = 34;
   /** RegularExpression Id. */
-  int ComparisonEquals = 35;
+  int SSCloseBracket = 35;
   /** RegularExpression Id. */
-  int SSComma = 36;
+  int ComparisonEquals = 36;
   /** RegularExpression Id. */
-  int SSColon = 37;
+  int SSComma = 37;
   /** RegularExpression Id. */
-  int SSTilda = 38;
+  int SSColon = 38;
   /** RegularExpression Id. */
-  int SSDot = 39;
+  int SSTilda = 39;
   /** RegularExpression Id. */
-  int RESERVEDWORDLOCAL = 40;
+  int SSDot = 40;
   /** RegularExpression Id. */
-  int RESERVEDWORDREADINT = 41;
+  int RESERVEDWORDLOCAL = 41;
   /** RegularExpression Id. */
-  int RESERVEDWORDPRINT = 42;
+  int RESERVEDWORDREADINT = 42;
   /** RegularExpression Id. */
-  int RESERVEDWORDPROCEDURE = 43;
+  int RESERVEDWORDPRINT = 43;
   /** RegularExpression Id. */
-  int RESERVEDWORDCALL = 44;
+  int RESERVEDWORDPROCEDURE = 44;
   /** RegularExpression Id. */
-  int RESERVEDWORDIF = 45;
+  int RESERVEDWORDCALL = 45;
   /** RegularExpression Id. */
-  int RESERVEDWORDBREAK = 46;
+  int RESERVEDWORDIF = 46;
   /** RegularExpression Id. */
-  int RESERVEDWORDELSE = 47;
+  int RESERVEDWORDBREAK = 47;
   /** RegularExpression Id. */
-  int RESERVEDWORDELSEIF = 48;
+  int RESERVEDWORDELSE = 48;
   /** RegularExpression Id. */
-  int RESERVEDWORDRETURN = 49;
+  int RESERVEDWORDELSEIF = 49;
   /** RegularExpression Id. */
-  int RESERVEDWORDCASE = 50;
+  int RESERVEDWORDRETURN = 50;
   /** RegularExpression Id. */
-  int RESERVEDWORDSWITCH = 51;
+  int RESERVEDWORDCASE = 51;
   /** RegularExpression Id. */
-  int RESERVEDWORDWHILE = 52;
+  int RESERVEDWORDSWITCH = 52;
   /** RegularExpression Id. */
-  int RESERVEDWORDFOR = 53;
+  int RESERVEDWORDWHILE = 53;
   /** RegularExpression Id. */
-  int RESERVEDWORDINT = 54;
+  int RESERVEDWORDFOR = 54;
   /** RegularExpression Id. */
-  int RESERVEDWORDFLOAT = 55;
+  int RESERVEDWORDINT = 55;
   /** RegularExpression Id. */
-  int RESERVEDWORDBOOLEAN = 56;
+  int RESERVEDWORDFLOAT = 56;
   /** RegularExpression Id. */
-  int RESERVEDWORDDOUBLE = 57;
+  int RESERVEDWORDBOOLEAN = 57;
   /** RegularExpression Id. */
-  int RESERVEDWORDSTRING = 58;
+  int RESERVEDWORDDOUBLE = 58;
   /** RegularExpression Id. */
-  int RESERVEDWORDHASHMAP = 59;
+  int RESERVEDWORDSTRING = 59;
   /** RegularExpression Id. */
-  int RESERVEDWORDSET = 60;
+  int RESERVEDWORDHASHMAP = 60;
   /** RegularExpression Id. */
-  int RESERVEDWORDLIST = 61;
+  int RESERVEDWORDSET = 61;
   /** RegularExpression Id. */
-  int RESERVEDWORDNEW = 62;
+  int RESERVEDWORDLIST = 62;
   /** RegularExpression Id. */
-  int RESERVEDWORDPUBLIC = 63;
+  int RESERVEDWORDNEW = 63;
   /** RegularExpression Id. */
-  int RESERVEDWORDVOID = 64;
+  int RESERVEDWORDPUBLIC = 64;
   /** RegularExpression Id. */
-  int DOTGETVAL = 65;
+  int RESERVEDWORDVOID = 65;
   /** RegularExpression Id. */
-  int DOTADD = 66;
+  int DOTGETVAL = 66;
   /** RegularExpression Id. */
-  int DOTREMOVE = 67;
+  int DOTADD = 67;
   /** RegularExpression Id. */
-  int DOTSETVAL = 68;
+  int DOTREMOVE = 68;
   /** RegularExpression Id. */
-  int DOTGETINDEX = 69;
+  int DOTSETVAL = 69;
   /** RegularExpression Id. */
-  int DOTGETSIZE = 70;
+  int DOTGETINDEX = 70;
   /** RegularExpression Id. */
-  int DOTGETSTRING = 71;
+  int DOTGETSIZE = 71;
   /** RegularExpression Id. */
-  int DOTCONTAINS = 72;
+  int DOTGETSTRING = 72;
   /** RegularExpression Id. */
-  int DOTSUBSTRING = 73;
+  int DOTCONTAINS = 73;
   /** RegularExpression Id. */
-  int DOTAPPEND = 74;
+  int DOTSUBSTRING = 74;
   /** RegularExpression Id. */
-  int BOOLEAN = 75;
+  int DOTAPPEND = 75;
   /** RegularExpression Id. */
-  int IDENTIFIER = 76;
+  int BOOLEAN = 76;
   /** RegularExpression Id. */
-  int STRING = 77;
+  int IDENTIFIER = 77;
   /** RegularExpression Id. */
-  int INTEGER = 78;
+  int STRING = 78;
   /** RegularExpression Id. */
-  int DECIMALINTEGER = 79;
+  int INTEGER = 79;
   /** RegularExpression Id. */
-  int OCTALINTEGER = 80;
+  int DECIMALINTEGER = 80;
   /** RegularExpression Id. */
-  int HEXINTEGER = 81;
+  int OCTALINTEGER = 81;
   /** RegularExpression Id. */
-  int DOUBLE = 82;
+  int HEXINTEGER = 82;
   /** RegularExpression Id. */
-  int REALNUMBER = 83;
+  int DOUBLE = 83;
   /** RegularExpression Id. */
-  int REAL_NUMBER = 84;
+  int REALNUMBER = 84;
   /** RegularExpression Id. */
-  int SINGLEQUOTE = 85;
+  int REAL_NUMBER = 85;
   /** RegularExpression Id. */
-  int DOUBLEQUOTE = 86;
+  int SINGLEQUOTE = 86;
   /** RegularExpression Id. */
-  int HEXLETTERS = 87;
+  int DOUBLEQUOTE = 87;
   /** RegularExpression Id. */
-  int DIGIT = 88;
+  int HEXLETTERS = 88;
   /** RegularExpression Id. */
-  int NONZERO = 89;
+  int DIGIT = 89;
   /** RegularExpression Id. */
-  int LETTER = 90;
+  int NONZERO = 90;
   /** RegularExpression Id. */
-  int OCTALS = 91;
+  int LETTER = 91;
   /** RegularExpression Id. */
-  int ZERO = 92;
+  int OCTALS = 92;
   /** RegularExpression Id. */
-  int ERROR = 93;
+  int ZERO = 93;
+  /** RegularExpression Id. */
+  int ERROR = 94;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -207,6 +209,7 @@ public interface ExprParserConstants {
     "<token of kind 6>",
     "<SPECIALSYMBOL>",
     "\"&\"",
+    "\"`\"",
     "\"|\"",
     "\"!\"",
     "\"$\"",

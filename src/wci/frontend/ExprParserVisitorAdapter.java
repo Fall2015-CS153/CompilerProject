@@ -511,6 +511,17 @@ public class ExprParserVisitorAdapter implements ExprParserVisitor
     {
          return node.childrenAccept(this, data);}
 
+    @Override
+    public Object visit(ASTParameters node, Object data)
+    {
+       return node.childrenAccept(this, data);}
+
+    @Override
+    public Object visit(ASTValuePass node, Object data)
+    {
+      return node.childrenAccept(this, data);}
+
+
   
 
    

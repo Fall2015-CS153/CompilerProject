@@ -116,6 +116,9 @@ TOKEN:
 <SSAnd: "&">
 
 |
+<SSFunc: "`">
+
+|
 <SSOr: "|">
 
 |
@@ -333,17 +336,28 @@ void ProcedureCall() :{}
  <RESERVEDWORDCALL> <IDENTIFIER>{
 jjtThis.setAttribute(VALUE,token.image);
 }
- <SSOpenParen><SSCloseParen><SSSemiColon>
+ (ValuePass())?<SSSemiColon>
 }
 
 void Procedure() : {}
 {
 (<RESERVEDWORDPROCEDURE> <IDENTIFIER>{
 jjtThis.setAttribute(VALUE, token.image);}
-<SSOpenBraces> Commands() <SSCloseBraces>
+(Parameters())?<SSOpenBraces> Commands() <SSCloseBraces>
 )
-
 }
+
+void Parameters():{TypeSpec type;}
+{
+<SSFunc>(type=PrimitiveType()
+	variableDecl(type) )*<SSFunc>
+}
+
+void ValuePass():{}
+{
+<SSFunc>(variable())*<SSFunc>
+}
+
 void Commands() : {}
 {
 	(try {

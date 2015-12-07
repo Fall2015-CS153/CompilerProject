@@ -1,0 +1,16 @@
+TestLocalVariables{
+   
+  Procedure :: main{
+    int a =10;
+    put "Global variable a before call to function ", a;
+    Call second`a`;
+    put "Global variable a after return from function ", a;
+  }
+
+  Procedure :: second`int f`{
+      local int b =f;
+      put "Passed value is " , b ;
+   
+  }
+
+}
