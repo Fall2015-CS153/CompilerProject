@@ -36,31 +36,35 @@
 
     pop
     pop
+    getstatic TestPassByValue/a I
     new TestPassByValue
     dup
     invokespecial TestPassByValue/<init>()V
-    invokevirtual TestPassByValue/second()V
-    ldc "Global variable a after return from function "
-    getstatic TestPassByValue/a I
-
-    getstatic     java/lang/System/out Ljava/io/PrintStream; 
-    new       java/lang/StringBuilder 
-    dup 
-    ldc "Global variable a after return from function "
-    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
-    getstatic TestPassByValue/a I
-    invokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;
-    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
-    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
-
-    pop
-    pop
+    invokevirtual TestPassByValue/second(I)V
 
 return
 .limit locals 32
 .limit stack 40
 .end method
 
+.method public second(I)V
+    getstatic TestPassByValue/f I
+
+    ldc "Passed value is "
+    getstatic TestPassByValue/b I
+
+    getstatic     java/lang/System/out Ljava/io/PrintStream; 
+    new       java/lang/StringBuilder 
+    dup 
+    ldc "Passed value is "
+    invokenonvirtual java/lang/StringBuilder/<init>(Ljava/lang/String;)V
+    getstatic TestPassByValue/b I
+    invokevirtual java/lang/StringBuilder/append(I)Ljava/lang/StringBuilder;
+    invokevirtual java/lang/StringBuilder/toString()Ljava/lang/String;
+    invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+
+    pop
+    pop
 
 return
 .limit locals 32

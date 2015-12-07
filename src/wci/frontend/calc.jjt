@@ -349,13 +349,13 @@ jjtThis.setAttribute(VALUE, token.image);}
 
 void Parameters():{TypeSpec type;}
 {
-<SSFunc>(type=PrimitiveType()
+<SSFunc>(type=PrimitiveType() {jjtThis.setTypeSpec(Predefined.integerType);}
 	variableDecl(type) )*<SSFunc>
 }
 
-void ValuePass():{}
+void ValuePass():{TypeSpec type;}
 {
-<SSOpenParen>(variable())*<SSCloseParen>
+<SSOpenParen>(type=PrimitiveType() {jjtThis.setTypeSpec(Predefined.integerType);} variable())*<SSCloseParen>
 }
 
 void Commands() : {}

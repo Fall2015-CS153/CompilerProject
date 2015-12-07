@@ -21,8 +21,18 @@ public class CodeGeneratorVisitor
         {
             SimpleNode param = (SimpleNode) node.jjtGetChild(0);
             System.out.println(param);
+            TypeSpec type = param.getTypeSpec();
+            String typePrefix = getTypePrefix(type);
             //load the stack with that value
+            
             //call the method.
+            param.jjtAccept(this, data);
+            CodeGenerator.objectFile.print(".method public " + node.getAttribute(
+            VALUE) + "("+ typePrefix + ")V");
+            System.out.println(typePrefix);
+        CodeGenerator.objectFile.println();
+                SimpleNode commandsNode = (SimpleNode) node.jjtGetChild(1);
+        commandsNode.jjtAccept(this, data);
         }
         else
         {
@@ -31,10 +41,11 @@ public class CodeGeneratorVisitor
                 VALUE) + "()V");
         CodeGenerator.objectFile.println();
         // create stuff inside
+                SimpleNode commandsNode = (SimpleNode) node.jjtGetChild(0);
+        commandsNode.jjtAccept(this, data);
 
         }
-        SimpleNode commandsNode = (SimpleNode) node.jjtGetChild(0);
-        commandsNode.jjtAccept(this, data);
+
         //create end
         CodeGenerator.objectFile.println();
         CodeGenerator.objectFile.println("return\n" + ".limit locals 32\n"
@@ -77,10 +88,30 @@ public class CodeGeneratorVisitor
 
     public Object visit(ASTProcedureCall node, Object data)
     {
-        String programName = (String) data;
+         String programName = (String) data;
+        if(node.jjtGetNumChildren()!=0)
+        {
+            SimpleNode param = (SimpleNode) node.jjtGetChild(0);
+            System.out.println(param);
+            TypeSpec type = param.getTypeSpec();
+            String typePrefix = getTypePrefix(type);
+            //load the stack with that value
+            //call the method.
+            param.jjtAccept(this, data);
+            //load value to stack.
+            
+            //determine call type and call.
+            CodeGenerator.objectFile.println("    new "+programName+"\n" + "    dup\n"
+                + "    invokespecial "+programName+"/<init>()V\n"
+                + "    invokevirtual "+programName+"/" + node.getAttribute(VALUE) + "(" + typePrefix + ")V");
+            
+        }
+       else
+        {
         CodeGenerator.objectFile.println("    new "+programName+"\n" + "    dup\n"
                 + "    invokespecial "+programName+"/<init>()V\n"
                 + "    invokevirtual "+programName+"/" + node.getAttribute(VALUE) + "()V");
+        }
         return data;
     }
 
