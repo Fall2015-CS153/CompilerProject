@@ -465,8 +465,7 @@ void Parameters():{/*@bgen(jjtree) Parameters */
 {/*@bgen(jjtree) Parameters */
 try {
 /*@egen*/
-<SSFunc>(type=PrimitiveType() {jjtn000.setTypeSpec(Predefined.integerType);}
-	variableDecl(type) )*<SSFunc>/*@bgen(jjtree)*/
+<SSFunc>(type=PrimitiveType() variableDecl(type) )*<SSFunc>/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
   if (jjtc000) {
     jjtree.clearNodeScope(jjtn000);
@@ -497,7 +496,7 @@ void ValuePass():{/*@bgen(jjtree) ValuePass */
 {/*@bgen(jjtree) ValuePass */
 try {
 /*@egen*/
-<SSOpenParen>(type=PrimitiveType() {jjtn000.setTypeSpec(Predefined.integerType);} variable())*<SSCloseParen>/*@bgen(jjtree)*/
+<SSOpenParen>(type=PrimitiveType()  variable())*<SSCloseParen>/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
   if (jjtc000) {
     jjtree.clearNodeScope(jjtn000);

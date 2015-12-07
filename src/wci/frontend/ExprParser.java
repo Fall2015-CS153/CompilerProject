@@ -287,7 +287,6 @@ jjtn000.setAttribute(VALUE, token.image);
             break label_2;
           }
           type = PrimitiveType();
-                               jjtn000.setTypeSpec(Predefined.integerType);
           variableDecl(type);
         }
         jj_consume_token(SSFunc);
@@ -339,7 +338,6 @@ jjtn000.setAttribute(VALUE, token.image);
             break label_3;
           }
           type = PrimitiveType();
-                                    jjtn000.setTypeSpec(Predefined.integerType);
           variable();
         }
         jj_consume_token(SSCloseParen);

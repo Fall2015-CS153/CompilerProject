@@ -1,14 +1,24 @@
 TestLocalVariables{
    
   Procedure :: main{
-    int a =10;
-    put "Global variable a before call to function ", a;
-    Call second(int a);
+    string a = 'abc';
+    int b = 5;
+    put "Inside main a before call to function ", a;
+    put "Inside main b before call to function ", b;
+    Call second(string a int b);
+    put "After return  a is ", a;
+    put "After return  b is ", b;
   }
 
-  Procedure :: second`int f`{
-      local int b = f;
-      put "Passed value is ", b ;
+  Procedure :: second`string f int d`{
+      string temp = f;
+      int x = d;
+      put "Inside proc Passed value is ", temp ;
+      put "Inside proc Passed value is ", x ;
+      temp = 'dog';
+      x = 7;
+      put "Inside proc Changed value is ", temp ;
+      put "Inside proc Changed value is ", x ;
    
   }
 

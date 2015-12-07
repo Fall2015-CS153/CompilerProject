@@ -43,6 +43,7 @@ public class CodeGenerator extends Backend
             String objectFilePath)
             throws Exception
     {
+        //try{
         CodeGenerator.iCode = iCode;
         CodeGenerator.symTabStack = symTabStack;
         CodeGenerator.objectFile = new PrintWriter(objectFilePath);
@@ -126,7 +127,7 @@ public class CodeGenerator extends Backend
 
                 }
         }
-                System.out.println("Type I found: " + type);
+                //System.out.println("Type I found: " + type);
                 objectFile.println(".field private static " + fieldName + " "
                         + typeCode);
             }
@@ -149,6 +150,7 @@ public class CodeGenerator extends Backend
         // for the  method's compound statement.
         //add local variables to the stack.
         // provide code for actual execution.
+        
         CodeGeneratorVisitor codeVisitor = new CodeGeneratorVisitor();
         Node rootNode = iCode.getRoot();
         rootNode.jjtAccept(codeVisitor, programName);
@@ -190,6 +192,15 @@ public class CodeGenerator extends Backend
         objectFile.println(".end method");
         objectFile.flush();
 
+       // }
+       //  catch(Exception e)
+        //{
+          //  System.out.println("Dear user, There has been an exception. Please re-check your program. ");
+           
+        //}
+        //finally
+        //{
         CodeGenerator.objectFile.close();
+    //    }
     }
 }
