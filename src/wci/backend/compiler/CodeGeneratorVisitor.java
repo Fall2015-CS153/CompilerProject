@@ -17,15 +17,24 @@ public class CodeGeneratorVisitor
 
     public Object visit(ASTProcedure node, Object data)
     {
-
+        if(node.jjtGetNumChildren()!=1)
+        {
+            SimpleNode param = (SimpleNode) node.jjtGetChild(0);
+            System.out.println(param);
+            //load the stack with that value
+            //call the method.
+        }
+        else
+        {
         // Generating method call
         CodeGenerator.objectFile.print(".method public " + node.getAttribute(
                 VALUE) + "()V");
         CodeGenerator.objectFile.println();
         // create stuff inside
+
+        }
         SimpleNode commandsNode = (SimpleNode) node.jjtGetChild(0);
         commandsNode.jjtAccept(this, data);
-
         //create end
         CodeGenerator.objectFile.println();
         CodeGenerator.objectFile.println("return\n" + ".limit locals 32\n"

@@ -355,7 +355,7 @@ void Parameters():{TypeSpec type;}
 
 void ValuePass():{}
 {
-<SSFunc>(variable())*<SSFunc>
+<SSOpenParen>(variable())*<SSCloseParen>
 }
 
 void Commands() : {}

@@ -497,7 +497,7 @@ void ValuePass():{/*@bgen(jjtree) ValuePass */
 {/*@bgen(jjtree) ValuePass */
 try {
 /*@egen*/
-<SSFunc>(variable())*<SSFunc>/*@bgen(jjtree)*/
+<SSOpenParen>(variable())*<SSCloseParen>/*@bgen(jjtree)*/
 } catch (Throwable jjte000) {
   if (jjtc000) {
     jjtree.clearNodeScope(jjtn000);

@@ -24,7 +24,6 @@
 .limit stack 1
 .end method
 
-.method public main()V
 new  List
 dup
 astore_0

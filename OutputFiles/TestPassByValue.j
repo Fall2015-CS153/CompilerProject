@@ -61,7 +61,6 @@ return
 .limit stack 40
 .end method
 
-.method public second()V
 
 return
 .limit locals 32
