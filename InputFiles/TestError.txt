@@ -9,9 +9,12 @@ Program{
       // er= "look"; // Catching incorrect Sym Tab Lookup String
        
        //ASDF // Catching basic error
-       
+       float      
        intDecl =5; //Immediate Recover: this will looked up
-       
+
+
+       double asd= "Hello";
+       string s= 5.2;
        int int int i=5;// error Recovered and variable i will be in symbol table
     }
 }

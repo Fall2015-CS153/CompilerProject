@@ -33,6 +33,9 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
     private static final String SOURCE_SUFFIX = ".txt";
     private static final String OUTPUT_SUFFIX = ".j";
 
+    private static TypeSpec type;
+    private static boolean typeBool=false;
+
     private static SymTabStack symTabStack;
     private static SymTabEntry programId;
     private static int index=0;
@@ -655,6 +658,10 @@ void IntegerConst() : {/*@bgen(jjtree) IntegerConst */
 	{
         jjtn000.setTypeSpec(Predefined.integerType);
         jjtn000.setAttribute(VALUE, Integer.parseInt(token.image));
+        if(Predefined.integerType!=type && typeBool){
+            System.out.println("Type Check Error This is not a Integer");
+        }
+        typeBool=false;
     })|<RESERVEDWORDREADINT>/*@bgen(jjtree)*/
                             {
                               jjtree.closeNodeScope(jjtn000, true);
@@ -685,6 +692,10 @@ void BooleanConst() : {/*@bgen(jjtree) BooleanConst */
         }
 /*@egen*/
 	{
+        if(Predefined.booleanType!=type && typeBool){
+            System.out.println("Type Check Error This is not a Boolean");
+        }
+        typeBool=false;
         jjtn000.setTypeSpec(Predefined.booleanType);
         jjtn000.setAttribute(VALUE, Boolean.valueOf(token.image));
     }/*@bgen(jjtree)*/
@@ -710,6 +721,10 @@ void FloatConst() : {/*@bgen(jjtree) FloatConst */
     }
 /*@egen*/
     {
+        if(Predefined.realType!=type && typeBool){
+            System.out.println("Type Check Error This is not a Float");
+        }
+        typeBool=false;
         jjtn000.setTypeSpec(Predefined.floatType);
         jjtn000.setAttribute(VALUE, Float.parseFloat(token.image));
     }/*@bgen(jjtree)*/
@@ -736,6 +751,10 @@ void DoubleConst() : {/*@bgen(jjtree) DoubleConst */
     }
 /*@egen*/
     {
+        if(Predefined.doubleType!=type && typeBool){
+            System.out.println("Type Check Error This is not a Double");
+        }
+        typeBool=false;
         jjtn000.setTypeSpec(Predefined.doubleType);
         jjtn000.setAttribute(VALUE, Double.parseDouble(token.image));
     }/*@bgen(jjtree)*/
@@ -762,6 +781,10 @@ void StringConst() : {/*@bgen(jjtree) StringConst */
         }
 /*@egen*/
 	{
+        if(Predefined.stringType!=type && typeBool){
+            System.out.println("Type Check Error This is not a String");
+        }
+        typeBool=false;
         jjtn000.setTypeSpec(Predefined.stringType);
         jjtn000.setAttribute(VALUE, token.image.substring(1,token.image.length()-1));
     }/*@bgen(jjtree)*/
@@ -1472,10 +1495,10 @@ void variableDecl(TypeSpec type) : {/*@bgen(jjtree) variableDecl */
 }
 
 void Declaration(): {/*@bgen(jjtree) Declaration */
-                     ASTDeclaration jjtn000 = new ASTDeclaration(JJTDECLARATION);
-                     boolean jjtc000 = true;
-                     jjtree.openNodeScope(jjtn000);
-/*@egen*/TypeSpec type;}
+  ASTDeclaration jjtn000 = new ASTDeclaration(JJTDECLARATION);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/}
 {/*@bgen(jjtree) Declaration */
         try {
 /*@egen*/
@@ -1483,6 +1506,9 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
                 jjtn000.setAttribute(VALUE, "Local");
         })?
 	type=PrimitiveType()
+        {
+        typeBool=true;
+        }
 	variableDecl(type) 
    (LOOKAHEAD(2)((<SSEquals> (Expr()) (<SSSemiColon>))) |( (<SSComma> <IDENTIFIER>)*  (<SSSemiColon>))  )/*@bgen(jjtree)*/
    {

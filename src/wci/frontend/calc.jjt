@@ -29,6 +29,9 @@ public class ExprParser
     private static final String SOURCE_SUFFIX = ".txt";
     private static final String OUTPUT_SUFFIX = ".j";
 
+    private static TypeSpec type;
+    private static boolean typeBool=false;
+
     private static SymTabStack symTabStack;
     private static SymTabEntry programId;
     private static int index=0;
@@ -404,6 +407,10 @@ void IntegerConst() : {}
 	{
         jjtThis.setTypeSpec(Predefined.integerType);
         jjtThis.setAttribute(VALUE, Integer.parseInt(token.image));
+        if(Predefined.integerType!=type && typeBool){
+            System.out.println("Type Check Error This is not a Integer");
+        }
+        typeBool=false;
     })|<RESERVEDWORDREADINT>{
         jjtThis.setAttribute(VALUE, "Input");
     }
@@ -412,6 +419,10 @@ void BooleanConst() : {}
 {
 	<BOOLEAN>
 	{
+        if(Predefined.booleanType!=type && typeBool){
+            System.out.println("Type Check Error This is not a Boolean");
+        }
+        typeBool=false;
         jjtThis.setTypeSpec(Predefined.booleanType);
         jjtThis.setAttribute(VALUE, Boolean.valueOf(token.image));
     }
@@ -420,6 +431,10 @@ void FloatConst() : {}
 {
     (<REALNUMBER>|<REAL_NUMBER>)
     {
+        if(Predefined.realType!=type && typeBool){
+            System.out.println("Type Check Error This is not a Float");
+        }
+        typeBool=false;
         jjtThis.setTypeSpec(Predefined.floatType);
         jjtThis.setAttribute(VALUE, Float.parseFloat(token.image));
     }
@@ -429,6 +444,10 @@ void DoubleConst() : {}
 {
     <DOUBLE>
     {
+        if(Predefined.doubleType!=type && typeBool){
+            System.out.println("Type Check Error This is not a Double");
+        }
+        typeBool=false;
         jjtThis.setTypeSpec(Predefined.doubleType);
         jjtThis.setAttribute(VALUE, Double.parseDouble(token.image));
     }
@@ -438,6 +457,10 @@ void StringConst() : {}
 {
 	<STRING>
 	{
+        if(Predefined.stringType!=type && typeBool){
+            System.out.println("Type Check Error This is not a String");
+        }
+        typeBool=false;
         jjtThis.setTypeSpec(Predefined.stringType);
         jjtThis.setAttribute(VALUE, token.image.substring(1,token.image.length()-1));
     }
@@ -557,12 +580,15 @@ void variableDecl(TypeSpec type) : {}
     }
 }
 
-void Declaration(): {TypeSpec type;}
+void Declaration(): {}
 {
         (<RESERVEDWORDLOCAL>{
                 jjtThis.setAttribute(VALUE, "Local");
         })?
 	type=PrimitiveType()
+        {
+        typeBool=true;
+        }
 	variableDecl(type) 
    (LOOKAHEAD(2)((<SSEquals> (Expr()) (<SSSemiColon>))) |( (<SSComma> <IDENTIFIER>)*  (<SSSemiColon>))  )
    {
