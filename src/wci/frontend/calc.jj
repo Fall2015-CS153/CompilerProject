@@ -356,7 +356,7 @@ SimpleNode Program() : {/*@bgen(jjtree) Program */
 try {
 /*@egen*/
 
-//(try{
+(try{
 <IDENTIFIER> {
 	programId = symTabStack.enterLocal(token.image);
         programId.setDefinition(DefinitionImpl.PROGRAM);
@@ -366,16 +366,16 @@ try {
 
 }<SSOpenBraces>
 (Procedure())*
-<SSCloseBraces>/*@bgen(jjtree)*/
+<SSCloseBraces>
+}catch(ParseException ex){
+handleError(ex.currentToken);
+System.out.println("Main Program Structure thrown!");
+})/*@bgen(jjtree)*/
 {
   jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
 }
 /*@egen*/
-//}catch(ParseException ex){
-//handleError(ex.currentToken);
-//System.out.println("Main Program Structure thrown!");
-//})
 {
 
 return jjtn000;

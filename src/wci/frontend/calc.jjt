@@ -323,7 +323,7 @@ void Error() : {}
 SimpleNode Program() : {}
 {
 
-//(try{
+(try{
 <IDENTIFIER> {
 	programId = symTabStack.enterLocal(token.image);
         programId.setDefinition(DefinitionImpl.PROGRAM);
@@ -334,10 +334,10 @@ SimpleNode Program() : {}
 }<SSOpenBraces>
 (Procedure())*
 <SSCloseBraces>
-//}catch(ParseException ex){
-//handleError(ex.currentToken);
-//System.out.println("Main Program Structure thrown!");
-//})
+}catch(ParseException ex){
+handleError(ex.currentToken);
+System.out.println("Main Program Structure thrown!");
+})
 {
 
 return jjtThis;

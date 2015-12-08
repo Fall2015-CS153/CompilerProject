@@ -118,28 +118,33 @@ if (jjtc000) {
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
     try {
-      jj_consume_token(IDENTIFIER);
+      try {
+        jj_consume_token(IDENTIFIER);
 programId = symTabStack.enterLocal(token.image);
         programId.setDefinition(DefinitionImpl.PROGRAM);
         programId.setAttribute(ROUTINE_SYMTAB, symTabStack.push());
         symTabStack.setProgramId(programId);
 //  deprecated      index=0;// Every procedure has new indx at 0
 
-      jj_consume_token(SSOpenBraces);
-      label_1:
-      while (true) {
-        switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
-        case RESERVEDWORDPROCEDURE:{
-          ;
-          break;
+        jj_consume_token(SSOpenBraces);
+        label_1:
+        while (true) {
+          switch ((jj_ntk==-1)?jj_ntk_f():jj_ntk) {
+          case RESERVEDWORDPROCEDURE:{
+            ;
+            break;
+            }
+          default:
+            jj_la1[0] = jj_gen;
+            break label_1;
           }
-        default:
-          jj_la1[0] = jj_gen;
-          break label_1;
+          Procedure();
         }
-        Procedure();
+        jj_consume_token(SSCloseBraces);
+      } catch (ParseException ex) {
+handleError(ex.currentToken);
+System.out.println("Main Program Structure thrown!");
       }
-      jj_consume_token(SSCloseBraces);
 jjtree.closeNodeScope(jjtn000, true);
   jjtc000 = false;
 {if ("" != null) return jjtn000;}
