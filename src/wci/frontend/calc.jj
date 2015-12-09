@@ -55,8 +55,8 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
 		   
 	
         // Print the cross-reference table.
-        CrossReferencer crossReferencer = new CrossReferencer();
-        crossReferencer.print(symTabStack);
+       // CrossReferencer crossReferencer = new CrossReferencer();
+        //crossReferencer.print(symTabStack);
 
         // Visit the parse tree nodes to decorate them with type information.
         ExprParserVisitorAdapter typeVisitor = new ExprParserVisitorAdapter();
@@ -68,8 +68,8 @@ public class ExprParser/*@bgen(jjtree)*/implements ExprParserTreeConstants/*@ege
         programId.setAttribute(ROUTINE_ICODE, iCode);
         
         // Print the parse tree.
-        ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
-        treePrinter.print(symTabStack);
+        //ParseTreePrinter treePrinter = new ParseTreePrinter(System.out);
+        //treePrinter.print(symTabStack);
 
         // Process the source file path which ends in .pcl
         // and create the output file path which ends in .j
