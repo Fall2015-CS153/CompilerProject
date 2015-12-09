@@ -12,11 +12,6 @@ BubbleSort{
     a.add[8];
 
 
-     
-
-
-
-
     boolean swappedThisTime = true;
     int swapVal = a.getVal[0];
     int size = a.getSize[];

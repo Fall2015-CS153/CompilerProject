@@ -4,16 +4,21 @@ ProgramTest{
       string name = 'a';
       a.add[name];
       a.add['b'];
+      a.add['c'];
       a.add['b'];
-      a.add['c'];
-      a.add['c'];
-      a.add['c'];
-      a.add['c'];
       a.add['d'];
+      a.add['c'];
+      a.add['c'];
+      a.add['c'];
       a.add['e'];
+     
 
       int size = a.getSize[];
       map{string,int} occurrences;
+
+      put "Showing empty Hashmap";
+      string desc =occurrences.getString{};
+      put "HashMap ", desc;
 
       for(int i=0; i<size; i++;){
       string temp = a.getVal[i];
@@ -27,8 +32,9 @@ ProgramTest{
       occurrences.add{temp,1}; }
 
     }
-
-     string desc =occurrences.getString{};
+    
+     put "Printing Generated Hash Map";
+     desc =occurrences.getString{};
      put "HashMap ", desc;
  }
 }

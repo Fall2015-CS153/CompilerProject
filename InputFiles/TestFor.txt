@@ -2,7 +2,7 @@ ProgramTestTwo{
     Procedure :: main{
     int a = 5;
     put "Above for looop";
-    boolean a = true;
+    boolean b = true;
     if(3<5){
     for(int i=0; i<10; i++;){
         if(3<5){
