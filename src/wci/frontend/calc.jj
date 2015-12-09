@@ -659,7 +659,7 @@ void IntegerConst() : {/*@bgen(jjtree) IntegerConst */
         jjtn000.setTypeSpec(Predefined.integerType);
         jjtn000.setAttribute(VALUE, Integer.parseInt(token.image));
         if(Predefined.integerType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Integer");
+            System.out.println("Type Check Error This is not a Integer Line "+ token.beginLine);
         }
         typeBool=false;
     })|<RESERVEDWORDREADINT>/*@bgen(jjtree)*/
@@ -693,7 +693,7 @@ void BooleanConst() : {/*@bgen(jjtree) BooleanConst */
 /*@egen*/
 	{
         if(Predefined.booleanType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Boolean");
+            System.out.println("Type Check Error This is not a Boolean Line "+ token.beginLine);
         }
         typeBool=false;
         jjtn000.setTypeSpec(Predefined.booleanType);
@@ -722,7 +722,7 @@ void FloatConst() : {/*@bgen(jjtree) FloatConst */
 /*@egen*/
     {
         if(Predefined.realType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Float");
+            System.out.println("Type Check Error This is not a Float Line "+ token.beginLine);
         }
         typeBool=false;
         jjtn000.setTypeSpec(Predefined.floatType);
@@ -752,7 +752,7 @@ void DoubleConst() : {/*@bgen(jjtree) DoubleConst */
 /*@egen*/
     {
         if(Predefined.doubleType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Double");
+            System.out.println("Type Check Error This is not a Double Line "+ token.beginLine);
         }
         typeBool=false;
         jjtn000.setTypeSpec(Predefined.doubleType);
@@ -782,7 +782,7 @@ void StringConst() : {/*@bgen(jjtree) StringConst */
 /*@egen*/
 	{
         if(Predefined.stringType!=type && typeBool){
-            System.out.println("Type Check Error This is not a String");
+            System.out.println("Type Check Error This is not a String Line "+token.beginLine);
         }
         typeBool=false;
         jjtn000.setTypeSpec(Predefined.stringType);
@@ -1518,6 +1518,7 @@ void Declaration(): {/*@bgen(jjtree) Declaration */
 /*@egen*/
    {
    	   jjtn000.setTypeSpec(type);
+           typeBool= false;
    }/*@bgen(jjtree)*/
         } catch (Throwable jjte000) {
           if (jjtc000) {

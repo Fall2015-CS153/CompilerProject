@@ -408,7 +408,7 @@ void IntegerConst() : {}
         jjtThis.setTypeSpec(Predefined.integerType);
         jjtThis.setAttribute(VALUE, Integer.parseInt(token.image));
         if(Predefined.integerType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Integer");
+            System.out.println("Type Check Error This is not a Integer Line "+ token.beginLine);
         }
         typeBool=false;
     })|<RESERVEDWORDREADINT>{
@@ -420,7 +420,7 @@ void BooleanConst() : {}
 	<BOOLEAN>
 	{
         if(Predefined.booleanType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Boolean");
+            System.out.println("Type Check Error This is not a Boolean Line "+ token.beginLine);
         }
         typeBool=false;
         jjtThis.setTypeSpec(Predefined.booleanType);
@@ -432,7 +432,7 @@ void FloatConst() : {}
     (<REALNUMBER>|<REAL_NUMBER>)
     {
         if(Predefined.realType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Float");
+            System.out.println("Type Check Error This is not a Float Line "+ token.beginLine);
         }
         typeBool=false;
         jjtThis.setTypeSpec(Predefined.floatType);
@@ -445,7 +445,7 @@ void DoubleConst() : {}
     <DOUBLE>
     {
         if(Predefined.doubleType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Double");
+            System.out.println("Type Check Error This is not a Double Line "+ token.beginLine);
         }
         typeBool=false;
         jjtThis.setTypeSpec(Predefined.doubleType);
@@ -458,7 +458,7 @@ void StringConst() : {}
 	<STRING>
 	{
         if(Predefined.stringType!=type && typeBool){
-            System.out.println("Type Check Error This is not a String");
+            System.out.println("Type Check Error This is not a String Line "+token.beginLine);
         }
         typeBool=false;
         jjtThis.setTypeSpec(Predefined.stringType);
@@ -593,6 +593,7 @@ void Declaration(): {}
    (LOOKAHEAD(2)((<SSEquals> (Expr()) (<SSSemiColon>))) |( (<SSComma> <IDENTIFIER>)*  (<SSSemiColon>))  )
    {
    	   jjtThis.setTypeSpec(type);
+           typeBool= false;
    }
 }
 

@@ -597,7 +597,7 @@ jjtree.closeNodeScope(jjtn000, true);
 jjtn000.setTypeSpec(Predefined.integerType);
         jjtn000.setAttribute(VALUE, Integer.parseInt(token.image));
         if(Predefined.integerType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Integer");
+            System.out.println("Type Check Error This is not a Integer Line "+ token.beginLine);
         }
         typeBool=false;
         break;
@@ -630,7 +630,7 @@ if (jjtc000) {
 jjtree.closeNodeScope(jjtn000, true);
           jjtc000 = false;
 if(Predefined.booleanType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Boolean");
+            System.out.println("Type Check Error This is not a Boolean Line "+ token.beginLine);
         }
         typeBool=false;
         jjtn000.setTypeSpec(Predefined.booleanType);
@@ -664,7 +664,7 @@ if (jjtc000) {
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 if(Predefined.realType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Float");
+            System.out.println("Type Check Error This is not a Float Line "+ token.beginLine);
         }
         typeBool=false;
         jjtn000.setTypeSpec(Predefined.floatType);
@@ -685,7 +685,7 @@ if (jjtc000) {
 jjtree.closeNodeScope(jjtn000, true);
       jjtc000 = false;
 if(Predefined.doubleType!=type && typeBool){
-            System.out.println("Type Check Error This is not a Double");
+            System.out.println("Type Check Error This is not a Double Line "+ token.beginLine);
         }
         typeBool=false;
         jjtn000.setTypeSpec(Predefined.doubleType);
@@ -706,7 +706,7 @@ if (jjtc000) {
 jjtree.closeNodeScope(jjtn000, true);
           jjtc000 = false;
 if(Predefined.stringType!=type && typeBool){
-            System.out.println("Type Check Error This is not a String");
+            System.out.println("Type Check Error This is not a String Line "+token.beginLine);
         }
         typeBool=false;
         jjtn000.setTypeSpec(Predefined.stringType);
@@ -1681,6 +1681,7 @@ typeBool=true;
 jjtree.closeNodeScope(jjtn000, true);
      jjtc000 = false;
 jjtn000.setTypeSpec(type);
+           typeBool= false;
     } catch (Throwable jjte000) {
 if (jjtc000) {
             jjtree.clearNodeScope(jjtn000);
@@ -3513,15 +3514,6 @@ if (jjtc000) {
     finally { jj_save(34, xla); }
   }
 
-  static private boolean jj_3R_46()
- {
-    if (jj_3R_14()) return true;
-    if (jj_scan_token(SSDot)) return true;
-    if (jj_scan_token(DOTGETSIZE)) return true;
-    if (jj_scan_token(SSDollar)) return true;
-    return false;
-  }
-
   static private boolean jj_3R_45()
  {
     if (jj_3R_14()) return true;
@@ -3602,18 +3594,18 @@ if (jjtc000) {
     return false;
   }
 
-  static private boolean jj_3_4()
- {
-    if (jj_3R_16()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_28()
  {
     if (jj_3R_14()) return true;
     if (jj_scan_token(SSDot)) return true;
     if (jj_scan_token(DOTREMOVE)) return true;
     if (jj_scan_token(SSOpenParen)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_4()
+ {
+    if (jj_3R_16()) return true;
     return false;
   }
 
@@ -3722,6 +3714,12 @@ if (jjtc000) {
     return false;
   }
 
+  static private boolean jj_3_35()
+ {
+    if (jj_3R_46()) return true;
+    return false;
+  }
+
   static private boolean jj_3_7()
  {
     if (jj_3R_19()) return true;
@@ -3734,21 +3732,15 @@ if (jjtc000) {
     return false;
   }
 
-  static private boolean jj_3_35()
+  static private boolean jj_3_34()
  {
-    if (jj_3R_46()) return true;
+    if (jj_3R_45()) return true;
     return false;
   }
 
   static private boolean jj_3_5()
  {
     if (jj_3R_17()) return true;
-    return false;
-  }
-
-  static private boolean jj_3_34()
- {
-    if (jj_3R_45()) return true;
     return false;
   }
 
@@ -4018,12 +4010,6 @@ if (jjtc000) {
     return false;
   }
 
-  static private boolean jj_3R_72()
- {
-    if (jj_scan_token(DOUBLE)) return true;
-    return false;
-  }
-
   static private boolean jj_3R_22()
  {
     if (jj_3R_14()) return true;
@@ -4031,10 +4017,25 @@ if (jjtc000) {
     return false;
   }
 
+  static private boolean jj_3R_72()
+ {
+    if (jj_scan_token(DOUBLE)) return true;
+    return false;
+  }
+
   static private boolean jj_3R_20()
  {
     if (jj_3R_14()) return true;
     if (jj_scan_token(SSMinusEquals)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_32()
+ {
+    if (jj_3R_14()) return true;
+    if (jj_scan_token(SSDot)) return true;
+    if (jj_scan_token(DOTSETVAL)) return true;
+    if (jj_scan_token(SSOpenBraces)) return true;
     return false;
   }
 
@@ -4046,15 +4047,6 @@ if (jjtc000) {
     jj_scanpos = xsp;
     if (jj_scan_token(85)) return true;
     }
-    return false;
-  }
-
-  static private boolean jj_3R_32()
- {
-    if (jj_3R_14()) return true;
-    if (jj_scan_token(SSDot)) return true;
-    if (jj_scan_token(DOTSETVAL)) return true;
-    if (jj_scan_token(SSOpenBraces)) return true;
     return false;
   }
 
@@ -4097,18 +4089,18 @@ if (jjtc000) {
     return false;
   }
 
-  static private boolean jj_3R_74()
- {
-    if (jj_scan_token(RESERVEDWORDREADINT)) return true;
-    return false;
-  }
-
   static private boolean jj_3R_39()
  {
     if (jj_3R_14()) return true;
     if (jj_scan_token(SSDot)) return true;
     if (jj_scan_token(DOTGETSTRING)) return true;
     if (jj_scan_token(SSOpenParen)) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_74()
+ {
+    if (jj_scan_token(RESERVEDWORDREADINT)) return true;
     return false;
   }
 
@@ -4167,19 +4159,19 @@ if (jjtc000) {
     return false;
   }
 
-  static private boolean jj_3_13()
- {
-    if (jj_scan_token(SSEquals)) return true;
-    if (jj_3R_24()) return true;
-    return false;
-  }
-
   static private boolean jj_3R_36()
  {
     if (jj_3R_14()) return true;
     if (jj_scan_token(SSDot)) return true;
     if (jj_scan_token(DOTGETSIZE)) return true;
     if (jj_scan_token(SSOpenBracket)) return true;
+    return false;
+  }
+
+  static private boolean jj_3_13()
+ {
+    if (jj_scan_token(SSEquals)) return true;
+    if (jj_3R_24()) return true;
     return false;
   }
 
@@ -4299,6 +4291,15 @@ if (jjtc000) {
   static private boolean jj_3_9()
  {
     if (jj_3R_21()) return true;
+    return false;
+  }
+
+  static private boolean jj_3R_46()
+ {
+    if (jj_3R_14()) return true;
+    if (jj_scan_token(SSDot)) return true;
+    if (jj_scan_token(DOTGETSIZE)) return true;
+    if (jj_scan_token(SSDollar)) return true;
     return false;
   }
 
