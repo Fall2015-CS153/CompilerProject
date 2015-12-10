@@ -4,7 +4,6 @@ import wci.frontend.SimpleNode;
 import wci.frontend.ASTAssignment;
 import wci.frontend.ASTCases;
 import wci.frontend.ASTComparisonOperator;
-import wci.frontend.ASTDataTypes;
 import wci.frontend.ASTDeclaration;
 import wci.frontend.ASTDecrementStatement;
 import wci.frontend.ASTDivideEqualsStatement;
